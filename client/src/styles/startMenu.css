@@ -1,0 +1,23 @@
+body{
+    background-image: url(https://cdn.pixabay.com/photo/2017/03/25/17/55/color-2174045_1280.png);
+    background-size: cover;
+}
+
+.pong-header{
+    color: rgb(255, 255, 255);
+    font-size:250px;
+    font-family: 'Wendy One', sans-serif;
+    font-weight: 600;
+    margin-top: 14%;
+    text-shadow: 1px 1px 2px red, 0 0 1em blue, 0 0 0.2em rgb(61, 241, 61);
+}
+
+.btn{
+    color: blueviolet;
+    box-shadow: 1px 1px 2px red, 0 0 1em blue;
+}
+
+.btn:hover{
+    background-color: blueviolet;
+    color: white;
+}
