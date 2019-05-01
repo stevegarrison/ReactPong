@@ -1,51 +1,110 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
-import { Col, Row, Container } from "../components/Grid";
-import Jumbotron from "../components/Jumbotron";
+import "../styles/optionsMenu.css"
 import API from "../utils/API";
+import { Link } from "react-router-dom";
+import { Input, TextArea, FormBtn } from "../components/Input";
 
-class Detail extends Component {
+let imageURL = "";
+let player1Color = "";
+let player2Color = "";
+let ballColor = "";
+
+
+class Options extends Component {
+
   state = {
-    book: {}
+    player1Color: "",
+    player2Color: "",
+    ballColor: "",
+    imageURL: ""
   };
-  // When this component mounts, grab the book with the _id of this.props.match.params.id
-  // e.g. localhost:3000/books/599dcb67f0f16317844583fc
-  componentDidMount() {
-    API.getBook(this.props.match.params.id)
-      .then(res => this.setState({ book: res.data }))
-      .catch(err => console.log(err));
+
+  handleSave = event => {
+    event.preventDefault();
+    imageURL = this.state.imageURL;
+    console.log("SAVED URL: " + imageURL);
+    console.log(this.state)
+  };
+
+  handleInputChange = event => {
+    this.setState({ imageURL: event.target.value });
+  }
+
+  handlePlayerOneColor = event => {
+    event.preventDefault();
+    player1Color = event.target.getAttribute("data-color");
+    this.setState({ player1Color: player1Color });
+    console.log("Player one color: " + player1Color);
+  }
+
+  handlePlayerTwoColor = event => {
+    event.preventDefault();
+    player2Color = event.target.getAttribute("data-color");
+    this.setState({ player2Color: player2Color });
+    console.log("Player two color: " + player2Color);
+  }
+
+  handleBallColor = event => {
+    event.preventDefault();
+    ballColor = event.target.getAttribute("data-color");
+    this.setState({ ballColor: ballColor });
+    console.log("Ball color: " + ballColor);
   }
 
   render() {
     return (
-      <Container fluid>
-        <Row>
-          <Col size="md-12">
-            <Jumbotron>
-              <h1>
-                {this.state.book.title} by {this.state.book.author}
-              </h1>
-            </Jumbotron>
-          </Col>
-        </Row>
-        <Row>
-          <Col size="md-10 md-offset-1">
-            <article>
-              <h1>Synopsis</h1>
-              <p>
-                {this.state.book.synopsis}
-              </p>
-            </article>
-          </Col>
-        </Row>
-        <Row>
-          <Col size="md-2">
-            <Link to="/">← Back to Authors</Link>
-          </Col>
-        </Row>
-      </Container>
+      <>
+        <div className="text-center text-light container">
+          <h1 className="header">Options</h1>
+                    {/* Home Button */}
+                    <button className="btn mb-2 mt-2" onClick={this.handleReturnHome}>
+            <Link to={"/"}>Home</Link>
+          </button>
+          <hr></hr>
+
+          {/* Options */}
+          <div className="mb-4">
+            <h1 className="options-text mb-2">Player One Skin</h1>
+            <button className={`player1-color1 m-1 ${"red" === this.state.player1Color ? "active" : ""}`} data-color="red" onClick={this.handlePlayerOneColor}></button>
+            <button className={`player1-color2 m-1 ${"blue" === this.state.player1Color ? "active" : ""}`} data-color="blue" onClick={this.handlePlayerOneColor}></button>
+            <button className={`player1-color3 m-1 ${"lime" === this.state.player1Color ? "active" : ""}`} data-color="lime" onClick={this.handlePlayerOneColor}></button>
+            <button className={`player1-color4 m-1 ${"yellow" === this.state.player1Color ? "active" : ""}`} data-color="yellow" onClick={this.handlePlayerOneColor}></button>
+          </div>
+          <div className="mb-4">
+            <h1 className="options-text mb-2">Player Two Skin</h1>
+            <button className={`player2-color1 m-1 ${"red" === this.state.player2Color ? "active" : ""}`} data-color="red" onClick={this.handlePlayerTwoColor}></button>
+            <button className={`player2-color2 m-1 ${"blue" === this.state.player2Color ? "active" : ""}`} data-color="blue" onClick={this.handlePlayerTwoColor}></button>
+            <button className={`player2-color3 m-1 ${"lime" === this.state.player2Color ? "active" : ""}`} data-color="lime" onClick={this.handlePlayerTwoColor}></button>
+            <button className={`player2-color4 m-1 ${"yellow" === this.state.player2Color ? "active" : ""}`} data-color="yellow" onClick={this.handlePlayerTwoColor}></button>
+          </div>
+          <div className="mb-4">
+            <h1 className="options-text mb-2">Ball Color</h1>
+            <button className={`ball-color1 m-1 ${"white" === this.state.ballColor ? "active" : ""}`} data-color="white" onClick={this.handleBallColor}></button>
+            <button className={`ball-color2 m-1 ${"lime" === this.state.ballColor ? "active" : ""}`} data-color="lime" onClick={this.handleBallColor}></button>
+            <button className={`ball-color3 m-1 ${"red" === this.state.ballColor ? "active" : ""}`} data-color="red" onClick={this.handleBallColor}></button>
+            <button className={`ball-color4 m-1 ${"blue" === this.state.ballColor ? "active" : ""}`} data-color="blue" onClick={this.handleBallColor}></button>
+          </div>
+          <div className="mb-4">
+            <h1 className="options-text mb-3">Background Image</h1>
+            <form className="form">
+              <Input
+                value={this.state.imageURL}
+                onChange={this.handleInputChange}
+                name="imageURL"
+                placeholder="Image URL"
+                id="form"
+              />
+            </form>
+          </div>
+
+          {/* Save Button */}
+          <button className="btn mt-4 mb-4" onClick={this.handleSave}>
+          <Link to={"/"}>Save</Link>
+          </button>
+        </div>
+      </>
     );
   }
 }
 
-export default Detail;
+export default Options;
