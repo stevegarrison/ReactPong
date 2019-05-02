@@ -19,8 +19,8 @@ class GameObject {
     render(_context, _imgRef) {
         console.log(_imgRef);
         _context.fillStyle = "green";
-        _context.fillRect(0, 0, 100, 100);
-       _context.drawImage(_imgRef, this.m_positionX, this.m_positionY, this.m_width, this.m_height);
+        _context.fillRect(300, 300, 100, 100);
+    //    _context.drawImage(_imgRef, this.m_positionX, this.m_positionY, this.m_width, this.m_height);
     }
 
 };

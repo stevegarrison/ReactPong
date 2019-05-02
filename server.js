@@ -31,6 +31,7 @@ db.options
     ballColor: "white",
     imageURL: ""
   }))
+  
   .then(function (dbOptions) {
     // If saved successfully, print the new Library document to the console
     console.log(dbOptions);
