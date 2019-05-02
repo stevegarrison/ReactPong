@@ -1,3 +1,6 @@
 module.exports = {
-  Book: require("./book")
+  ballModel: require("./ballModel"),
+  options: require("./options"),
+  paddleModel: require("./paddleModel"),
+  userModel: require("./userModel")
 };

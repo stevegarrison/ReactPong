@@ -10,6 +10,8 @@ body
 height: 100%;
 margin: 0;
 padding: 0;
+background-image: url("./images/BG-IMG.png");
+background-size: cover;
 }
 
 .player-text{
@@ -21,12 +23,35 @@ padding: 0;
 }
 
 .gameUI{
-    background: rgba(0, 0, 0, 0.945);
+    background: rgb(0, 0, 0);
     height: 80vh;
     width: 100%;
 }
 
 
-#home-icon{
+.fa-home{
+    color: rgb(255, 255, 255);
     text-shadow: 1px 1px 2px rgb(255, 0, 0), 0 0 1em blue, 0 0 0.2em rgb(61, 241, 61);
+}
+
+.fa-home:hover{
+    color: rgba(255, 255, 255, 0.589);
+    text-shadow: 1px 1px 2px rgba(255, 0, 0, 0.2), 0 0 1em rgba(0, 0, 255, 0.4), 0 0 0.2em rgba(61, 241, 61, 0.4);
+}
+
+.paddleOne{
+    position: absolute;
+    margin-left: 10px;
+    top: 40%;
+    width: 3%;
+    height: 25%;
+}
+
+.paddleTwo{
+    position: absolute;
+    right: 0px;
+    top: 40%;
+    margin-right: 10px;
+    width: 3%;
+    height: 25%;
 }

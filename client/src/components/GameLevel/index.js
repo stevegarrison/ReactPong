@@ -51,11 +51,11 @@ class GameLevel extends Component {
     userInput = _event => {
         console.log(this.state.positionY);
         if (_event.key === 's') {
-            if(this.state.positionY < 390)
+            if (this.state.positionY < 390)
                 this.setState({ positionY: this.state.positionY + 30.0 });
         } else if (_event.key === 'w') {
-            if(this.state.positionY > 10)
-            this.setState({ positionY: this.state.positionY - 30.0 });
+            if (this.state.positionY > 10)
+                this.setState({ positionY: this.state.positionY - 30.0 });
         }
     }
 
