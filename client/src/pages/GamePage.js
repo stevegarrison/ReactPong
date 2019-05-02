@@ -26,6 +26,7 @@ class Game extends Component {
                             <div className="row">
                                 <div className="gameUI"></div>
                             </div>
+                            
                         </div>
                         <div className="col-md-1">
                             <div>
