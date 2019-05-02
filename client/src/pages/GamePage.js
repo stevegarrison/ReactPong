@@ -2,14 +2,13 @@ import React, { Component } from "react";
 import "../styles/game.css"
 import API from "../utils/API";
 import { Link } from "react-router-dom";
-import GameLevel from "../components/GameLevel";
+import GameCom from "../components/GameCom"
 
 let playerOneScore = 0;
 let playerTwoScore = 0;
 
-class Game extends Component {
-
-    
+class GamePage extends Component {
+  
 
     render() {
         return (
@@ -30,17 +29,7 @@ class Game extends Component {
                             {/* Game UI */}
                             <div className="row">
                                 <div className="gameUI">
-
-                                {/* GAME COMPONENT GOES HERE */}
-
-                                    {/* Paddle one */}
-                                    <div className="paddleOne" style={{background: "lime"}}>
-                                    </div>
-
-                                    {/* Paddle two */}
-                                    <div className="paddleTwo" style={{background: "red"}}>
-                                    </div>
-
+                                    <GameCom></GameCom>
                                 </div>
                             </div>
 
@@ -57,4 +46,4 @@ class Game extends Component {
     }
 }
 
-export default Game;
+export default GamePage;
