@@ -1,0 +1,32 @@
+html
+{
+height: 100%;
+margin: 0;
+padding: 0;
+}
+
+body
+{
+height: 100%;
+margin: 0;
+padding: 0;
+}
+
+.player-text{
+    color: rgb(255, 255, 255);
+    font-size:80px;
+    font-family: 'Wendy One', sans-serif;
+    font-weight:200;
+    text-shadow: 1px 1px 2px rgb(255, 0, 0), 0 0 1em blue, 0 0 0.2em rgb(61, 241, 61);
+}
+
+.gameUI{
+    background: rgba(0, 0, 0, 0.945);
+    height: 80vh;
+    width: 100%;
+}
+
+#home-icon{
+    right: 2px;
+    text-shadow: 1px 1px 2px rgb(255, 0, 0), 0 0 1em blue, 0 0 0.2em rgb(61, 241, 61);
+}
