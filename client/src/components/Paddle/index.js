@@ -4,27 +4,56 @@
  * 
  */
 
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 
-const canvasStyle = {
-    width: 1000,
-    height: 1000,
-    backgroundColor: "green"
-};
 //const viewBox = [window.innerWidth / -2, 100 - window.innerHeight, window.innerWidth, window.innerHeight];
+
+// class Paddle { 
+//     positionX = 0;
+//     positionY=  0;
+//     image = "https://cdn.shopify.com/s/files/1/0784/2279/products/TraditionalPaddle400_1_-_Copy_large.jpg?v=1463152608";
+//     context = null;
+
+//     initPaddle() { 
+//         document.addEventListener("keydown", this.userInput, false);
+//     }
+
+//     handleInput(_event) { 
+//         if (_event.key === this.props.moveUp) {
+//             if(this.state.positionY > 10)
+//             this.setState({ positionY: this.state.positionY - 30.0 });
+//         } else if (_event.key === this.props.moveDown) {
+//             if(this.state.positionY < 790)
+//                 this.setState({ positionY: this.state.positionY + 30.0 });
+//         } 
+//     }
+
+//     updatePaddle() { 
+
+//     }
+
+//     renderPaddle() { 
+//         this.context.drawImage(image, this.state.positionX, this.state.positionY, 100, 100);
+//     }
+// }
+
 
 class Paddle extends Component {
 
 
     state = {
-        positionX: 0.0,
-        positionY: 0.0,
-        image: "https://cdn.shopify.com/s/files/1/0784/2279/products/TraditionalPaddle400_1_-_Copy_large.jpg?v=1463152608"
+        positionX: 0,
+        positionY: 0,
+        image: "https://cdn.shopify.com/s/files/1/0784/2279/products/TraditionalPaddle400_1_-_Copy_large.jpg?v=1463152608",
+        context: null
     }
 
     componentDidMount() {
 
-        this.renderLevel();
+        
+        this.setState({ context: this.props.context.context, positionX: this.props.initPos.x, positionY: this.props.initPos.y });
+       console.log(this.props.context);
+       this.renderLevel();
 
         document.addEventListener("keydown", this.userInput, false);
     }
@@ -38,24 +67,30 @@ class Paddle extends Component {
 
     renderLevel = () => {
         setInterval(() => {
-            console.log("here");
-            console.log(this.state.positionY);
-            const canvas = this.refs.canvas;
-            const context = canvas.getContext("2d");
+            //console.log("here");
+            // console.log(this.state.positionX);
+            // console.log(this.state.positionY);
+            //console.log(this.props.initPos.x);
+            // console.log(this.props.initPos.y);
+            //const canvas = this.refs.canvas;
+            //const context = this.getContext2d();
             const image = this.refs.image;
-            context.clearRect(0, 0, canvasStyle.width, canvasStyle.height);
-            context.drawImage(image, 10, this.state.positionY, 100, 100);
-            // context.fillStyle = "red";
-            // context.fillRect(100, this.state.positionY, 100, 50);
-        });
+            //console.log(this.state.context);
+            if (this.state.context) {
+                // this.state.context.clearRect(0, 0, 1500, 900);
+                this.state.context.drawImage(image, this.state.positionX, this.state.positionY, 100, 100);
+                // context.fillStyle = "red";
+                // context.fillRect(100, this.state.positionY, 100, 50);
+            }
+       }, 20);
     }
 
     userInput = _event => {
         console.log(this.state.positionY);
-        if (_event.key === 'w') {
+        if (_event.key === this.props.moveUp) {
             if(this.state.positionY > 10)
             this.setState({ positionY: this.state.positionY - 30.0 });
-        } else if (_event.key === 's') {
+        } else if (_event.key === this.props.moveDown) {
             if(this.state.positionY < 790)
                 this.setState({ positionY: this.state.positionY + 30.0 });
         } 
@@ -72,12 +107,7 @@ class Paddle extends Component {
     render() {
         return (
             <div>
-                <canvas
-                    ref="canvas"
-                    width={1500}
-                    height={900}
-                //viewBox={viewBox}
-                />
+                {this.renderLevel()}
                 <img style={{ display: "none" }} ref="image" src={this.state.image} alt="paddleImg" />
 
             </div>

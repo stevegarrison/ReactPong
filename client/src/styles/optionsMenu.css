@@ -1,0 +1,138 @@
+body{
+    background-image: url(https://cdn.pixabay.com/photo/2017/03/25/17/55/color-2174045_1280.png);
+    background-size: cover;
+}
+
+hr{
+    border-color: white;
+    width: 50%;
+}
+
+.header{
+    color: rgb(255, 255, 255);
+    font-size:80px;
+    font-family: 'Wendy One', sans-serif;
+    font-weight:200;
+    text-shadow: 1px 1px 2px rgb(255, 0, 0), 0 0 1em blue, 0 0 0.2em rgb(61, 241, 61);
+}
+
+.btn{
+    color: blueviolet;
+    box-shadow: 1px 1px 2px red, 0 0 1em blue;
+}
+
+.btn:hover{
+    background-color: blueviolet;
+    color: white;
+}
+
+.options-text{
+    text-shadow: 1px 1px 2px rgb(0, 47, 255), 0 0 1em rgb(0, 38, 255), 0 0 0.2em rgb(61, 241, 61);
+}
+
+.player1-color1{
+    background: red;
+    border: none;
+    width:30px;
+    height:30px;
+    box-shadow: 1px 1px 2px , 0 0 1em blue;
+}
+
+.player1-color2{
+    background: blue;
+    border: none;
+    width:30px;
+    height:30px;
+    box-shadow: 1px 1px 2px , 0 0 1em blue;
+}
+
+.player1-color3{
+    background: lime;
+    border: none;
+    width:30px;
+    height:30px;
+    box-shadow: 1px 1px 2px , 0 0 1em blue;
+}
+
+.player1-color4{
+    background: yellow;
+    border: none;
+    width:30px;
+    height:30px;
+    box-shadow: 1px 1px 2px , 0 0 1em blue;
+}
+
+.player2-color1{
+    background: red;
+    border: none;
+    width:30px;
+    height:30px;
+    box-shadow: 1px 1px 2px , 0 0 1em blue;
+}
+
+.player2-color2{
+    background: blue;
+    border: none;
+    width:30px;
+    height:30px;
+    box-shadow: 1px 1px 2px , 0 0 1em blue;
+}
+
+.player2-color3{
+    background: lime;
+    border: none;
+    width:30px;
+    height:30px;
+    box-shadow: 1px 1px 2px , 0 0 1em blue;
+}
+
+.player2-color4{
+    background: yellow;
+    border: none;
+    width:30px;
+    height:30px;
+    box-shadow: 1px 1px 2px , 0 0 1em blue;
+}
+
+.ball-color1{
+    background: white;
+    border: none;
+    width:30px;
+    height:30px;
+    box-shadow: 1px 1px 2px , 0 0 1em blue;
+}
+
+.ball-color2{
+    background: lime;
+    border: none;
+    width:30px;
+    height:30px;
+    box-shadow: 1px 1px 2px , 0 0 1em blue;
+}
+
+.ball-color3{
+    background: red;
+    border: none;
+    width:30px;
+    height:30px;
+    box-shadow: 1px 1px 2px, 0 0 1em blue;
+}
+
+.ball-color4{
+    background: blue;
+    border: none;
+    width:30px;
+    height:30px;
+    box-shadow: 1px 1px 2px , 0 0 1em blue;
+}
+
+.active{
+    border-style: solid;
+    border-color: rgba(0, 0, 0, 0.459);
+}
+
+#form{
+    width: 30%;
+    border: none;
+    box-shadow: 1px 1px 2px red, 0 0 1em blue;
+}
