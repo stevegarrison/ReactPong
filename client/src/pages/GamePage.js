@@ -7,7 +7,7 @@ import GameCom from "../components/GameCom"
 let playerOneScore = 0;
 let playerTwoScore = 0;
 
-class Game extends Component {
+class GamePage extends Component {
   
 
     render() {
