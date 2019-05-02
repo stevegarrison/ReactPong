@@ -108,7 +108,9 @@ class Paddle extends Component {
         return (
             <div>
                 {this.renderLevel()}
-                <img style={{ display: "none" }} ref="image" src={this.state.image} alt="paddleImg" />
+                <img style={{ display: "none" }} ref="image"
+                    src="https://cdn.shopify.com/s/files/1/0784/2279/products/TraditionalPaddle400_1_-_Copy_large.jpg?v=1463152608"
+                    alt="paddleImg" />
 
             </div>
         );

@@ -2,9 +2,9 @@ import React, { Component } from "react";
 import "../styles/game.css"
 import API from "../utils/API";
 import { Link } from "react-router-dom";
+import GameCom from "../components/GameCom"
 
-
-class Game extends Component {
+class GamePage extends Component {
 
     render() {
         return (
@@ -24,7 +24,9 @@ class Game extends Component {
                             </div>
                             {/* Game UI */}
                             <div className="row">
-                                <div className="gameUI"></div>
+                                <div className="gameUI">
+                                    <GameCom></GameCom>
+                                </div>
                             </div>
                         </div>
                         <div className="col-md-1">
@@ -39,4 +41,4 @@ class Game extends Component {
     }
 }
 
-export default Game;
+export default GamePage;
