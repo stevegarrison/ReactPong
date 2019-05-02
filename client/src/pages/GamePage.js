@@ -4,7 +4,11 @@ import API from "../utils/API";
 import { Link } from "react-router-dom";
 import GameCom from "../components/GameCom"
 
-class GamePage extends Component {
+let playerOneScore = 0;
+let playerTwoScore = 0;
+
+class Game extends Component {
+  
 
     render() {
         return (
@@ -16,10 +20,10 @@ class GamePage extends Component {
                             {/* Player Scores */}
                             <div className="row player-text mt-3 mb-4">
                                 <div className="col-md-6">
-                                    <h2>Player One: </h2>
+                                    <h2>Player One: {playerOneScore}</h2>
                                 </div>
                                 <div className="col-md-6">
-                                    <h2>Player Two: </h2>
+                                    <h2>Player Two: {playerTwoScore}</h2>
                                 </div>
                             </div>
                             {/* Game UI */}
@@ -28,10 +32,11 @@ class GamePage extends Component {
                                     <GameCom></GameCom>
                                 </div>
                             </div>
+
                         </div>
                         <div className="col-md-1">
                             <div>
-                                <Link to={"/"}><i id="home-icon" className="m-3 fas fa-home text-light fa-2x"></i></Link>
+                                <Link to={"/"}><i id="home-icon" className="m-3 fas fa-home fa-2x"></i></Link>
                             </div>
                         </div>
                     </div>

@@ -1,7 +1,10 @@
 const router = require("express").Router();
-// const bookRoutes = require("./books");
+const optionsController = require("../../controllers/optionsContoller");
 
-// // Book routes
-// router.use("/books", bookRoutes);
+// Matches with "/api/options"
+router.put("/options", function(req, res) {
+  console.log(req.body);
+  optionsController.update(req.body)
+});
 
 module.exports = router;
