@@ -20,10 +20,14 @@ class Options extends Component {
   };
 
   handleSave = event => {
-    event.preventDefault();
-    imageURL = this.state.imageURL;
-    console.log("SAVED URL: " + imageURL);
-    console.log(this.state)
+    // Save Options to DB
+    API.saveOptions({
+      player1Color: this.state.player1Color,
+      player2Color: this.state.player2Color,
+      ballColor: this.state.ballColor,
+      imageURL: this.state.imageURL
+    })
+
   };
 
   handleInputChange = event => {
@@ -78,10 +82,10 @@ class Options extends Component {
           </div>
           <div className="mb-4">
             <h1 className="options-text mb-2">Ball Color</h1>
-            <button className={`ball-color1 m-1 ${"white" === this.state.ballColor ? "active" : ""}`} data-color="white" onClick={this.handleBallColor}></button>
-            <button className={`ball-color2 m-1 ${"lime" === this.state.ballColor ? "active" : ""}`} data-color="lime" onClick={this.handleBallColor}></button>
-            <button className={`ball-color3 m-1 ${"red" === this.state.ballColor ? "active" : ""}`} data-color="red" onClick={this.handleBallColor}></button>
-            <button className={`ball-color4 m-1 ${"blue" === this.state.ballColor ? "active" : ""}`} data-color="blue" onClick={this.handleBallColor}></button>
+            <button className={`ball-color1 m-1 ${"red" === this.state.ballColor ? "active" : ""}`} data-color="red" onClick={this.handleBallColor}></button>
+            <button className={`ball-color2 m-1 ${"blue" === this.state.ballColor ? "active" : ""}`} data-color="blue" onClick={this.handleBallColor}></button>
+            <button className={`ball-color3 m-1 ${"lime" === this.state.ballColor ? "active" : ""}`} data-color="lime" onClick={this.handleBallColor}></button>
+            <button className={`ball-color4 m-1 ${"yellow" === this.state.ballColor ? "active" : ""}`} data-color="yellow" onClick={this.handleBallColor}></button>
           </div>
           <div className="mb-4">
             <h1 className="options-text mb-3">Background Image</h1>
