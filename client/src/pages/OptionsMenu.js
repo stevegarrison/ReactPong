@@ -57,9 +57,8 @@ class Options extends Component {
         <div className="text-center text-light container">
           <h1 className="header">Options</h1>
                     {/* Home Button */}
-                    <button className="btn mb-2 mt-2" onClick={this.handleReturnHome}>
-            <Link to={"/"}>Home</Link>
-          </button>
+                    
+            <Link to={"/"}><button className="btn mb-2 mt-2" onClick={this.handleReturnHome}>Home</button></Link>
           <hr></hr>
 
           {/* Options */}
@@ -98,9 +97,7 @@ class Options extends Component {
           </div>
 
           {/* Save Button */}
-          <button className="btn mt-4 mb-4" onClick={this.handleSave}>
-          <Link to={"/"}>Save</Link>
-          </button>
+          <Link to={"/"}><button className="btn mt-4 mb-4" onClick={this.handleSave}>Save</button></Link>
         </div>
       </>
     );
