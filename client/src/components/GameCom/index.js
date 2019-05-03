@@ -84,6 +84,7 @@ class GameCom extends Component {
             this.state.ball = new Ball(this.state.gameUIWidth, this.state.gameUIHeight, this.state.ballColor);
 
             document.addEventListener("keydown", this.handleInput, false);
+            document.addEventListener("keyup", this.handleKeyUp, false);
             requestAnimationFrame(() => { this.update() });
         });
         //console.log(canvas);
@@ -156,35 +157,54 @@ class GameCom extends Component {
         };
     }
 
-    processInput() {
+    handleKeyUp = _event => { 
+        switch (_event.key) {
+            case 'w':
+                this.setKey('w', 0);
+                break;
+            case 's':
+                this.setKey('s', 0);
+                break;
+            case 'i':
+                this.setKey('i', 0);
+                break;
+            case 'k':
+                this.setKey('k', 0);
+                break;
+            default:
+                break;
+        };
+    }
+
+    processInput(_deltaTime) {
 
         var newKeys = { ...this.state.keys }
         if (this.state.keys.w === 1) {
 
-            this.setKey('w', 0);
+            //this.setKey('w', 0);
             // newKeys.w = 0;
-            this.state.player1.paddle.movePaddle(0, -30);
+            this.state.player1.paddle.movePaddle("up", _deltaTime);
             // this.setState({ keys: newKeys });
         }
         if (this.state.keys.s === 1) {
 
-            this.setKey('s', 0);
+           // this.setKey('s', 0);
             // newKeys.s = 0;
-            this.state.player1.paddle.movePaddle(0, 30);
+            this.state.player1.paddle.movePaddle("down", _deltaTime);
             // this.setState({ keys: newKeys});
         }
         if (this.state.keys.i === 1) {
 
-            this.setKey('i', 0);
+            //this.setKey('i', 0);
             //newKeys.i = 0;
-            this.state.player2.paddle.movePaddle(0, -30);
+            this.state.player2.paddle.movePaddle("up", _deltaTime);
             // this.setState({ keys: newKeys});
         }
         if (this.state.keys.k === 1) {
 
-            this.setKey('k', 0);
+           // this.setKey('k', 0);
             // newKeys.k = 0;
-            this.state.player2.paddle.movePaddle(0, 30);
+            this.state.player2.paddle.movePaddle("down", _deltaTime);
             // this.setState({ keys: newKeys});
         }
 
@@ -248,7 +268,7 @@ class GameCom extends Component {
             this.state.context.clearRect(0, 0, this.state.gameUIWidth, this.state.gameUIHeight);
 
             // update input
-            this.processInput();
+            this.processInput(deltaTime);
 
             // update objects
             this.state.ball.update(deltaTime, _sideHit => {
@@ -346,4 +366,3 @@ class GameCom extends Component {
 };
 
 export default GameCom;
-

@@ -11,16 +11,25 @@ class InputManager {
     addKey = _keyToAdd => { 
 
         if (_keyToAdd !== "") {
-            
+            this.m_keys.unshift(_keyToAdd);
          }
 
     }
 
-    removeKey = _keyToRemove => { 
+    processKeys(_callback) { 
 
+        _callback(this.m_keys);
+    }
+
+  
+    // returns the key it removed
+    removeKey = () => { 
+        return this.m_keys.shift();
     }
 
     removeAllKeys = () => { 
 
     }
 };
+
+export default InputManager;
