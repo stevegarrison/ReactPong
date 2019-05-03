@@ -23,10 +23,12 @@ class Ball {
     m_gameHeight = 0;
     m_originX = 0;
     m_originY = 0;
+    m_ballColor = "red";
 
-    constructor(_gameWidth, _gameHeight) { 
+    constructor(_gameWidth, _gameHeight, _ballColor) { 
         this.m_gameWidth = _gameWidth;
         this.m_gameHeight = _gameHeight;
+        this.m_ballColor = _ballColor;
         console.log("widht " + this.m_gameWidth);
         console.log("height " + this.m_gameHeight);
     }
@@ -79,8 +81,10 @@ class Ball {
     render(_context, _imgRef, _levelWidth, _levelHeight) {
         // console.log(_imgRef);
         // GamePlayer.prototype.render(_context, _imgRef);
-        _context.drawImage(_imgRef, this.m_positionX, this.m_positionY, this.m_width, this.m_height);
+        // _context.fillRect(_imgRef, this.m_positionX, this.m_positionY, this.m_width, this.m_height);
         //_context.drawImage(_imgRef, this.m_positionX, this.m_positionY, this.m_width, this.m_height);
+        _context.fillStyle = this.m_ballColor;
+        _context.fillRect(this.m_positionX, this.m_positionY, this.m_width, this.m_height);
 
     }
 

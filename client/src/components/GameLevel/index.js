@@ -36,7 +36,7 @@ class GameLevel extends Component {
 
     renderLevel = () => {
         setInterval(() => {
-            console.log("here");
+            // console.log("here");
             console.log(this.state.positionY);
             const canvas = this.refs.canvas;
             const context = canvas.getContext("2d");

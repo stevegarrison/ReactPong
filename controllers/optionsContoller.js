@@ -2,7 +2,7 @@ const db = require("../models");
 
 // Defining methods for the booksController
 module.exports = {
-  update: function(req, res) {
+  update: function (req, res) {
     console.log(req.body);
     let newPlayer1Color = req.player1Color;
     let newPlayer2Color = req.player2Color;
@@ -16,13 +16,22 @@ module.exports = {
 
 
     db.options
-      .findOneAndUpdate({}, { 
+      .findOneAndUpdate({}, {
         player1Color: newPlayer1Color,
         player2Color: newPlayer2Color,
         ballColor: newBallColor,
         imageURL: newImageURL
-       })
-      .then(dbModel => { console.log("the model" + dbModel); res.json(dbModel)})
+      })
+      .then(dbModel => { console.log("The model" + dbModel); res.json(dbModel) })
+      .catch(err => res.status(422).json(err));
+  },
+
+  findAll: function (req, res) {
+    db.options
+      .find()
+      .then(dbModel => { 
+        console.log("SETTINGS (optionsController.js): " + dbModel);
+         res.json(dbModel) })
       .catch(err => res.status(422).json(err));
   }
 };

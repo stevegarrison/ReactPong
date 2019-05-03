@@ -60,9 +60,9 @@ class Options extends Component {
       <>
         <div className="text-center text-light container">
           <h1 className="header">Options</h1>
-                    {/* Home Button */}
-                    
-            <Link to={"/"}><button className="btn mb-2 mt-2" onClick={this.handleReturnHome}>Home</button></Link>
+          {/* Home Button */}
+
+          <Link to={"/"}><button className="btn mb-2 mt-2" onClick={this.handleReturnHome}>Home</button></Link>
           <hr></hr>
 
           {/* Options */}

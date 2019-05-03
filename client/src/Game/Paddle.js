@@ -3,8 +3,6 @@
  *      Paddle.js
  * 
  */
-
-
 class Paddle  {
 
     m_positionX = 10;
