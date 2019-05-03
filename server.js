@@ -20,7 +20,7 @@ if (process.env.NODE_ENV === "production") {
 app.use(routes);
 
 // Connect to the Mongo DB
-mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/options");
+mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/options", { useNewUrlParser: true });
 
 // Every NPM start creates default options and DB
 db.options
@@ -47,9 +47,8 @@ app.listen(PORT, function () {
   console.log(`🌎  ==> API Server now listening on PORT ${PORT}!`);
 });
 
-
 mongoose.connection.on('connected', function(){  
-  console.log("Mongoose default connection is open to ", "mongodb://localhost/options");
+  console.log("Mongoose default connection is open to " + "mongodb://localhost/options");
 });
 
 mongoose.connection.on('error', function(err){
