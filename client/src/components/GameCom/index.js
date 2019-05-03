@@ -14,19 +14,20 @@ class GameCom extends Component {
 
     state = {
         context: null,
-       // paddle: null,
+        // paddle: null,
         ball: null,
         gameWidth: 0,
         gameHeight: 0,
-        
+
         player1: {
             paddle: null,
- 
+            score: 0
+
         },
 
         player2: {
             paddle: null,
-
+            score: 0
         },
 
         keys: {
@@ -52,7 +53,9 @@ class GameCom extends Component {
         this.state.player1.paddle = new Paddle(this.state.gameUIWidth, this.state.gameUIHeight, "red");
         this.state.player2.paddle = new Paddle(this.state.gameUIWidth, this.state.gameUIHeight, "green");
         console.log(this.state.player2.paddle);
-        this.state.player2.paddle.setPositionX(1360);
+        this.state.player1.paddle.setPositionX(100);
+        this.state.player2.paddle.setPositionX(1260);
+        //this.state.player2.paddle.setPositionX(1360);
         this.state.ball = new Ball(this.state.gameUIWidth, this.state.gameUIHeight);
 
         document.addEventListener("keydown", this.handleInput, false);
@@ -61,108 +64,95 @@ class GameCom extends Component {
 
     }
 
-    setKey(_key, _value) { 
+    setKey(_key, _value) {
 
-        var newKeys = {...this.state.keys};
-        switch(_key) { 
+        var newKeys = { ...this.state.keys };
+        switch (_key) {
             case 'w':
-            newKeys.w = _value;
+                newKeys.w = _value;
                 break;
             case 's':
-            newKeys.s = _value;
+                newKeys.s = _value;
                 break;
             case 'i':
-            newKeys.i = _value;
+                newKeys.i = _value;
                 break;
             case 'k':
-            newKeys.k = _value;
+                newKeys.k = _value;
                 break;
             default:
                 break;
-            
+
         };
 
-        this.setState({keys: newKeys});
+        this.setState({ keys: newKeys });
     }
 
-    checkCollision() { 
+    checkCollision() {
 
         this.state.player1.paddle.checkForCollision(this.state.ball);
+        this.state.player2.paddle.checkForCollision(this.state.ball);
     }
 
-    handleInput =  _event => { 
+    handleInput = _event => {
 
 
         //console.log(_event);
-        switch (_event.key) { 
+        switch (_event.key) {
             case 'w':
-                console.log(this.state.player1.posY);
                 this.setKey('w', 1);
-                // this.setState({ player1: { posX: 10, posY: this.state.player1.posY - 30 } });
-                console.log(this.state.player1.posY);
                 break;
             case 's':
-                console.log(this.state.player1.posY);
                 this.setKey('s', 1);
-               // this.setState({ player1: { posX: 10, posY: this.state.player1.posY + 30 } });
-                console.log(this.state.player1.posY);
                 break;
-            
-                case 'i':
-                console.log(this.state.player2.posY);
+            case 'i':
                 this.setKey('i', 1);
-                    // this.setState({ player2: { posX: 1000, posY: this.state.player2.posY - 30 } });
-                    console.log(this.state.player2.posY);
                 break;
-            
-                case 'k':
-                console.log(this.state.player2.posY);
+            case 'k':
                 this.setKey('k', 1);
-                    // this.setState({ player2: { posX: 1000, posY: this.state.player2.posY + 30 } });
-                    console.log(this.state.player2.posY);
-                    break;
+                break;
             default:
                 break;
         };
     }
 
-    processInput() { 
+    processInput() {
 
         var newKeys = { ...this.state.keys }
-        if (this.state.keys.w === 1) { 
-            
+        if (this.state.keys.w === 1) {
+
             this.setKey('w', 0);
-           // newKeys.w = 0;
+            // newKeys.w = 0;
             this.state.player1.paddle.movePaddle(0, -30);
-           // this.setState({ keys: newKeys });
+            // this.setState({ keys: newKeys });
         }
-        if (this.state.keys.s === 1) { 
+        if (this.state.keys.s === 1) {
 
             this.setKey('s', 0);
-           // newKeys.s = 0;
+            // newKeys.s = 0;
             this.state.player1.paddle.movePaddle(0, 30);
-          // this.setState({ keys: newKeys});
+            // this.setState({ keys: newKeys});
         }
-        if (this.state.keys.i === 1) { 
+        if (this.state.keys.i === 1) {
 
             this.setKey('i', 0);
             //newKeys.i = 0;
             this.state.player2.paddle.movePaddle(0, -30);
-           // this.setState({ keys: newKeys});
+            // this.setState({ keys: newKeys});
         }
-        if (this.state.keys.k === 1) { 
+        if (this.state.keys.k === 1) {
 
             this.setKey('k', 0);
-           // newKeys.k = 0;
+            // newKeys.k = 0;
             this.state.player2.paddle.movePaddle(0, 30);
-           // this.setState({ keys: newKeys});
+            // this.setState({ keys: newKeys});
         }
 
     }
 
-    componentWillUnmount() { 
+    componentWillUnmount() {
         document.removeEventListener("keydown", this.handleInput, false);
-       
+
     }
 
     // waitForContext() { 
@@ -183,29 +173,71 @@ class GameCom extends Component {
 
     }
 
+    resetGame() { 
+        var newState = { ...this.state };
+        newState.player1.score = 0;
+        newState.player1.paddle.placeAtOrigin();
+        newState.player2.score = 0;
+        newState.player2.paddle.placeAtOrigin();
+        newState.ball.placeAtOrigin();
+        newState.keys = {w: 0, s: 0, i: 0, k:0};
+        this.setState(newState);
+    }
+
+    checkForWins() { 
+
+        if (this.state.player1.score >= 3) {
+            console.log("Player 1 Wins!!!");
+            this.resetGame();
+        } else if (this.state.player2.score >= 3) { 
+            console.log("Player 1 Wins!!!");
+            this.resetGame();
+        }
+    }
+
     update = () => {
         //console.log("here");
         if (this.state.context) {
             this.state.context.clearRect(0, 0, 1500, 900);
-        
-           
+
+
             //console.log(this.refs.image);
-            
+
 
             // update input
             this.processInput();
 
             // update objects
-            this.state.ball.update(0);
+            this.state.ball.update(0, _sideHit => { 
+                switch (_sideHit) { 
+                    case "left":
+                        var newPlayer = { ...this.state.player2 };
+                        newPlayer.score++;
+                        this.setState({ player2: newPlayer });
+                        console.log("Player 2 score: " + newPlayer.score);
+                        break;
+                    case "right":
+                    var newPlayer = { ...this.state.player1 };
+                    newPlayer.score++;
+                    this.setState({ player1: newPlayer});
+                    console.log("Player 1 score: " + newPlayer.score);
+                    break;
+                    default:
+                        break;
+                };
+            });
 
             // check for collision
             this.checkCollision();
-            
+
+            // check for player wins
+            this.checkForWins();
+
             // render objects
             this.state.ball.render(this.state.context, this.refs.ballImg, 1400, 700);
             this.state.player1.paddle.render(this.state.context, this.refs.image, this.state.player1.posX, this.state.player1.posY);
             this.state.player2.paddle.render(this.state.context, this.refs.image, this.state.player1.posX, this.state.player1.posY);
-           
+
             //this.state.paddle.render(this.state.context, this.refs.image, this.state.player2.posX, this.state.player2.posY);
         }
 
@@ -223,19 +255,19 @@ class GameCom extends Component {
                     height={900}
                     ref="canvas" >
 
-                    
+
 
                     <img style={{ display: "none" }}
                         ref="image"
                         src="https://cdn.shopify.com/s/files/1/0784/2279/products/TraditionalPaddle400_1_-_Copy_large.jpg?v=1463152608"
                         alt="paddleImg" />
-                    
+
                     <img style={{ display: "none" }}
                         ref="ballImg"
                         src="https://www.big5sportinggoods.com/catalogimage/img/product/rwd/large/6165_15086_0001_551_large_03.jpg"
                         alt="paddleImg" />
-                    
-                    
+
+
 
                     {/* {this.clearRect()}
                     {this.state.context ? <Paddle context={{ context: this.state.context }} initPos={{ x: 10, y: 0 }} moveUp='w' moveDown='s'></Paddle> : null}

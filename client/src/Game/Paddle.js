@@ -44,6 +44,10 @@ class Paddle  {
         return this.m_positionX;
     }
 
+    placeAtOrigin() { 
+        this.m_positionY = this.m_gameHeight / 2 - this.m_height / 2;
+    }
+
     initPaddle() {
        
     }
@@ -88,34 +92,23 @@ class Paddle  {
         var collideLeft = false;
         var collideBottom = false;
         var collideRight = false;
-        
-        // check top side of ball
-        // if (this.m_positionY < _paddleObj.bottom) { 
-        //     this.m_velY *= -1;
-        // }
 
-        // check left side of ball
-        
+        // check to see if there has been a collision
         if (this.m_positionX + this.m_width > _ball.m_positionX
             && this.m_positionY < _ball.m_positionY
-            && this.m_positionY + this.m_height > _ball.m_positionY) { 
-                console.log(_ball.m_velY);
-                console.log(_ball.m_velX);
+            && this.m_positionY + this.m_height > _ball.m_positionY
+            && this.m_positionX < _ball.m_positionX) {
+            
             _ball.m_velX *= -1;
-            console.log(_ball.m_velY);
-        console.log(_ball.m_velX);
+            _ball.m_velY *= -1;
+            // check where the collision occured
+            // if(this.m_positionX + this.m_width > )
+            
+            // _ball.m_positionX += (this.m_positionX + this.m_width) - _ball.m_positionX + 5;
+            // _ball.m_velX *= -1;
         }
 
-        // check bottom side of ball
-        // if (this.m_positionY < _paddleObj.bottom) { 
-        //     this.m_velY *= -1;
-        // }
-
-        // // check right side of ball
-        // if (this.m_positionY < _paddleObj.bottom) { 
-        //     this.m_velY *= -1;
-        // }
-
+       
     }
 
     closePaddle() {
