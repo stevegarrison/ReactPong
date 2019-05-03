@@ -11,10 +11,15 @@ import { Link } from "react-router-dom";
 import "../../styles/game.css"
 import API from "../../utils/API";
 
+
 var contextWait = null;
+
+
+
 
 class GameCom extends Component {
 
+    startTime = 0.0;
 
     state = {
         //Settings
@@ -73,8 +78,8 @@ class GameCom extends Component {
 
             this.state.player1.paddle = new Paddle(this.state.gameUIWidth, this.state.gameUIHeight, this.state.player1Color);
             this.state.player2.paddle = new Paddle(this.state.gameUIWidth, this.state.gameUIHeight, this.state.player2Color);
-            this.state.player1.paddle.setPositionX(75);
-            this.state.player2.paddle.setPositionX(1060);
+            this.state.player1.paddle.setPositionX(100);
+            this.state.player2.paddle.setPositionX(1260);
             //this.state.player2.paddle.setPositionX(1360);
             this.state.ball = new Ball(this.state.gameUIWidth, this.state.gameUIHeight, this.state.ballColor);
 
@@ -225,25 +230,28 @@ class GameCom extends Component {
             console.log("Player 1 Wins!!!");
             this.resetGame();
         } else if (this.state.player2.score >= 3) {
-            console.log("Player 1 Wins!!!");
+            console.log("Player 2 Wins!!!");
             this.resetGame();
         }
     }
 
     update = () => {
         //console.log("here");
+
+        // find the time elapsed
+        var currentTime = new Date().getTime();
+        var deltaTime = (currentTime - this.startTime) /1000;
+        this.startTime = currentTime;
+
+        
         if (this.state.context) {
-            this.state.context.clearRect(0, 0, 1500, 900);
-
-
-            //console.log(this.refs.image);
-
+            this.state.context.clearRect(0, 0, this.state.gameUIWidth, this.state.gameUIHeight);
 
             // update input
             this.processInput();
 
             // update objects
-            this.state.ball.update(0, _sideHit => {
+            this.state.ball.update(deltaTime, _sideHit => {
                 switch (_sideHit) {
                     case "left":
                         var newPlayer = { ...this.state.player2 };
@@ -269,7 +277,7 @@ class GameCom extends Component {
             this.checkForWins();
 
             // render objects
-            this.state.ball.render(this.state.context, this.refs.ballImg, 1400, 700);
+            this.state.ball.render(this.state.context, this.refs.ballImg, this.state.gameUIWidth, this.state.gameUIHeight);
             this.state.player1.paddle.render(this.state.context, this.refs.image, this.state.player1.posX, this.state.player1.posY);
             this.state.player2.paddle.render(this.state.context, this.refs.image, this.state.player1.posX, this.state.player1.posY);
 
@@ -320,7 +328,7 @@ class GameCom extends Component {
                                         alt="paddleImg" />
 
                                 </canvas>
-                            </div>
+                            </div>     
                         </div>
 
                         <div className="col-md-1">
@@ -338,3 +346,4 @@ class GameCom extends Component {
 };
 
 export default GameCom;
+

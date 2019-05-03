@@ -62,6 +62,38 @@ hr{
     box-shadow: 1px 1px 2px , 0 0 1em blue;
 }
 
+.player1-color5{
+    background: #FF3399;
+    border: none;
+    width:30px;
+    height:30px;
+    box-shadow: 1px 1px 2px , 0 0 1em blue;
+}
+
+.player1-color6{
+    background: purple;
+    border: none;
+    width:30px;
+    height:30px;
+    box-shadow: 1px 1px 2px , 0 0 1em blue;
+}
+
+.player1-color7{
+    background: orange;
+    border: none;
+    width:30px;
+    height:30px;
+    box-shadow: 1px 1px 2px , 0 0 1em blue;
+}
+
+.player1-color8{
+    background: silver;
+    border: none;
+    width:30px;
+    height:30px;
+    box-shadow: 1px 1px 2px , 0 0 1em blue;
+}
+
 .player2-color1{
     background: red;
     border: none;
@@ -94,6 +126,38 @@ hr{
     box-shadow: 1px 1px 2px , 0 0 1em blue;
 }
 
+.player2-color5{
+    background: #FF3399;
+    border: none;
+    width:30px;
+    height:30px;
+    box-shadow: 1px 1px 2px , 0 0 1em blue;
+}
+
+.player2-color6{
+    background: purple;
+    border: none;
+    width:30px;
+    height:30px;
+    box-shadow: 1px 1px 2px , 0 0 1em blue;
+}
+
+.player2-color7{
+    background: orange;
+    border: none;
+    width:30px;
+    height:30px;
+    box-shadow: 1px 1px 2px , 0 0 1em blue;
+}
+
+.player2-color8{
+    background: silver;
+    border: none;
+    width:30px;
+    height:30px;
+    box-shadow: 1px 1px 2px , 0 0 1em blue;
+}
+
 .ball-color1{
     background: red;
     border: none;
@@ -120,6 +184,38 @@ hr{
 
 .ball-color4{
     background: yellow;
+    border: none;
+    width:30px;
+    height:30px;
+    box-shadow: 1px 1px 2px , 0 0 1em blue;
+}
+
+.ball-color5{
+    background: #FF3399;
+    border: none;
+    width:30px;
+    height:30px;
+    box-shadow: 1px 1px 2px , 0 0 1em blue;
+}
+
+.ball-color6{
+    background: purple;
+    border: none;
+    width:30px;
+    height:30px;
+    box-shadow: 1px 1px 2px , 0 0 1em blue;
+}
+
+.ball-color7{
+    background: orange;
+    border: none;
+    width:30px;
+    height:30px;
+    box-shadow: 1px 1px 2px , 0 0 1em blue;
+}
+
+.ball-color8{
+    background: silver;
     border: none;
     width:30px;
     height:30px;
