@@ -9,6 +9,7 @@ router.put("/options", function(req, res) {
 
 router.get("/options", function(req, res) {
   console.log(req.body);
+  optionsController.get()
 });
 
 module.exports = router;

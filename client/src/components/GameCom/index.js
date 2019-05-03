@@ -14,23 +14,26 @@ class GameCom extends Component {
 
     state = {
         context: null,
-        paddle: null,
+       // paddle: null,
         ball: null,
+        gameWidth: 0,
+        gameHeight: 0,
+        
         player1: {
-            
-            posX: 10,
-            posY: 100,
+            paddle: null,
+ 
         },
 
         player2: {
-          
-            posX: 700,
-            posY: 100,
+            paddle: null,
+
         },
 
         keys: {
             w: 0,
-            s: 0
+            s: 0,
+            i: 0,
+            k: 0
         }
     };
 
@@ -41,11 +44,16 @@ class GameCom extends Component {
         const canvas = this.refs.canvas;
         this.setState({ context: canvas.getContext("2d") });
 
+        // set game height and width
+        console.log();
+        this.state.gameUIWidth = this.props.gameUIWidth;
+        this.state.gameUIHeight = this.props.gameUIHeight;
 
-
-        this.state.paddle = new Paddle();
-        this.state.ball = new Ball();
-
+        this.state.player1.paddle = new Paddle(this.state.gameUIWidth, this.state.gameUIHeight, "red");
+        this.state.player2.paddle = new Paddle(this.state.gameUIWidth, this.state.gameUIHeight, "green");
+        console.log(this.state.player2.paddle);
+        this.state.player2.paddle.setPositionX(1360);
+        this.state.ball = new Ball(this.state.gameUIWidth, this.state.gameUIHeight);
 
         document.addEventListener("keydown", this.handleInput, false);
         requestAnimationFrame(() => { this.update() });
@@ -53,32 +61,64 @@ class GameCom extends Component {
 
     }
 
+    setKey(_key, _value) { 
+
+        var newKeys = {...this.state.keys};
+        switch(_key) { 
+            case 'w':
+            newKeys.w = _value;
+                break;
+            case 's':
+            newKeys.s = _value;
+                break;
+            case 'i':
+            newKeys.i = _value;
+                break;
+            case 'k':
+            newKeys.k = _value;
+                break;
+            default:
+                break;
+            
+        };
+
+        this.setState({keys: newKeys});
+    }
+
+    checkCollision() { 
+
+        this.state.player1.paddle.checkForCollision(this.state.ball);
+    }
+
     handleInput =  _event => { 
+
 
         //console.log(_event);
         switch (_event.key) { 
             case 'w':
                 console.log(this.state.player1.posY);
-                this.setState({ keys: {w: 1, s: 0 }});
-                //this.setState({ player1: { posX: 10, posY: this.state.player1.posY - 30 } });
+                this.setKey('w', 1);
+                // this.setState({ player1: { posX: 10, posY: this.state.player1.posY - 30 } });
                 console.log(this.state.player1.posY);
                 break;
             case 's':
                 console.log(this.state.player1.posY);
-                this.setState({ keys: {w: 0, s: 1 }});
+                this.setKey('s', 1);
                // this.setState({ player1: { posX: 10, posY: this.state.player1.posY + 30 } });
                 console.log(this.state.player1.posY);
                 break;
             
                 case 'i':
                 console.log(this.state.player2.posY);
-                    this.setState({ player2: { posX: 1000, posY: this.state.player2.posY - 30 } });
+                this.setKey('i', 1);
+                    // this.setState({ player2: { posX: 1000, posY: this.state.player2.posY - 30 } });
                     console.log(this.state.player2.posY);
                 break;
             
                 case 'k':
                 console.log(this.state.player2.posY);
-                    this.setState({ player2: { posX: 1000, posY: this.state.player2.posY + 30 } });
+                this.setKey('k', 1);
+                    // this.setState({ player2: { posX: 1000, posY: this.state.player2.posY + 30 } });
                     console.log(this.state.player2.posY);
                     break;
             default:
@@ -91,20 +131,31 @@ class GameCom extends Component {
         var newKeys = { ...this.state.keys }
         if (this.state.keys.w === 1) { 
             
-            newKeys.w = 0;
-            this.setState({ keys: newKeys, player1: { posX: 10, posY: this.state.player1.posY - 30 } });
+            this.setKey('w', 0);
+           // newKeys.w = 0;
+            this.state.player1.paddle.movePaddle(0, -30);
+           // this.setState({ keys: newKeys });
         }
         if (this.state.keys.s === 1) { 
-            newKeys.s = 0;
-            this.setState({ keys: newKeys, player1: { posX: 10, posY: this.state.player1.posY + 30 } });
+
+            this.setKey('s', 0);
+           // newKeys.s = 0;
+            this.state.player1.paddle.movePaddle(0, 30);
+          // this.setState({ keys: newKeys});
         }
         if (this.state.keys.i === 1) { 
-            newKeys.i = 0;
-            this.setState({ keys: newKeys, player1: { posX: 10, posY: this.state.player1.posY + 30 } });
+
+            this.setKey('i', 0);
+            //newKeys.i = 0;
+            this.state.player2.paddle.movePaddle(0, -30);
+           // this.setState({ keys: newKeys});
         }
         if (this.state.keys.k === 1) { 
-            newKeys.k = 0;
-            this.setState({ keys: newKeys, player1: { posX: 10, posY: this.state.player1.posY + 30 } });
+
+            this.setKey('k', 0);
+           // newKeys.k = 0;
+            this.state.player2.paddle.movePaddle(0, 30);
+           // this.setState({ keys: newKeys});
         }
 
     }
@@ -133,7 +184,7 @@ class GameCom extends Component {
     }
 
     update = () => {
-        // console.log("here");
+        //console.log("here");
         if (this.state.context) {
             this.state.context.clearRect(0, 0, 1500, 900);
         
@@ -146,11 +197,16 @@ class GameCom extends Component {
 
             // update objects
             this.state.ball.update(0);
+
+            // check for collision
+            this.checkCollision();
             
             // render objects
             this.state.ball.render(this.state.context, this.refs.ballImg, 1400, 700);
-            this.state.paddle.render(this.state.context, this.refs.image, this.state.player1.posX, this.state.player1.posY);
-            this.state.paddle.render(this.state.context, this.refs.image, this.state.player2.posX, this.state.player2.posY);
+            this.state.player1.paddle.render(this.state.context, this.refs.image, this.state.player1.posX, this.state.player1.posY);
+            this.state.player2.paddle.render(this.state.context, this.refs.image, this.state.player1.posX, this.state.player1.posY);
+           
+            //this.state.paddle.render(this.state.context, this.refs.image, this.state.player2.posX, this.state.player2.posY);
         }
 
         // Next frame

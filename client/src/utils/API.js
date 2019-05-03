@@ -8,6 +8,7 @@ export default {
   },
 
   getOptions: function () {
+    console.log("OPTIONS (API.js)");
     return axios.get("api/options");
   }
   

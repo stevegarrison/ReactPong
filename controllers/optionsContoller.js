@@ -22,7 +22,16 @@ module.exports = {
         ballColor: newBallColor,
         imageURL: newImageURL
        })
-      .then(dbModel => { console.log("the model" + dbModel); res.json(dbModel)})
+      .then(dbModel => { console.log("The model" + dbModel); res.json(dbModel)})
       .catch(err => res.status(422).json(err));
+  },
+
+  findAll: function(req, res) {
+    console.log("get (optionsController.js)" + req);
+    db.options
+    .find(req.query)
+    .then(console.log("Made it (optionsController.js)"))
+    .then(dbModel => res.json(dbModel))
+    .catch(err => res.status(422).json(err));
   }
 };

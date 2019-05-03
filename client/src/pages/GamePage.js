@@ -8,20 +8,31 @@ let playerOneScore = 0;
 let playerTwoScore = 0;
 
 class GamePage extends Component {
+
+    state = {
+        player1Color: "",
+        player2Color: "",
+        ballColor: "",
+        imageURL: ""
+      };
   
     componentDidMount() {
         this.loadOptions();
       }
     
       loadOptions = () => {
-        console.log("loaded options");
+        console.log("LOADED OPTIONS (GamePage.js)");
         API.getOptions()
           .then(res =>
-            console.log(res)
-            // this.setState({ books: res.data, title: "", author: "", synopsis: "" })
+            console.log("res (GamePage.js): " + res)
+            // this.setState({ player1Color: res.data,  player2Color: res.pla, ballColor: res.data, imageURL: res.imageURL})
           )
           .catch(err => console.log(err));
       };
+
+    m_nGameUIWidth = 1400;
+    m_nGameUIHeight = 700;
+
     
     render() {
         return (
@@ -41,8 +52,8 @@ class GamePage extends Component {
                             </div>
                             {/* Game UI */}
                             <div className="row">
-                                <div className="gameUI">
-                                    <GameCom></GameCom>
+                                <div className="gameUI" style={{width:this.m_nGameUIWidth, height:this.m_nGameUIHeight}}>
+                                    <GameCom gameUIWidth={this.m_nGameUIWidth} gameUIHeight={this.m_nGameUIHeight}></GameCom>
                                 </div>
                             </div>
 
