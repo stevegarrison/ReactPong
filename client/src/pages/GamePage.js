@@ -23,9 +23,11 @@ class GamePage extends Component {
       loadOptions = () => {
         console.log("LOADED OPTIONS (GamePage.js)");
         API.getOptions()
-          .then(res =>
-            console.log("res (GamePage.js): " + res)
-            // this.setState({ player1Color: res.data,  player2Color: res.pla, ballColor: res.data, imageURL: res.imageURL})
+          .then(res => {
+            console.log("res (GamePage.js): " + res);
+            console.log(this.state);
+            this.setState({ player1Color: res.player1Color,  player2Color: res.player2Color, ballColor: res.ballColor, imageURL: res.imageURL});
+            console.log("Made it")}
           )
           .catch(err => console.log(err));
       };

@@ -27,11 +27,9 @@ module.exports = {
   },
 
   findAll: function(req, res) {
-    console.log("get (optionsController.js)" + req);
     db.options
-    .find(req.query)
-    .then(console.log("Made it (optionsController.js)"))
-    .then(dbModel => res.json(dbModel))
+    .find(req)
+    .then(dbModel => { console.log("SETTINGS (optionsController.js): " + dbModel); res.json(dbModel)})
     .catch(err => res.status(422).json(err));
   }
 };

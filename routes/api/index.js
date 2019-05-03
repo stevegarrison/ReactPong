@@ -8,8 +8,8 @@ router.put("/options", function(req, res) {
 });
 
 router.get("/options", function(req, res) {
-  console.log(req.body);
-  optionsController.get()
+  console.log("req (routes/indes.js): " + req)
+  optionsController.findAll()
 });
 
 module.exports = router;
