@@ -7,6 +7,8 @@
 import React, { Component } from "react"
 import Paddle from "../../Game/Paddle"
 import Ball from "../../Game/Ball"
+import { Link } from "react-router-dom";
+import "../../styles/game.css"
 
 var contextWait = null;
 
@@ -16,8 +18,8 @@ class GameCom extends Component {
         context: null,
         // paddle: null,
         ball: null,
-        gameWidth: 0,
-        gameHeight: 0,
+        gameUIWidth: 0,
+        gameUIHeight: 0,
 
         player1: {
             paddle: null,
@@ -46,13 +48,11 @@ class GameCom extends Component {
         this.setState({ context: canvas.getContext("2d") });
 
         // set game height and width
-        console.log();
-        this.state.gameUIWidth = this.props.gameUIWidth;
-        this.state.gameUIHeight = this.props.gameUIHeight;
+        this.state.gameUIWidth = 1400;
+        this.state.gameUIHeight = 700;
 
         this.state.player1.paddle = new Paddle(this.state.gameUIWidth, this.state.gameUIHeight, "red");
         this.state.player2.paddle = new Paddle(this.state.gameUIWidth, this.state.gameUIHeight, "green");
-        console.log(this.state.player2.paddle);
         this.state.player1.paddle.setPositionX(100);
         this.state.player2.paddle.setPositionX(1260);
         //this.state.player2.paddle.setPositionX(1360);
@@ -173,23 +173,23 @@ class GameCom extends Component {
 
     }
 
-    resetGame() { 
+    resetGame() {
         var newState = { ...this.state };
         newState.player1.score = 0;
         newState.player1.paddle.placeAtOrigin();
         newState.player2.score = 0;
         newState.player2.paddle.placeAtOrigin();
         newState.ball.placeAtOrigin();
-        newState.keys = {w: 0, s: 0, i: 0, k:0};
+        newState.keys = { w: 0, s: 0, i: 0, k: 0 };
         this.setState(newState);
     }
 
-    checkForWins() { 
+    checkForWins() {
 
         if (this.state.player1.score >= 3) {
             console.log("Player 1 Wins!!!");
             this.resetGame();
-        } else if (this.state.player2.score >= 3) { 
+        } else if (this.state.player2.score >= 3) {
             console.log("Player 1 Wins!!!");
             this.resetGame();
         }
@@ -208,8 +208,8 @@ class GameCom extends Component {
             this.processInput();
 
             // update objects
-            this.state.ball.update(0, _sideHit => { 
-                switch (_sideHit) { 
+            this.state.ball.update(0, _sideHit => {
+                switch (_sideHit) {
                     case "left":
                         var newPlayer = { ...this.state.player2 };
                         newPlayer.score++;
@@ -217,11 +217,11 @@ class GameCom extends Component {
                         console.log("Player 2 score: " + newPlayer.score);
                         break;
                     case "right":
-                    var newPlayer = { ...this.state.player1 };
-                    newPlayer.score++;
-                    this.setState({ player1: newPlayer});
-                    console.log("Player 1 score: " + newPlayer.score);
-                    break;
+                        var newPlayer = { ...this.state.player1 };
+                        newPlayer.score++;
+                        this.setState({ player1: newPlayer });
+                        console.log("Player 1 score: " + newPlayer.score);
+                        break;
                     default:
                         break;
                 };
@@ -250,31 +250,52 @@ class GameCom extends Component {
     render() {
         return (
             <>
-                <canvas
-                    width={1500}
-                    height={900}
-                    ref="canvas" >
+                <div className="text-center">
+                    <div className="row">
+                        <div className="col-md-1"></div>
+                        <div className="col-md-10">
+                            {/* Player Scores */}
+                            <div className="row player-text mt-3 mb-4">
+                                <div className="col-md-6">
+                                    <h2>Player One: {this.state.player1.score}</h2>
+                                </div>
+                                <div className="col-md-6">
+                                    <h2>Player Two: {this.state.player2.score}</h2>
+                                </div>
+                            </div>
+                            {/* Game UI */}
+                            <div className="row">
+                                <canvas
+                                    className="gameUI"
+                                    width={this.state.gameUIWidth}
+                                    height={this.state.gameUIHeight}
+                                    ref="canvas" >
 
+                                    <img style={{ display: "none" }}
+                                        ref="image"
+                                        src="https://cdn.shopify.com/s/files/1/0784/2279/products/TraditionalPaddle400_1_-_Copy_large.jpg?v=1463152608"
+                                        alt="paddleImg" />
 
+                                    <img style={{ display: "none" }}
+                                        ref="ballImg"
+                                        src="https://www.big5sportinggoods.com/catalogimage/img/product/rwd/large/6165_15086_0001_551_large_03.jpg"
+                                        alt="paddleImg" />
 
-                    <img style={{ display: "none" }}
-                        ref="image"
-                        src="https://cdn.shopify.com/s/files/1/0784/2279/products/TraditionalPaddle400_1_-_Copy_large.jpg?v=1463152608"
-                        alt="paddleImg" />
+                                  </canvas>
 
-                    <img style={{ display: "none" }}
-                        ref="ballImg"
-                        src="https://www.big5sportinggoods.com/catalogimage/img/product/rwd/large/6165_15086_0001_551_large_03.jpg"
-                        alt="paddleImg" />
+                                <p>test</p>
 
+                            </div>
+                        </div>
 
+                    </div>
+                    <div className="col-md-1">
+                        <div>
+                            <Link to={"/"}><i id="home-icon" className="m-3 fas fa-home fa-2x"></i></Link>
+                        </div>
+                    </div>
+                </div>
 
-                    {/* {this.clearRect()}
-                    {this.state.context ? <Paddle context={{ context: this.state.context }} initPos={{ x: 10, y: 0 }} moveUp='w' moveDown='s'></Paddle> : null}
-                    {this.state.context ? <Paddle context={{ context: this.state.context }} initPos={{ x: 1000, y: 0 }} moveUp='i' moveDown='k'></Paddle> : null} */}
-                </canvas>
-
-                <p>test</p>
             </>
         );
     }
