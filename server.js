@@ -31,9 +31,10 @@ db.options
     ballColor: "white",
     imageURL: ""
   }))
+  
   .then(function (dbOptions) {
     // If saved successfully, print the new Library document to the console
-    console.log(dbOptions);
+    console.log("Options logged from main server.js file: " + dbOptions);
   })
   .catch(function (err) {
     // If an error occurs, print it to the console

@@ -9,12 +9,19 @@ import Paddle from "../../Game/Paddle"
 import Ball from "../../Game/Ball"
 import { Link } from "react-router-dom";
 import "../../styles/game.css"
+import API from "../../utils/API";
 
 var contextWait = null;
 
 class GameCom extends Component {
 
     state = {
+        //Settings
+        player1Color: "",
+        player2Color: "",
+        ballColor: "",
+        imageURL: "",
+
         context: null,
         // paddle: null,
         ball: null,
@@ -44,6 +51,8 @@ class GameCom extends Component {
     componentDidMount() {
         //this.waitForContext();
         // this.update();
+        this.loadOptions(()=>{
+        console.log(this.state);
         const canvas = this.refs.canvas;
         this.setState({ context: canvas.getContext("2d") });
 
@@ -51,18 +60,33 @@ class GameCom extends Component {
         this.state.gameUIWidth = 1400;
         this.state.gameUIHeight = 700;
 
-        this.state.player1.paddle = new Paddle(this.state.gameUIWidth, this.state.gameUIHeight, "red");
-        this.state.player2.paddle = new Paddle(this.state.gameUIWidth, this.state.gameUIHeight, "green");
+        this.state.player1.paddle = new Paddle(this.state.gameUIWidth, this.state.gameUIHeight, this.state.player1Color);
+        this.state.player2.paddle = new Paddle(this.state.gameUIWidth, this.state.gameUIHeight, this.state.player2Color);
         this.state.player1.paddle.setPositionX(100);
         this.state.player2.paddle.setPositionX(1260);
         //this.state.player2.paddle.setPositionX(1360);
-        this.state.ball = new Ball(this.state.gameUIWidth, this.state.gameUIHeight);
+        this.state.ball = new Ball(this.state.gameUIWidth, this.state.gameUIHeight, this.state.ballColor);
 
         document.addEventListener("keydown", this.handleInput, false);
         requestAnimationFrame(() => { this.update() });
+    });
         //console.log(canvas);
 
     }
+
+    loadOptions = (_callback) => {
+        console.log("LOADED OPTIONS (GamePage.js)");
+        API.getOptions()
+            .then(res => {
+                // I DON'T THINK I'M GETTING HERE
+                console.log("res (GamePage.js): ", res);
+                this.setState({ player1Color: res.data[0].player1Color, player2Color: res.data[0].player2Color, ballColor: res.data[0].ballColor, imageURL: res.data[0].imageURL });
+                console.log("bc: " + this.state.ballColor);
+                console.log(this.state);
+                _callback();
+            })
+            .catch(err => console.log("GameCon console", err));
+    };
 
     setKey(_key, _value) {
 
@@ -281,7 +305,7 @@ class GameCom extends Component {
                                         src="https://www.big5sportinggoods.com/catalogimage/img/product/rwd/large/6165_15086_0001_551_large_03.jpg"
                                         alt="paddleImg" />
 
-                                  </canvas>
+                                </canvas>
 
                                 <p>test</p>
 
