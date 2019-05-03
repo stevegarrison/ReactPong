@@ -190,7 +190,7 @@ class GameCom extends Component {
             console.log("Player 1 Wins!!!");
             this.resetGame();
         } else if (this.state.player2.score >= 3) {
-            console.log("Player 1 Wins!!!");
+            console.log("Player 2 Wins!!!");
             this.resetGame();
         }
     }
@@ -198,7 +198,7 @@ class GameCom extends Component {
     update = () => {
         //console.log("here");
         if (this.state.context) {
-            this.state.context.clearRect(0, 0, 1500, 900);
+            this.state.context.clearRect(0, 0, this.state.gameUIWidth, this.state.gameUIHeight);
 
 
             //console.log(this.refs.image);
