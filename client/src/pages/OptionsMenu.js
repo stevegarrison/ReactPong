@@ -75,7 +75,7 @@ class Options extends Component {
             <button className={`player1-color5 m-1 ${"#FF3399" === this.state.player1Color ? "active" : ""}`} data-color="#FF3399" onClick={this.handlePlayerOneColor}></button>
             <button className={`player1-color6 m-1 ${"purple" === this.state.player1Color ? "active" : ""}`} data-color="purple" onClick={this.handlePlayerOneColor}></button>
             <button className={`player1-color7 m-1 ${"orange" === this.state.player1Color ? "active" : ""}`} data-color="orange" onClick={this.handlePlayerOneColor}></button>
-            <button className={`player1-color8 m-1 ${"silver" === this.state.player1Color ? "active" : ""}`} data-color="silver" onClick={this.handlePlayerOneColor}></button>
+            <button className={`player1-color8 m-1 ${"mediumspringgreen" === this.state.player1Color ? "active" : ""}`} data-color="mediumspringgreen" onClick={this.handlePlayerOneColor}></button>
           </div>
           <div className="mb-4">
             <h1 className="options-text mb-2">Player Two Skin</h1>
@@ -86,7 +86,7 @@ class Options extends Component {
             <button className={`player2-color5 m-1 ${"#FF3399" === this.state.player2Color ? "active" : ""}`} data-color="#FF3399" onClick={this.handlePlayerTwoColor}></button>
             <button className={`player2-color6 m-1 ${"purple" === this.state.player2Color ? "active" : ""}`} data-color="purple" onClick={this.handlePlayerTwoColor}></button>
             <button className={`player2-color7 m-1 ${"orange" === this.state.player2Color ? "active" : ""}`} data-color="orange" onClick={this.handlePlayerTwoColor}></button>
-            <button className={`player2-color8 m-1 ${"silver" === this.state.player2Color ? "active" : ""}`} data-color="silver" onClick={this.handlePlayerTwoColor}></button>
+            <button className={`player2-color8 m-1 ${"mediumspringgreen" === this.state.player2Color ? "active" : ""}`} data-color="mediumspringgreen" onClick={this.handlePlayerTwoColor}></button>
           </div>
           <div className="mb-4">
             <h1 className="options-text mb-2">Ball Color</h1>
@@ -97,7 +97,7 @@ class Options extends Component {
             <button className={`ball-color5 m-1 ${"#FF3399" === this.state.ballColor ? "active" : ""}`} data-color="#FF3399" onClick={this.handleBallColor}></button>
             <button className={`ball-color6 m-1 ${"purple" === this.state.ballColor ? "active" : ""}`} data-color="purple" onClick={this.handleBallColor}></button>
             <button className={`ball-color7 m-1 ${"orange" === this.state.ballColor ? "active" : ""}`} data-color="orange" onClick={this.handleBallColor}></button>
-            <button className={`ball-color8 m-1 ${"silver" === this.state.ballColor ? "active" : ""}`} data-color="silver" onClick={this.handleBallColor}></button>
+            <button className={`ball-color8 m-1 ${"mediumspringgreen" === this.state.ballColor ? "active" : ""}`} data-color="mediumspringgreen" onClick={this.handleBallColor}></button>
           </div>
           <div className="mb-4">
             <h1 className="options-text mb-3">Background Image</h1>
