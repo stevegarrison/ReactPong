@@ -9,7 +9,10 @@ let playerTwoScore = 0;
 
 class GamePage extends Component {
   
+    m_nGameUIWidth = 1400;
+    m_nGameUIHeight = 700;
 
+    
     render() {
         return (
             <>
@@ -28,8 +31,8 @@ class GamePage extends Component {
                             </div>
                             {/* Game UI */}
                             <div className="row">
-                                <div className="gameUI">
-                                    <GameCom></GameCom>
+                                <div className="gameUI" style={{width:this.m_nGameUIWidth, height:this.m_nGameUIHeight}}>
+                                    <GameCom gameUIWidth={this.m_nGameUIWidth} gameUIHeight={this.m_nGameUIHeight}></GameCom>
                                 </div>
                             </div>
 
