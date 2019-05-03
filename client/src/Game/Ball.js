@@ -17,7 +17,7 @@ class Ball {
     m_positionY = 500;
     m_width = 50;
     m_height = 50;
-    m_velX = 5.0;
+    m_velX = 8.0;
     m_velY = 5.0;
     m_gameWidth = 0;
     m_gameHeight = 0;

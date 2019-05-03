@@ -51,25 +51,33 @@ class GameCom extends Component {
     componentDidMount() {
         //this.waitForContext();
         // this.update();
-        this.loadOptions(()=>{
-        console.log(this.state);
-        const canvas = this.refs.canvas;
-        this.setState({ context: canvas.getContext("2d") });
+        this.loadOptions(() => {
+            console.log(this.state);
+            const canvas = this.refs.canvas;
+            this.setState({ context: canvas.getContext("2d") });
 
-        // set game height and width
-        this.state.gameUIWidth = 1400;
-        this.state.gameUIHeight = 700;
+            // set game height and width
+            this.state.gameUIWidth = 1400;
+            this.state.gameUIHeight = 700;
 
-        this.state.player1.paddle = new Paddle(this.state.gameUIWidth, this.state.gameUIHeight, this.state.player1Color);
-        this.state.player2.paddle = new Paddle(this.state.gameUIWidth, this.state.gameUIHeight, this.state.player2Color);
-        this.state.player1.paddle.setPositionX(100);
-        this.state.player2.paddle.setPositionX(1260);
-        //this.state.player2.paddle.setPositionX(1360);
-        this.state.ball = new Ball(this.state.gameUIWidth, this.state.gameUIHeight, this.state.ballColor);
+            var color = "white";
+            if (!this.state.player1Color)
+                this.setState({ player1Color: color });
+            if (!this.state.player2Color)
+                this.setState({ player2Color: color });
+            if (!this.state.ballColor)
+                this.setState({ ballColor: color });
 
-        document.addEventListener("keydown", this.handleInput, false);
-        requestAnimationFrame(() => { this.update() });
-    });
+            this.state.player1.paddle = new Paddle(this.state.gameUIWidth, this.state.gameUIHeight, this.state.player1Color);
+            this.state.player2.paddle = new Paddle(this.state.gameUIWidth, this.state.gameUIHeight, this.state.player2Color);
+            this.state.player1.paddle.setPositionX(100);
+            this.state.player2.paddle.setPositionX(1260);
+            //this.state.player2.paddle.setPositionX(1360);
+            this.state.ball = new Ball(this.state.gameUIWidth, this.state.gameUIHeight, this.state.ballColor);
+
+            document.addEventListener("keydown", this.handleInput, false);
+            requestAnimationFrame(() => { this.update() });
+        });
         //console.log(canvas);
 
     }
@@ -291,11 +299,17 @@ class GameCom extends Component {
                             <div className="row">
                                 <canvas
                                     className="gameUI"
+                                    style={{
+                                        backgroundImage: "url(" + this.state.imageURL + ")",
+                                        backgroundPosition: "center",
+                                        backgroundRepeat: "no-repeat",
+                                        backgroundSize: "cover"
+                                    }}
                                     width={this.state.gameUIWidth}
                                     height={this.state.gameUIHeight}
                                     ref="canvas" >
 
-                                    <img style={{ display: "none" }}
+                                    {/* <img style={{ display: "none" }}
                                         ref="image"
                                         src="https://cdn.shopify.com/s/files/1/0784/2279/products/TraditionalPaddle400_1_-_Copy_large.jpg?v=1463152608"
                                         alt="paddleImg" />
@@ -303,12 +317,9 @@ class GameCom extends Component {
                                     <img style={{ display: "none" }}
                                         ref="ballImg"
                                         src="https://www.big5sportinggoods.com/catalogimage/img/product/rwd/large/6165_15086_0001_551_large_03.jpg"
-                                        alt="paddleImg" />
+                                        alt="paddleImg" /> */}
 
                                 </canvas>
-
-                                <p>test</p>
-
                             </div>
                         </div>
 
