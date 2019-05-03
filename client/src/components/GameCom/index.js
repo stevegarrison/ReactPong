@@ -15,6 +15,7 @@ var contextWait = null;
 
 class GameCom extends Component {
 
+
     state = {
         //Settings
         player1Color: "",
@@ -52,6 +53,7 @@ class GameCom extends Component {
         //this.waitForContext();
         // this.update();
         this.loadOptions(() => {
+
             console.log(this.state);
             const canvas = this.refs.canvas;
             this.setState({ context: canvas.getContext("2d") });
@@ -60,7 +62,8 @@ class GameCom extends Component {
             this.state.gameUIWidth = 1400;
             this.state.gameUIHeight = 700;
 
-            var color = "white";
+            const color = "white";
+
             if (!this.state.player1Color)
                 this.setState({ player1Color: color });
             if (!this.state.player2Color)
@@ -70,8 +73,8 @@ class GameCom extends Component {
 
             this.state.player1.paddle = new Paddle(this.state.gameUIWidth, this.state.gameUIHeight, this.state.player1Color);
             this.state.player2.paddle = new Paddle(this.state.gameUIWidth, this.state.gameUIHeight, this.state.player2Color);
-            this.state.player1.paddle.setPositionX(100);
-            this.state.player2.paddle.setPositionX(1260);
+            this.state.player1.paddle.setPositionX(75);
+            this.state.player2.paddle.setPositionX(1060);
             //this.state.player2.paddle.setPositionX(1360);
             this.state.ball = new Ball(this.state.gameUIWidth, this.state.gameUIHeight, this.state.ballColor);
 
@@ -285,6 +288,8 @@ class GameCom extends Component {
                 <div className="text-center">
                     <div className="row">
                         <div className="col-md-1"></div>
+
+
                         <div className="col-md-10">
                             {/* Player Scores */}
                             <div className="row player-text mt-3 mb-4">
@@ -295,21 +300,16 @@ class GameCom extends Component {
                                     <h2>Player Two: {this.state.player2.score}</h2>
                                 </div>
                             </div>
+
                             {/* Game UI */}
                             <div className="row">
                                 <canvas
                                     className="gameUI"
-                                    style={{
-                                        backgroundImage: "url(" + this.state.imageURL + ")",
-                                        backgroundPosition: "center",
-                                        backgroundRepeat: "no-repeat",
-                                        backgroundSize: "cover"
-                                    }}
                                     width={this.state.gameUIWidth}
                                     height={this.state.gameUIHeight}
                                     ref="canvas" >
 
-                                    {/* <img style={{ display: "none" }}
+                                    <img style={{ display: "none" }}
                                         ref="image"
                                         src="https://cdn.shopify.com/s/files/1/0784/2279/products/TraditionalPaddle400_1_-_Copy_large.jpg?v=1463152608"
                                         alt="paddleImg" />
@@ -317,16 +317,16 @@ class GameCom extends Component {
                                     <img style={{ display: "none" }}
                                         ref="ballImg"
                                         src="https://www.big5sportinggoods.com/catalogimage/img/product/rwd/large/6165_15086_0001_551_large_03.jpg"
-                                        alt="paddleImg" /> */}
+                                        alt="paddleImg" />
 
                                 </canvas>
                             </div>
                         </div>
 
-                    </div>
-                    <div className="col-md-1">
-                        <div>
-                            <Link to={"/"}><i id="home-icon" className="m-3 fas fa-home fa-2x"></i></Link>
+                        <div className="col-md-1">
+                            <div>
+                                <Link to={"/"}><i id="home-icon" className="m-3 fas fa-home fa-2x"></i></Link>
+                            </div>
                         </div>
                     </div>
                 </div>
