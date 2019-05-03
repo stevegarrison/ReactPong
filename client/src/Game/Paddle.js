@@ -5,8 +5,10 @@
  */
 class Paddle  {
 
-    m_positionX = 10;
-    m_positionY = 10;
+    m_positionX = 10.0;
+    m_positionY = 10.0;
+    m_velocityX = 300.0;
+    m_velocityY = 720.0;
     m_width = 30;
     m_height = 130;
     m_paddleColor = "red";
@@ -19,7 +21,6 @@ class Paddle  {
         this.m_positionY = _gameHeight / 2 - this.m_height / 2;
         this.m_paddleColor = _color;
 
-        
     }
     setPosition(_posX, _posY) { 
         this.m_positionX = _posX;
@@ -60,13 +61,30 @@ class Paddle  {
     //     } 
     // }
 
-    movePaddle(_amountX, _amountY) { 
+    movePaddle( _direction, _deltaTime) { 
 
-        if(this.m_positionX + _amountX > 0 && this.m_positionX + _amountX < this.m_gameWidth)
-            this.m_positionX += _amountX;
+        switch (_direction) { 
 
-            if(this.m_positionY + _amountY > 0 && (this.m_positionY + _amountY + this.m_height) < this.m_gameHeight)   
-                 this.m_positionY += _amountY;
+            case "up":
+            //     console.log(this.m_positionY);
+            //     console.log(_deltaTime);
+            //    // if (this.m_positionY + (this.m_velocityY * _deltaTime) > 0 && (this.m_positionY + (this.m_velocityY * _deltaTime) + this.m_height) < this.m_gameHeight)
+                this.m_positionY = this.m_positionY - (this.m_velocityY * _deltaTime);
+               // console.log(this.m_positionY);
+                break;
+            case "down":
+            if ((this.m_positionY + this.m_velocityY) * _deltaTime > 0 && ((this.m_positionY + this.m_velocityY) * _deltaTime + this.m_height) < this.m_gameHeight)
+                this.m_positionY = this.m_positionY + (this.m_velocityY * _deltaTime);
+                break;
+            default:
+                break;
+        };
+
+        // if((this.m_positionX + this.m_velocityX) * _deltaTime > 0 && (this.m_positionX + this.m_velocityX) * _deltaTime < this.m_gameWidth)
+        // this.m_positionX = (this.m_positionX + this.m_velocityX) * _deltaTime;
+
+        // if((this.m_positionY + this.m_velocityY) * _deltaTime > 0 && ((this.m_positionY + this.m_velocityY) * _deltaTime + this.m_height) < this.m_gameHeight)   
+        //      this.m_positionY = (this.m_positionY + this.m_velocityY) * _deltaTime;
     }
 
     update(_dt) {

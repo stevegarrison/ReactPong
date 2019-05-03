@@ -58,6 +58,7 @@ class GameCom extends Component {
         //this.waitForContext();
         // this.update();
         this.loadOptions(() => {
+
             console.log(this.state);
             const canvas = this.refs.canvas;
             this.setState({ context: canvas.getContext("2d") });
@@ -66,7 +67,8 @@ class GameCom extends Component {
             this.state.gameUIWidth = 1400;
             this.state.gameUIHeight = 700;
 
-            var color = "white";
+            const color = "white";
+
             if (!this.state.player1Color)
                 this.setState({ player1Color: color });
             if (!this.state.player2Color)
@@ -82,6 +84,7 @@ class GameCom extends Component {
             this.state.ball = new Ball(this.state.gameUIWidth, this.state.gameUIHeight, this.state.ballColor);
 
             document.addEventListener("keydown", this.handleInput, false);
+            document.addEventListener("keyup", this.handleKeyUp, false);
             requestAnimationFrame(() => { this.update() });
         });
         //console.log(canvas);
@@ -154,35 +157,54 @@ class GameCom extends Component {
         };
     }
 
-    processInput() {
+    handleKeyUp = _event => { 
+        switch (_event.key) {
+            case 'w':
+                this.setKey('w', 0);
+                break;
+            case 's':
+                this.setKey('s', 0);
+                break;
+            case 'i':
+                this.setKey('i', 0);
+                break;
+            case 'k':
+                this.setKey('k', 0);
+                break;
+            default:
+                break;
+        };
+    }
+
+    processInput(_deltaTime) {
 
         var newKeys = { ...this.state.keys }
         if (this.state.keys.w === 1) {
 
-            this.setKey('w', 0);
+            //this.setKey('w', 0);
             // newKeys.w = 0;
-            this.state.player1.paddle.movePaddle(0, -30);
+            this.state.player1.paddle.movePaddle("up", _deltaTime);
             // this.setState({ keys: newKeys });
         }
         if (this.state.keys.s === 1) {
 
-            this.setKey('s', 0);
+           // this.setKey('s', 0);
             // newKeys.s = 0;
-            this.state.player1.paddle.movePaddle(0, 30);
+            this.state.player1.paddle.movePaddle("down", _deltaTime);
             // this.setState({ keys: newKeys});
         }
         if (this.state.keys.i === 1) {
 
-            this.setKey('i', 0);
+            //this.setKey('i', 0);
             //newKeys.i = 0;
-            this.state.player2.paddle.movePaddle(0, -30);
+            this.state.player2.paddle.movePaddle("up", _deltaTime);
             // this.setState({ keys: newKeys});
         }
         if (this.state.keys.k === 1) {
 
-            this.setKey('k', 0);
+           // this.setKey('k', 0);
             // newKeys.k = 0;
-            this.state.player2.paddle.movePaddle(0, 30);
+            this.state.player2.paddle.movePaddle("down", _deltaTime);
             // this.setState({ keys: newKeys});
         }
 
@@ -246,7 +268,7 @@ class GameCom extends Component {
             this.state.context.clearRect(0, 0, this.state.gameUIWidth, this.state.gameUIHeight);
 
             // update input
-            this.processInput();
+            this.processInput(deltaTime);
 
             // update objects
             this.state.ball.update(deltaTime, _sideHit => {
@@ -311,17 +333,11 @@ class GameCom extends Component {
                             <div className="row">
                                 <canvas
                                     className="gameUI"
-                                    style={{
-                                        backgroundImage: "url(" + this.state.imageURL + ")",
-                                        backgroundPosition: "center",
-                                        backgroundRepeat: "no-repeat",
-                                        backgroundSize: "cover"
-                                    }}
                                     width={this.state.gameUIWidth}
                                     height={this.state.gameUIHeight}
                                     ref="canvas" >
 
-                                    {/* <img style={{ display: "none" }}
+                                    <img style={{ display: "none" }}
                                         ref="image"
                                         src="https://cdn.shopify.com/s/files/1/0784/2279/products/TraditionalPaddle400_1_-_Copy_large.jpg?v=1463152608"
                                         alt="paddleImg" />
@@ -329,7 +345,7 @@ class GameCom extends Component {
                                     <img style={{ display: "none" }}
                                         ref="ballImg"
                                         src="https://www.big5sportinggoods.com/catalogimage/img/product/rwd/large/6165_15086_0001_551_large_03.jpg"
-                                        alt="paddleImg" /> */}
+                                        alt="paddleImg" />
 
                                 </canvas>
                             </div>     
@@ -350,4 +366,3 @@ class GameCom extends Component {
 };
 
 export default GameCom;
-
