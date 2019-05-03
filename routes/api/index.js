@@ -7,4 +7,8 @@ router.put("/options", function(req, res) {
   optionsController.update(req.body)
 });
 
+router.get("/options", function(req, res) {
+  console.log(req.body);
+});
+
 module.exports = router;

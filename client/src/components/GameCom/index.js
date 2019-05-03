@@ -133,7 +133,7 @@ class GameCom extends Component {
     }
 
     update = () => {
-        console.log("here");
+        // console.log("here");
         if (this.state.context) {
             this.state.context.clearRect(0, 0, 1500, 900);
         

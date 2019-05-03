@@ -9,7 +9,20 @@ let playerTwoScore = 0;
 
 class GamePage extends Component {
   
-
+    componentDidMount() {
+        this.loadOptions();
+      }
+    
+      loadOptions = () => {
+        console.log("loaded options");
+        API.getOptions()
+          .then(res =>
+            console.log(res)
+            // this.setState({ books: res.data, title: "", author: "", synopsis: "" })
+          )
+          .catch(err => console.log(err));
+      };
+    
     render() {
         return (
             <>
