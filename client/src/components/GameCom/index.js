@@ -11,9 +11,15 @@ import { Link } from "react-router-dom";
 import "../../styles/game.css"
 import API from "../../utils/API";
 
+
 var contextWait = null;
 
+
+
+
 class GameCom extends Component {
+
+    startTime = 0.0;
 
     state = {
         //Settings
@@ -57,8 +63,9 @@ class GameCom extends Component {
         this.setState({ context: canvas.getContext("2d") });
 
         // set game height and width
-        this.state.gameUIWidth = 1400;
-        this.state.gameUIHeight = 700;
+            this.setState({gameUIHeight: 700, gameUIWidth: 1400});
+        // this.state.gameUIWidth = 1400;
+        // this.state.gameUIHeight = 700;
 
         this.state.player1.paddle = new Paddle(this.state.gameUIWidth, this.state.gameUIHeight, this.state.player1Color);
         this.state.player2.paddle = new Paddle(this.state.gameUIWidth, this.state.gameUIHeight, this.state.player2Color);
@@ -67,8 +74,10 @@ class GameCom extends Component {
         //this.state.player2.paddle.setPositionX(1360);
         this.state.ball = new Ball(this.state.gameUIWidth, this.state.gameUIHeight, this.state.ballColor);
 
+            this.startTime = new Date().getTime();
         document.addEventListener("keydown", this.handleInput, false);
-        requestAnimationFrame(() => { this.update() });
+            requestAnimationFrame(() => { this.update() });
+            
     });
         //console.log(canvas);
 
@@ -221,18 +230,21 @@ class GameCom extends Component {
 
     update = () => {
         //console.log("here");
+
+        // find the time elapsed
+        var currentTime = new Date().getTime();
+        var deltaTime = (currentTime - this.startTime) /1000;
+        this.startTime = currentTime;
+
+        
         if (this.state.context) {
             this.state.context.clearRect(0, 0, this.state.gameUIWidth, this.state.gameUIHeight);
-
-
-            //console.log(this.refs.image);
-
 
             // update input
             this.processInput();
 
             // update objects
-            this.state.ball.update(0, _sideHit => {
+            this.state.ball.update(deltaTime, _sideHit => {
                 switch (_sideHit) {
                     case "left":
                         var newPlayer = { ...this.state.player2 };
@@ -258,7 +270,7 @@ class GameCom extends Component {
             this.checkForWins();
 
             // render objects
-            this.state.ball.render(this.state.context, this.refs.ballImg, 1400, 700);
+            this.state.ball.render(this.state.context, this.refs.ballImg, this.state.gameUIWidth, this.state.gameUIHeight);
             this.state.player1.paddle.render(this.state.context, this.refs.image, this.state.player1.posX, this.state.player1.posY);
             this.state.player2.paddle.render(this.state.context, this.refs.image, this.state.player1.posX, this.state.player1.posY);
 
@@ -277,6 +289,8 @@ class GameCom extends Component {
                 <div className="text-center">
                     <div className="row">
                         <div className="col-md-1"></div>
+
+
                         <div className="col-md-10">
                             {/* Player Scores */}
                             <div className="row player-text mt-3 mb-4">
@@ -287,6 +301,7 @@ class GameCom extends Component {
                                     <h2>Player Two: {this.state.player2.score}</h2>
                                 </div>
                             </div>
+
                             {/* Game UI */}
                             <div className="row">
                                 <canvas
@@ -306,16 +321,13 @@ class GameCom extends Component {
                                         alt="paddleImg" />
 
                                 </canvas>
-
-                                <p>test</p>
-
-                            </div>
+                            </div>     
                         </div>
 
-                    </div>
-                    <div className="col-md-1">
-                        <div>
-                            <Link to={"/"}><i id="home-icon" className="m-3 fas fa-home fa-2x"></i></Link>
+                        <div className="col-md-1">
+                            <div>
+                                <Link to={"/"}><i id="home-icon" className="m-3 fas fa-home fa-2x"></i></Link>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -327,3 +339,4 @@ class GameCom extends Component {
 };
 
 export default GameCom;
+
