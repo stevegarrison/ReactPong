@@ -7,8 +7,8 @@ export default {
     return axios.get("/api/options");
   },
   // Update options
-  saveOptions: function(optionsData) {
+  saveOptions: function (optionsData) {
     console.log(optionsData)
     return axios.put("/api/options", optionsData);
-  }  
+  }
 };
