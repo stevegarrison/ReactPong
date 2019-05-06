@@ -56,12 +56,12 @@ mongoose.connection.on('error', function(err){
 });
 
 mongoose.connection.on('disconnected', function(){
-  console.log(disconnected("Mongoose default connection is disconnected"));
+  console.log("Mongoose default connection is disconnected");
 });
 
 process.on('SIGINT', function(){
   mongoose.connection.close(function(){
-      console.log(termination("Mongoose default connection is disconnected due to application termination"));
+      console.log("Mongoose default connection is disconnected due to application termination");
       process.exit(0)
   });
 });
