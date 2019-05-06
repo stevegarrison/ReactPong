@@ -34,6 +34,5 @@ module.exports = {
         console.log("SETTINGS (optionsController.js): " + _settings);
         _callback(_settings);
       }).catch(_err => console.log(_err));
-      
   }
 };

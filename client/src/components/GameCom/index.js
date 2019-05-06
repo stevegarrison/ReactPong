@@ -92,7 +92,6 @@ class GameCom extends Component {
             requestAnimationFrame(() => { this.update() });
         });
         //console.log(canvas);
-
     }
 
     loadOptions = (_callback) => {
@@ -107,7 +106,6 @@ class GameCom extends Component {
                 _callback();
             })
             .catch(err => console.log("GameCon console", err));
-        // _callback();
     };
 
     setKey(_key, _value) {
