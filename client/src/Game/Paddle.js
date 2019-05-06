@@ -24,9 +24,10 @@ class Paddle  {
 
     }
 
-    constructor(_gameWidth, _gameHeight, _color) { 
+    constructor(_gameWidth, _gameHeight, _color, _paddleHeight) { 
         this.m_gameWidth = _gameWidth;
         this.m_gameHeight = _gameHeight;
+        this.m_height = _paddleHeight;
         this.m_positionY = _gameHeight / 2 - this.m_height / 2;
         this.m_paddleColor = _color;
 

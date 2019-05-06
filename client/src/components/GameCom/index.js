@@ -19,12 +19,14 @@ var contextWait = null;
 class GameCom extends Component {
 
     startTime = 0.0;
-    m_nScoreToWin = 20;
+    m_nScoreToWin = 3;
 
     state = {
         //Settings
         player1Color: "white",
+        player1Size: 130,
         player2Color: "white",
+        player2Size: 130,
         ballColor: "white",
         imageURL: "",
         gamePaused: false,
@@ -72,7 +74,6 @@ class GameCom extends Component {
             this.state.gameUIHeight = 700;
 
             const color = "white";
-
             if (!this.state.player1Color)
                 this.setState({ player1Color: color });
             if (!this.state.player2Color)
@@ -80,10 +81,15 @@ class GameCom extends Component {
             if (!this.state.ballColor)
                 this.setState({ ballColor: color });
 
-            this.state.player1.paddle = new Paddle(this.state.gameUIWidth, this.state.gameUIHeight, this.state.player1Color);
-            //this.state.player2.paddle = new Paddle(this.state.gameUIWidth, this.state.gameUIHeight, this.state.player2Color);
-            this.state.player2.aiPaddle = new AIPaddle(this.state.gameUIWidth, this.state.gameUIHeight, this.state.player2Color);
-            
+            const size = 130;
+            if (!this.state.player1Size)
+                this.setState({ player1Size: size });
+            if (!this.state.player2Size)
+                this.setState({ player2Size: size });
+
+            this.state.player1.paddle = new Paddle(this.state.gameUIWidth, this.state.gameUIHeight, this.state.player1Color, this.state.player1Size);
+            //this.state.player2.paddle = new Paddle(this.state.gameUIWidth, this.state.gameUIHeight, this.state.player2Color, this.state.player2Size);
+            this.state.player2.aiPaddle = new AIPaddle(this.state.gameUIWidth, this.state.gameUIHeight, this.state.player2Color, this.state.player2Size);
             this.state.player1.paddle.setPositionX(100);
             //this.state.player2.paddle.setPositionX(1260);
             this.state.player2.aiPaddle.setPositionX(1260);
@@ -95,7 +101,6 @@ class GameCom extends Component {
             requestAnimationFrame(() => { this.update() });
         });
         //console.log(canvas);
-
     }
 
     loadOptions = (_callback) => {
@@ -104,13 +109,12 @@ class GameCom extends Component {
             .then(res => {
                 // I DON'T THINK I'M GETTING HERE
                 console.log("res (GamePage.js): ", res.data);
-                this.setState({ player1Color: res.data[0].player1Color, player2Color: res.data[0].player2Color, ballColor: res.data[0].ballColor, imageURL: res.data[0].imageURL });
+                this.setState({ player1Color: res.data[0].player1Color, player1Size:res.data[0].player1Size, player2Color: res.data[0].player2Color, player2Size: res.data[0].player2Size, ballColor: res.data[0].ballColor, imageURL: res.data[0].imageURL });
                 console.log("bc: " + this.state.ballColor);
                 console.log(this.state);
                 _callback();
             })
             .catch(err => console.log("GameCon console", err));
-        // _callback();
     };
 
     setKey(_key, _value) {
@@ -147,7 +151,7 @@ class GameCom extends Component {
     handleInput = _event => {
 
         if (this.state.gameStart)
-            this.setState({gameStart: false});
+            this.setState({ gameStart: false });
 
         //console.log(_event);
         switch (_event.key) {
@@ -166,7 +170,7 @@ class GameCom extends Component {
             case 'p':
                 this.pauseGame();
                 break;
-                case 'u':
+            case 'u':
                 this.unPauseGame();
                 break;
             default:
@@ -174,7 +178,7 @@ class GameCom extends Component {
         };
     }
 
-    handleKeyUp = _event => { 
+    handleKeyUp = _event => {
         switch (_event.key) {
             case 'w':
                 this.setKey('w', 0);
@@ -194,7 +198,7 @@ class GameCom extends Component {
     }
 
     processInput(_deltaTime) {
-  
+
         if (this.state.keys.w === 1) {
 
             this.state.player1.paddle.movePaddle("up", _deltaTime);
@@ -222,21 +226,21 @@ class GameCom extends Component {
 
     }
 
-    pauseGame() { 
+    pauseGame() {
         console.log("game paused");
         this.setState({
             gamePaused: true
         });
     }
 
-    unPauseGame() { 
+    unPauseGame() {
         console.log("game un-paused");
         this.setState({
             gamePaused: false
         });
     }
 
-    toggleGamePause() { 
+    toggleGamePause() {
         this.setState({
             gamePaused: !this.state.gamePaused
         });
@@ -251,7 +255,8 @@ class GameCom extends Component {
         newState.player1.score = 0;
         newState.player1.paddle.placeAtOrigin();
         newState.player2.score = 0;
-        newState.player2.paddle.placeAtOrigin();
+       // newState.player2.paddle.placeAtOrigin();
+        newState.player2.aiPaddle.placeAtOrigin();
         newState.ball.placeAtOrigin();
         newState.keys = { w: 0, s: 0, i: 0, k: 0 };
         newState.gameStart = true;
@@ -270,18 +275,21 @@ class GameCom extends Component {
     }
 
     update = () => {
-   
-       // console.log("game paused: " + this.state.gamePaused);
+
+        // console.log("game paused: " + this.state.gamePaused);
         // console.log("game start: " + this.state.gameStart);
         if (!this.state.gamePaused && !this.state.gameStart) {
-            
+
             // console.log("updating");
-            this.state.player2.aiPaddle.trackBall(this.state.ball.m_positionY);
 
             // find the time elapsed
             var currentTime = new Date().getTime();
             var deltaTime = (currentTime - this.startTime) / 1000;
             this.startTime = currentTime;
+
+            this.state.player2.aiPaddle.update(deltaTime);
+            this.state.player2.aiPaddle.trackBall(this.state.ball.m_positionY, deltaTime);
+
 
             // update input
             this.processInput(deltaTime);
@@ -323,7 +331,7 @@ class GameCom extends Component {
 
                 //this.state.paddle.render(this.state.context, this.refs.image, this.state.player2.posX, this.state.player2.posY);
             }
-        } else { 
+        } else {
             this.startTime = new Date().getTime();
         }
         // Next frame
@@ -355,6 +363,11 @@ class GameCom extends Component {
                             <div className="row">
                                 <canvas
                                     className="gameUI"
+                                    style={{
+                                        backgroundImage: "url(" + this.state.imageURL + ")",
+                                        backgroundSize: "cover",
+                                        backgroundPosition: "center"
+                                    }}
                                     width={this.state.gameUIWidth}
                                     height={this.state.gameUIHeight}
                                     ref="canvas" >
@@ -371,7 +384,7 @@ class GameCom extends Component {
 
                                 </canvas>
                                 <p>Press Any Key To Begin</p>
-                            </div>     
+                            </div>
                         </div>
 
                         <div className="col-md-1">

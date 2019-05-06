@@ -29,7 +29,9 @@ db.options
     player1Color: "white",
     player2Color: "white",
     ballColor: "white",
-    imageURL: ""
+    imageURL: "",
+    player1Size: 130,
+    player2Size: 130
   }))
   
   .then(function (dbOptions) {

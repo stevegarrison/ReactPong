@@ -1,5 +1,7 @@
 body{
     background-image: url("./images/BG-IMG.png");
+    background-repeat: no-repeat;
+    background-attachment: fixed;
     background-size: cover;
 }
 
@@ -28,6 +30,16 @@ hr{
 
 .options-text{
     text-shadow: 1px 1px 2px rgb(0, 47, 255), 0 0 1em rgb(0, 38, 255), 0 0 0.2em rgb(61, 241, 61);
+}
+
+.options-text1{
+    font-size: 25px;
+    text-shadow: 1px 1px 2px rgb(0, 47, 255), 0 0 1em rgb(0, 38, 255), 0 0 0.2em rgb(61, 241, 61);
+}
+
+.player-size {
+width: auto;
+box-shadow: none;
 }
 
 .player1-color1{
@@ -87,7 +99,7 @@ hr{
 }
 
 .player1-color8{
-    background: silver;
+    background: mediumspringgreen;
     border: none;
     width:30px;
     height:30px;
@@ -151,7 +163,7 @@ hr{
 }
 
 .player2-color8{
-    background: silver;
+    background: mediumspringgreen;
     border: none;
     width:30px;
     height:30px;
@@ -215,7 +227,7 @@ hr{
 }
 
 .ball-color8{
-    background: silver;
+    background: mediumspringgreen;
     border: none;
     width:30px;
     height:30px;
@@ -229,8 +241,16 @@ hr{
     height: 40px;
 }
 
+.active2{
+    background-color: rgba(203, 147, 255, 0.836);
+    color: rgb(0, 0, 0);   
+    width: auto;
+    box-shadow: 1px 1px 2px red, 0 0 1em blue;
+}
+
 #form{
     width: 30%;
     border: none;
     box-shadow: 1px 1px 2px red, 0 0 1em blue;
 }
+
