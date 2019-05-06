@@ -23,7 +23,6 @@ router.get("/options", function (req, res) {
 module.exports = router;
 
 
-
 router.get("/options", function (req, res) {
   optionsController.findAll(req, res);
   console.log("called find all in optionsController (routes/index.js)");
