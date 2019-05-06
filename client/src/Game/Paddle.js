@@ -157,12 +157,12 @@ class Paddle  {
             }
      
             // // top
-            // else if (_ball.m_positionY < this.m_positionY) {
-            //     console.log("top");
-            //     if (_ball.m_velY < 0)
-            //         _ball.m_velY *= -1;
-            //     _ball.m_positionY -= (_ball.m_positionY + _ball.m_width) - this.m_positionY;
-            // }
+            else if (_ball.m_positionY < this.m_positionY) {
+                console.log("top");
+                if (_ball.m_velY < 0)
+                    _ball.m_velY *= -1;
+                _ball.m_positionY -= (_ball.m_positionY + _ball.m_width) - this.m_positionY;
+            }
            
             // // bottom
             //  if (_ball.m_positionY < this.m_positionY + this.m_height) {
