@@ -15,8 +15,8 @@ class Ball {
 
     m_positionX = 400.0;
     m_positionY = 500.0;
-    m_velX = 1750.0;
-    m_velY = 1750.0;
+    m_velX = 750.0;
+    m_velY = 750.0;
 
     m_width = 25;
     m_height = 25;
@@ -96,10 +96,10 @@ class Ball {
        _context.fillStyle = this.m_ballColor;
         // _context.fillRect(this.m_positionX, this.m_positionY, this.m_width, this.m_height);
 
-        _context.beginPath();
-        _context.ellipse(this.m_positionX, this.m_positionY, this.m_width/2, this.m_height/2, Math.PI * this.m_width, 0,  Math.PI * this.m_width);
-        _context.fill();
-    //    this.renderCollisionRect(_context);
+        // _context.beginPath();
+        // _context.ellipse(this.m_positionX, this.m_positionY, this.m_width/2, this.m_height/2, Math.PI * this.m_width, 0,  Math.PI * this.m_width);
+        // _context.fill();
+       this.renderCollisionRect(_context);
 
     }
 
