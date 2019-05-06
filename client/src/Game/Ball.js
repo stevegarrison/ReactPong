@@ -97,9 +97,9 @@ class Ball {
         // _context.fillRect(this.m_positionX, this.m_positionY, this.m_width, this.m_height);
 
         _context.beginPath();
-        _context.ellipse(this.m_positionX, this.m_positionY, this.m_width, this.m_height, Math.PI * this.m_width, 0, Math.PI * this.m_width);
+        _context.ellipse(this.m_positionX, this.m_positionY, this.m_width/2, this.m_height/2, Math.PI * this.m_width, 0,  Math.PI * this.m_width);
         _context.fill();
-       // this.renderCollisionRect(_context);
+    //    this.renderCollisionRect(_context);
 
     }
 
