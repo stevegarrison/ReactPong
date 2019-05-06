@@ -10,6 +10,7 @@ import Ball from "../../Game/Ball"
 import { Link } from "react-router-dom";
 import "../../styles/game.css"
 import API from "../../utils/API";
+import AIPaddle from "../../Game/AIPaddle"
 
 
 var contextWait = null;
@@ -18,7 +19,7 @@ var contextWait = null;
 class GameCom extends Component {
 
     startTime = 0.0;
-    m_nScoreToWin = 20;
+    m_nScoreToWin = 3;
 
     state = {
         //Settings
@@ -45,6 +46,7 @@ class GameCom extends Component {
 
         player2: {
             paddle: null,
+            aiPaddle: null,
             score: 0
         },
 
@@ -86,9 +88,11 @@ class GameCom extends Component {
                 this.setState({ player2Size: size });
 
             this.state.player1.paddle = new Paddle(this.state.gameUIWidth, this.state.gameUIHeight, this.state.player1Color, this.state.player1Size);
-            this.state.player2.paddle = new Paddle(this.state.gameUIWidth, this.state.gameUIHeight, this.state.player2Color, this.state.player2Size);
+            //this.state.player2.paddle = new Paddle(this.state.gameUIWidth, this.state.gameUIHeight, this.state.player2Color, this.state.player2Size);
+            this.state.player2.aiPaddle = new AIPaddle(this.state.gameUIWidth, this.state.gameUIHeight, this.state.player2Color, this.state.player2Size);
             this.state.player1.paddle.setPositionX(100);
-            this.state.player2.paddle.setPositionX(1260);
+            //this.state.player2.paddle.setPositionX(1260);
+            this.state.player2.aiPaddle.setPositionX(1260);
             //this.state.player2.paddle.setPositionX(1360);
             this.state.ball = new Ball(this.state.gameUIWidth, this.state.gameUIHeight, this.state.ballColor);
 
@@ -140,7 +144,8 @@ class GameCom extends Component {
     checkCollision() {
 
         this.state.player1.paddle.checkForCollision(this.state.ball);
-        this.state.player2.paddle.checkForCollision(this.state.ball);
+        this.state.player2.aiPaddle.checkForCollision(this.state.ball);
+//        this.state.player2.paddle.checkForCollision(this.state.ball);
     }
 
     handleInput = _event => {
@@ -156,10 +161,10 @@ class GameCom extends Component {
             case 's':
                 this.setKey('s', 1);
                 break;
-            case 'i':
+            case 'a':
                 this.setKey('i', 1);
                 break;
-            case 'k':
+            case 'd':
                 this.setKey('k', 1);
                 break;
             case 'p':
@@ -181,10 +186,10 @@ class GameCom extends Component {
             case 's':
                 this.setKey('s', 0);
                 break;
-            case 'i':
+            case 'a':
                 this.setKey('i', 0);
                 break;
-            case 'k':
+            case 'd':
                 this.setKey('k', 0);
                 break;
             default:
@@ -204,14 +209,14 @@ class GameCom extends Component {
         }
         if (this.state.keys.i === 1) {
 
-            //this.state.player1.paddle.movePaddle("right", _deltaTime);
-
-            this.state.player2.paddle.movePaddle("up", _deltaTime);
+            this.state.player1.paddle.movePaddle("right", _deltaTime);
+            
+            // this.state.player2.paddle.movePaddle("up", _deltaTime);
         }
         if (this.state.keys.k === 1) {
 
-            // this.state.player1.paddle.movePaddle("left", _deltaTime);
-            this.state.player2.paddle.movePaddle("down", _deltaTime);
+           this.state.player1.paddle.movePaddle("left", _deltaTime);
+            //  this.state.player2.paddle.movePaddle("down", _deltaTime);
         }
 
     }
@@ -250,7 +255,8 @@ class GameCom extends Component {
         newState.player1.score = 0;
         newState.player1.paddle.placeAtOrigin();
         newState.player2.score = 0;
-        newState.player2.paddle.placeAtOrigin();
+       // newState.player2.paddle.placeAtOrigin();
+        newState.player2.aiPaddle.placeAtOrigin();
         newState.ball.placeAtOrigin();
         newState.keys = { w: 0, s: 0, i: 0, k: 0 };
         newState.gameStart = true;
@@ -281,43 +287,47 @@ class GameCom extends Component {
             var deltaTime = (currentTime - this.startTime) / 1000;
             this.startTime = currentTime;
 
+            this.state.player2.aiPaddle.update(deltaTime);
+            this.state.player2.aiPaddle.trackBall(this.state.ball.m_positionY, deltaTime);
+
+
+            // update input
+            this.processInput(deltaTime);
+
+            // update objects
+            this.state.ball.update(deltaTime, _sideHit => {
+                switch (_sideHit) {
+                    case "left":
+                        var newPlayer = { ...this.state.player2 };
+                        newPlayer.score++;
+                        this.setState({ player2: newPlayer });
+                        // console.log("Player 2 score: " + newPlayer.score);
+                        break;
+                    case "right":
+                        var newPlayer = { ...this.state.player1 };
+                        newPlayer.score++;
+                        this.setState({ player1: newPlayer });
+                        // console.log("Player 1 score: " + newPlayer.score);
+                        break;
+                    default:
+                        break;
+                };
+            });
+
+            // check for collision
+            this.checkCollision();
+
+            // check for player wins
+            this.checkForWins();
 
             if (this.state.context) {
                 this.state.context.clearRect(0, 0, this.state.gameUIWidth, this.state.gameUIHeight);
 
-                // update input
-                this.processInput(deltaTime);
-
-                // update objects
-                this.state.ball.update(deltaTime, _sideHit => {
-                    switch (_sideHit) {
-                        case "left":
-                            var newPlayer = { ...this.state.player2 };
-                            newPlayer.score++;
-                            this.setState({ player2: newPlayer });
-                            // console.log("Player 2 score: " + newPlayer.score);
-                            break;
-                        case "right":
-                            var newPlayer = { ...this.state.player1 };
-                            newPlayer.score++;
-                            this.setState({ player1: newPlayer });
-                            // console.log("Player 1 score: " + newPlayer.score);
-                            break;
-                        default:
-                            break;
-                    };
-                });
-
-                // check for collision
-                this.checkCollision();
-
-                // check for player wins
-                this.checkForWins();
-
                 // render objects
                 this.state.ball.render(this.state.context, this.refs.ballImg, this.state.gameUIWidth, this.state.gameUIHeight);
-                this.state.player1.paddle.render(this.state.context, this.refs.image, this.state.player1.posX, this.state.player1.posY);
-                this.state.player2.paddle.render(this.state.context, this.refs.image, this.state.player1.posX, this.state.player1.posY);
+                this.state.player1.paddle.render(this.state.context, this.refs.image);
+                this.state.player2.aiPaddle.render(this.state.context, this.refs.image);
+                //   this.state.player2.paddle.render(this.state.context, this.refs.image, this.state.player1.posX, this.state.player1.posY);
 
                 //this.state.paddle.render(this.state.context, this.refs.image, this.state.player2.posX, this.state.player2.posY);
             }
