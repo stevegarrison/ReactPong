@@ -20,6 +20,7 @@ var contextWait = null;
 class GameCom extends Component {
 
     startTime = 0.0;
+    m_nScoreToWin = 20;
 
     state = {
         //Settings
@@ -152,10 +153,10 @@ class GameCom extends Component {
             case 's':
                 this.setKey('s', 1);
                 break;
-            case 'a':
+            case 'i':
                 this.setKey('i', 1);
                 break;
-            case 'd':
+            case 'k':
                 this.setKey('k', 1);
                 break;
             case 'p':
@@ -177,10 +178,10 @@ class GameCom extends Component {
             case 's':
                 this.setKey('s', 0);
                 break;
-            case 'a':
+            case 'i':
                 this.setKey('i', 0);
                 break;
-            case 'd':
+            case 'k':
                 this.setKey('k', 0);
                 break;
             default:
@@ -200,14 +201,14 @@ class GameCom extends Component {
         }
         if (this.state.keys.i === 1) {
 
-            this.state.player1.paddle.movePaddle("right", _deltaTime);
+            //this.state.player1.paddle.movePaddle("right", _deltaTime);
             
-            // this.state.player2.paddle.movePaddle("up", _deltaTime);
+            this.state.player2.paddle.movePaddle("up", _deltaTime);
         }
         if (this.state.keys.k === 1) {
 
-            this.state.player1.paddle.movePaddle("left", _deltaTime);
-            //  this.state.player2.paddle.movePaddle("down", _deltaTime);
+           // this.state.player1.paddle.movePaddle("left", _deltaTime);
+             this.state.player2.paddle.movePaddle("down", _deltaTime);
         }
 
     }
@@ -255,10 +256,10 @@ class GameCom extends Component {
 
     checkForWins() {
 
-        if (this.state.player1.score >= 3) {
+        if (this.state.player1.score >= this.m_nScoreToWin) {
             console.log("Player 1 Wins!!!");
             this.resetGame();
-        } else if (this.state.player2.score >= 3) {
+        } else if (this.state.player2.score >= this.m_nScoreToWin) {
             console.log("Player 2 Wins!!!");
             this.resetGame();
         }
