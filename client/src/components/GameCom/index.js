@@ -333,6 +333,11 @@ class GameCom extends Component {
                             <div className="row">
                                 <canvas
                                     className="gameUI"
+                                    style={{ 
+                                        backgroundImage: "url(" + this.state.imageURL + ")",
+                                        backgroundSize: "cover",
+                                        backgroundPosition: "center"
+                                    }}
                                     width={this.state.gameUIWidth}
                                     height={this.state.gameUIHeight}
                                     ref="canvas" >
