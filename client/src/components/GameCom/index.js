@@ -15,8 +15,6 @@ import API from "../../utils/API";
 var contextWait = null;
 
 
-
-
 class GameCom extends Component {
 
     startTime = 0.0;
