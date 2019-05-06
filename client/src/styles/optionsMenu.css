@@ -7,7 +7,12 @@ body{
 
 hr{
     border-color: white;
-    width: 50%;
+    width: 100%;
+}
+
+#flex{
+    display: flex;
+    align-items: center;
 }
 
 .header{
@@ -23,8 +28,23 @@ hr{
     box-shadow: 1px 1px 2px red, 0 0 1em blue;
 }
 
+.save-btn{
+    width: 100%;
+    height: 7%;
+    color: blueviolet;
+    box-shadow: 1px 1px 2px red, 0 0 1em blue;
+   font-family:  "Arial Black", Gadget, sans-serif;
+}
+
+.save-btn:hover{
+    background-color: rgba(195, 43, 226, 0.226);
+    color: white;
+    cursor: pointer;
+    box-shadow: 1px 1px 2px red, 0 0 1em blue;
+}
+
 .btn:hover{
-    background-color: rgba(137, 43, 226, 0.226);
+    background-color: rgba(43, 226, 52, 0.226);
     color: white;
 }
 
@@ -244,13 +264,22 @@ box-shadow: none;
 .active2{
     background-color: rgba(203, 147, 255, 0.836);
     color: rgb(0, 0, 0);   
-    width: auto;
+    width: 100px;
     box-shadow: 1px 1px 2px red, 0 0 1em blue;
 }
 
 #form{
-    width: 30%;
+    width: 150%;
     border: none;
     box-shadow: 1px 1px 2px red, 0 0 1em blue;
+    padding: 12px 20px;
+    margin: 8px 0;
+    box-sizing: border-box;
+    border-radius: 4px;
 }
 
+#home-icon {
+    position: fixed;
+    right: 15px;
+    top: 15px;
+}
