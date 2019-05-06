@@ -44,8 +44,8 @@ class Ball {
 
     addVelY(_amt) { 
 
-        if(this.m_velY <= this.m_maxVelY)
-            this.m_velY += _amt;
+        if(this.m_currentVelY <= this.m_maxVelY)
+            this.m_currentVelY += _amt;
     }
 
     decelerateVelY(_dt) { 
@@ -61,10 +61,11 @@ class Ball {
 
     update(_dt, _callback) {
 
-        this.decelerateVelY();
+      // this.decelerateVelY();
 
         this.m_positionX += this.m_velX * _dt;
-        this.m_positionY += this.m_velY * _dt;
+        console.log(this.m_currentVelY);
+        this.m_positionY += this.m_currentVelY * _dt;
 
 
         var sideHit = "";
