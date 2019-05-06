@@ -93,13 +93,13 @@ class Ball {
         // GamePlayer.prototype.render(_context, _imgRef);
         // _context.fillRect(_imgRef, this.m_positionX, this.m_positionY, this.m_width, this.m_height);
         //_context.drawImage(_imgRef, this.m_positionX, this.m_positionY, this.m_width, this.m_height);
-        _context.fillStyle = this.m_ballColor;
+       // _context.fillStyle = this.m_ballColor;
         // _context.fillRect(this.m_positionX, this.m_positionY, this.m_width, this.m_height);
 
-        // _context.beginPath();
-        // _context.ellipse(this.m_positionX, this.m_positionY, this.m_width, this.m_height, 2 *  Math.PI * (this.m_width * this.m_width), 0, 2 *  Math.PI * (this.m_width * this.m_width));
-        // _context.fill();
-        this.renderCollisionRect(_context);
+        _context.beginPath();
+        _context.ellipse(this.m_positionX, this.m_positionY, this.m_width, this.m_height, Math.PI * (this.m_width), 0, Math.PI * (this.m_width));
+        _context.fill();
+       // this.renderCollisionRect(_context);
 
     }
 
