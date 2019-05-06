@@ -15,8 +15,8 @@ class Ball {
 
     m_positionX = 400.0;
     m_positionY = 500.0;
-    m_velX = 350.0;
-    m_velY = 350.0;
+    m_velX = 1750.0;
+    m_velY = 1750.0;
 
     m_width = 25;
     m_height = 25;
@@ -58,10 +58,15 @@ class Ball {
         }
 
         if (this.m_positionY < 0) {
+            this.m_positionY += Math.abs(this.m_positionY);
             this.m_velY *= -1;
         }
 
         if (this.m_positionY + this.m_height > this.m_gameHeight) {
+            console.log("position: " + this.m_height);
+            console.log("amt: " + ((this.m_positionY + this.m_height) - this.m_gameHeight));
+            
+            this.m_positionY -= ((this.m_positionY + this.m_height) - this.m_gameHeight);
             this.m_velY *= -1;
         }
 
@@ -78,6 +83,10 @@ class Ball {
         this.m_velY *= -1;
     }
     
+    renderCollisionRect(_context) { 
+
+        _context.fillRect(this.m_positionX, this.m_positionY, this.m_width, this.m_height);
+    }
 
     render(_context, _imgRef, _levelWidth, _levelHeight) {
         // console.log(_imgRef);
@@ -87,9 +96,10 @@ class Ball {
         _context.fillStyle = this.m_ballColor;
         // _context.fillRect(this.m_positionX, this.m_positionY, this.m_width, this.m_height);
 
-        _context.beginPath();
-        _context.ellipse(this.m_positionX, this.m_positionY, this.m_width, this.m_height, 2 *  Math.PI * (this.m_width * this.m_width), 0, 2 *  Math.PI * (this.m_width * this.m_width));
-        _context.fill();
+        // _context.beginPath();
+        // _context.ellipse(this.m_positionX, this.m_positionY, this.m_width, this.m_height, 2 *  Math.PI * (this.m_width * this.m_width), 0, 2 *  Math.PI * (this.m_width * this.m_width));
+        // _context.fill();
+        this.renderCollisionRect(_context);
 
     }
 

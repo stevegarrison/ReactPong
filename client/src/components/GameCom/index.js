@@ -152,10 +152,10 @@ class GameCom extends Component {
             case 's':
                 this.setKey('s', 1);
                 break;
-            case 'i':
+            case 'a':
                 this.setKey('i', 1);
                 break;
-            case 'k':
+            case 'd':
                 this.setKey('k', 1);
                 break;
             case 'p':
@@ -177,10 +177,10 @@ class GameCom extends Component {
             case 's':
                 this.setKey('s', 0);
                 break;
-            case 'i':
+            case 'a':
                 this.setKey('i', 0);
                 break;
-            case 'k':
+            case 'd':
                 this.setKey('k', 0);
                 break;
             default:
@@ -189,33 +189,25 @@ class GameCom extends Component {
     }
 
     processInput(_deltaTime) {
-
-        var newKeys = { ...this.state.keys }
+  
         if (this.state.keys.w === 1) {
 
-            //this.setKey('w', 0);
-            // newKeys.w = 0;
             this.state.player1.paddle.movePaddle("up", _deltaTime);
-            // this.setState({ keys: newKeys });
         }
         if (this.state.keys.s === 1) {
 
-           // this.setKey('s', 0);
-            // newKeys.s = 0;
             this.state.player1.paddle.movePaddle("down", _deltaTime);
-            // this.setState({ keys: newKeys});
         }
         if (this.state.keys.i === 1) {
 
-            //this.setKey('i', 0);
-            //newKeys.i = 0;
-            this.state.player2.paddle.movePaddle("up", _deltaTime);
-            // this.setState({ keys: newKeys});
+            this.state.player1.paddle.movePaddle("right", _deltaTime);
+            
+            // this.state.player2.paddle.movePaddle("up", _deltaTime);
         }
         if (this.state.keys.k === 1) {
 
-             this.state.player2.paddle.movePaddle("down", _deltaTime);
-            // this.setState({ keys: newKeys});
+            this.state.player1.paddle.movePaddle("left", _deltaTime);
+            //  this.state.player2.paddle.movePaddle("down", _deltaTime);
         }
 
     }
@@ -274,11 +266,11 @@ class GameCom extends Component {
 
     update = () => {
    
-        console.log("game paused: " + this.state.gamePaused);
-        console.log("game start: " + this.state.gameStart);
+       // console.log("game paused: " + this.state.gamePaused);
+        // console.log("game start: " + this.state.gameStart);
         if (!this.state.gamePaused && !this.state.gameStart) {
             
-            console.log("updating");
+            // console.log("updating");
 
             // find the time elapsed
             var currentTime = new Date().getTime();
@@ -299,13 +291,13 @@ class GameCom extends Component {
                             var newPlayer = { ...this.state.player2 };
                             newPlayer.score++;
                             this.setState({ player2: newPlayer });
-                            console.log("Player 2 score: " + newPlayer.score);
+                            // console.log("Player 2 score: " + newPlayer.score);
                             break;
                         case "right":
                             var newPlayer = { ...this.state.player1 };
                             newPlayer.score++;
                             this.setState({ player1: newPlayer });
-                            console.log("Player 1 score: " + newPlayer.score);
+                            // console.log("Player 1 score: " + newPlayer.score);
                             break;
                         default:
                             break;
