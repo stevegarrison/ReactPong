@@ -18,7 +18,7 @@ var contextWait = null;
 class GameCom extends Component {
 
     startTime = 0.0;
-    m_nScoreToWin = 20;
+    m_nScoreToWin = 2;
 
     state = {
         //Settings
@@ -29,7 +29,8 @@ class GameCom extends Component {
         ballColor: "white",
         imageURL: "",
         gamePaused: false,
-        gameStart: false,
+        gameStart: true,
+        m_bWon: false,
 
         context: null,
         // paddle: null,
@@ -105,7 +106,7 @@ class GameCom extends Component {
             .then(res => {
                 // I DON'T THINK I'M GETTING HERE
                 console.log("res (GamePage.js): ", res.data);
-                this.setState({ player1Color: res.data[0].player1Color, player1Size:res.data[0].player1Size, player2Color: res.data[0].player2Color, player2Size: res.data[0].player2Size, ballColor: res.data[0].ballColor, imageURL: res.data[0].imageURL });
+                this.setState({ player1Color: res.data[0].player1Color, player1Size: res.data[0].player1Size, player2Color: res.data[0].player2Color, player2Size: res.data[0].player2Size, ballColor: res.data[0].ballColor, imageURL: res.data[0].imageURL });
                 console.log("bc: " + this.state.ballColor);
                 console.log(this.state);
                 _callback();
@@ -245,6 +246,22 @@ class GameCom extends Component {
 
     }
 
+    wonGame() {
+        // this.setState({ m_bWon: false });
+        return (
+            // < !--The Modal-- >
+            <div id="id01" class="w3-modal">
+                <div class="w3-modal-content">
+                    <div class="w3-container">
+                        <span onclick="document.getElementById('id01').style.display='none'"
+                            class="w3-button w3-display-topright">&times;</span>
+                        <p>Winner!</p>
+                    </div>
+                </div>
+            </div>
+        )
+    }
+
     resetGame() {
         var newState = { ...this.state };
         newState.player1.score = 0;
@@ -258,12 +275,13 @@ class GameCom extends Component {
     }
 
     checkForWins() {
-
         if (this.state.player1.score >= this.m_nScoreToWin) {
             console.log("Player 1 Wins!!!");
+            this.setState({ m_bWon: true });
             this.resetGame();
         } else if (this.state.player2.score >= this.m_nScoreToWin) {
             console.log("Player 2 Wins!!!");
+            this.setState({ m_bWon: true });
             this.resetGame();
         }
     }
@@ -373,7 +391,7 @@ class GameCom extends Component {
                                         alt="paddleImg" /> */}
 
                                 </canvas>
-                                <p>Press Any Key To Begin</p>
+                                {this.state.m_bWon ? this.wonGame() : null}
                             </div>
                         </div>
 
