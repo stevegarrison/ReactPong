@@ -28,7 +28,7 @@ class GameCom extends Component {
         ballColor: "white",
         imageURL: "",
         gamePaused: false,
-        gameStart: true,
+        gameStart: false,
 
         context: null,
         // paddle: null,
@@ -214,9 +214,7 @@ class GameCom extends Component {
         }
         if (this.state.keys.k === 1) {
 
-           // this.setKey('k', 0);
-            // newKeys.k = 0;
-            this.state.player2.paddle.movePaddle("down", _deltaTime);
+             this.state.player2.paddle.movePaddle("down", _deltaTime);
             // this.setState({ keys: newKeys});
         }
 
