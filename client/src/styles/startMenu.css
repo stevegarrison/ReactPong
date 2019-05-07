@@ -24,6 +24,17 @@ body{
     color: white;
 }
 
+#cog{
+  position: fixed;
+  right: 2%;
+  top:3%;
+  color: white;
+  }
+
+  #cog:hover{
+    color: rgba(255, 255, 255, 0.397);
+    }
+
 .glow {
     color: rgb(255, 255, 255);
         font-family: 'Wendy One', sans-serif;
@@ -32,129 +43,129 @@ body{
         text-align: center;
         text-transform: uppercase;
         width: 100%;
-        animation: move linear 2000ms infinite;  
+        animation: move linear 7000ms infinite;  
         padding-top: 15%;
       }
       
       @keyframes move {
         0% {
           text-shadow:
-            10px -10px 0 rgba(255, 0, 0, 0.15), 
-            9px -9px 0 rgba(255, 0, 0, 0.15), 
-            8px -8px 0 rgba(255, 0, 0, 0.15), 
-            7px -7px 0 rgba(255, 0, 0, 0.15), 
-            6px -6px 0 rgba(255, 0, 0, 0.15), 
-            5px -5px 0 rgba(255, 0, 0, 0.15), 
-            4px -4px 0 rgba(255, 0, 0, 0.15),
-            3px -3px 0 rgba(255, 0, 0, 0.15),
-            2px -2px 0 rgba(255, 0, 0, 0.15),
-            1px -1px 0 rgba(255, 0, 0, 0.15),
-            -10px 10px 0 rgba(25, 0, 255, 0.15),
-            -9px 9px 0 rgba(25, 0, 255, 0.15), 
-            -8px 8px 0 rgba(25, 0, 255, 0.15), 
-            -7px 7px 0 rgba(25, 0, 255, 0.15),
-            -6px 6px 0 rgba(25, 0, 255, 0.15), 
-            -5px 5px 0 rgba(25, 0, 255, 0.15),
-            -4px 4px 0 rgba(25, 0, 255, 0.15),
-            -3px 3px 0 rgba(25, 0, 255, 0.15),
-            -2px 2px 0 rgba(25, 0, 255, 0.15),
-            -1px 1px 0 rgba(25, 0, 255, 0.15)
+            10px -10px 0 rgba(255, 0, 0, 1), 
+            9px -9px 0 rgba(255, 0, 0, 1), 
+            8px -8px 0 rgba(255, 0, 0, 1), 
+            7px -7px 0 rgba(255, 0, 0, 1), 
+            6px -6px 0 rgba(255, 0, 0, 1), 
+            5px -5px 0 rgba(255, 0, 0, 1), 
+            4px -4px 0 rgba(255, 0, 0, 1),
+            3px -3px 0 rgba(255, 0, 0, 1),
+            2px -2px 0 rgba(255, 0, 0, 1),
+            1px -1px 0 rgba(255, 0, 0, 1),
+            -10px 10px 0 rgba(25, 0, 255, 1),
+            -9px 9px 0 rgba(25, 0, 255, 1), 
+            -8px 8px 0 rgba(25, 0, 255, 1), 
+            -7px 7px 0 rgba(25, 0, 255, 1),
+            -6px 6px 0 rgba(25, 0, 255, 1), 
+            -5px 5px 0 rgba(25, 0, 255, 1),
+            -4px 4px 0 rgba(25, 0, 255, 1),
+            -3px 3px 0 rgba(25, 0, 255, 1),
+            -2px 2px 0 rgba(25, 0, 255, 1),
+            -1px 1px 0 rgba(25, 0, 255, 1)
           ;
         }
         25% {    
           text-shadow:      
-          -10px -10px 0 rgba(25, 0, 255, 0.15),
-          -9px -9px 0 rgba(25, 0, 255, 0.15), 
-          -8px -8px 0 rgba(25, 0, 255, 0.15), 
-          -7px -7px 0 rgba(25, 0, 255, 0.15),
-          -6px -6px 0 rgba(25, 0, 255, 0.15), 
-          -5px -5px 0 rgba(25, 0, 255, 0.15),
-          -4px -4px 0 rgba(25, 0, 255, 0.15),
-          -3px -3px 0 rgba(25, 0, 255, 0.15),
-          -2px -2px 0 rgba(25, 0, 255, 0.15),
-          -1px -1px 0 rgba(25, 0, 255, 0.15),
-          10px 10px 0 rgba(255, 0, 0, 0.15), 
-          9px 9px 0 rgba(255, 0, 0, 0.15), 
-          8px 8px 0 rgba(255, 0, 0, 0.15), 
-          7px 7px 0 rgba(255, 0, 0, 0.15), 
-          6px 6px 0 rgba(255, 0, 0, 0.15), 
-          5px 5px 0 rgba(255, 0, 0, 0.15), 
-          4px 4px 0 rgba(255, 0, 0, 0.15),
-          3px 3px 0 rgba(255, 0, 0, 0.15),
-          2px 2px 0 rgba(255, 0, 0, 0.15),
-          1px 1px 0 rgba(255, 0, 0, 0.15)  
+          -10px -10px 0 rgba(25, 0, 255, 1),
+          -9px -9px 0 rgba(25, 0, 255, 1), 
+          -8px -8px 0 rgba(25, 0, 255, 1), 
+          -7px -7px 0 rgba(25, 0, 255, 1),
+          -6px -6px 0 rgba(25, 0, 255, 1), 
+          -5px -5px 0 rgba(25, 0, 255, 1),
+          -4px -4px 0 rgba(25, 0, 255, 1),
+          -3px -3px 0 rgba(25, 0, 255, 1),
+          -2px -2px 0 rgba(25, 0, 255, 1),
+          -1px -1px 0 rgba(25, 0, 255, 1),
+          10px 10px 0 rgba(255, 0, 0, 1), 
+          9px 9px 0 rgba(255, 0, 0, 1), 
+          8px 8px 0 rgba(255, 0, 0, 1), 
+          7px 7px 0 rgba(255, 0, 0, 1), 
+          6px 6px 0 rgba(255, 0, 0, 1), 
+          5px 5px 0 rgba(255, 0, 0, 1), 
+          4px 4px 0 rgba(255, 0, 0, 1),
+          3px 3px 0 rgba(255, 0, 0, 1),
+          2px 2px 0 rgba(255, 0, 0, 1),
+          1px 1px 0 rgba(255, 0, 0, 1)  
           ;
         }
         50% {
           text-shadow:
-          -10px 10px 0 rgba(255, 0, 0, 0.15), 
-          -9px 9px 0 rgba(255, 0, 0, 0.15), 
-          -8px 8px 0 rgba(255, 0, 0, 0.15), 
-          -7px 7px 0 rgba(255, 0, 0, 0.15), 
-          -6px 6px 0 rgba(255, 0, 0, 0.15), 
-          -5px 5px 0 rgba(255, 0, 0, 0.15), 
-          -4px 4px 0 rgba(255, 0, 0, 0.15),
-          -3px 3px 0 rgba(255, 0, 0, 0.15),
-          -2px 2px 0 rgba(255, 0, 0, 0.15),
-          -1px 1px 0 rgba(255, 0, 0, 0.15),
-          10px -10px 0 rgba(25, 0, 255, 0.15),
-          9px -9px 0 rgba(25, 0, 255, 0.15), 
-          8px -8px 0 rgba(25, 0, 255, 0.15), 
-          7px -7px 0 rgba(25, 0, 255, 0.15),
-          6px -6px 0 rgba(25, 0, 255, 0.15), 
-          5px -5px 0 rgba(25, 0, 255, 0.15),
-          4px -4px 0 rgba(25, 0, 255, 0.15),
-          3px -3px 0 rgba(25, 0, 255, 0.15),
-          2px -2px 0 rgba(25, 0, 255, 0.15),
-          1px -1px 0 rgba(25, 0, 255, 0.15)
+          -10px 10px 0 rgba(255, 0, 0, 1), 
+          -9px 9px 0 rgba(255, 0, 0, 1), 
+          -8px 8px 0 rgba(255, 0, 0, 1), 
+          -7px 7px 0 rgba(255, 0, 0, 1), 
+          -6px 6px 0 rgba(255, 0, 0, 1), 
+          -5px 5px 0 rgba(255, 0, 0, 1), 
+          -4px 4px 0 rgba(255, 0, 0, 1),
+          -3px 3px 0 rgba(255, 0, 0, 1),
+          -2px 2px 0 rgba(255, 0, 0, 1),
+          -1px 1px 0 rgba(255, 0, 0, 1),
+          10px -10px 0 rgba(25, 0, 255, 1),
+          9px -9px 0 rgba(25, 0, 255, 1), 
+          8px -8px 0 rgba(25, 0, 255, 1), 
+          7px -7px 0 rgba(25, 0, 255, 1),
+          6px -6px 0 rgba(25, 0, 255, 1), 
+          5px -5px 0 rgba(25, 0, 255, 1),
+          4px -4px 0 rgba(25, 0, 255, 1),
+          3px -3px 0 rgba(25, 0, 255, 1),
+          2px -2px 0 rgba(25, 0, 255, 1),
+          1px -1px 0 rgba(25, 0, 255, 1)
           ;
         }
         75% {
           text-shadow:
-          10px 10px 0 rgba(25, 0, 255, 0.15),
-          9px 9px 0 rgba(25, 0, 255, 0.15), 
-          8px 8px 0 rgba(25, 0, 255, 0.15), 
-          7px 7px 0 rgba(25, 0, 255, 0.15),
-          6px 6px 0 rgba(25, 0, 255, 0.15), 
-          5px 5px 0 rgba(25, 0, 255, 0.15),
-          4px 4px 0 rgba(25, 0, 255, 0.15),
-          3px 3px 0 rgba(25, 0, 255, 0.15),
-          2px 2px 0 rgba(25, 0, 255, 0.15),
-          1px 1px 0 rgba(25, 0, 255, 0.15),
-          -10px -10px 0 rgba(255, 0, 0, 0.15), 
-          -9px -9px 0 rgba(255, 0, 0, 0.15), 
-          -8px -8px 0 rgba(255, 0, 0, 0.15), 
-          -7px -7px 0 rgba(255, 0, 0, 0.15), 
-          -6px -6px 0 rgba(255, 0, 0, 0.15), 
-          -5px -5px 0 rgba(255, 0, 0, 0.15), 
-          -4px -4px 0 rgba(255, 0, 0, 0.15),
-          -3px -3px 0 rgba(255, 0, 0, 0.15),
-          -2px -2px 0 rgba(255, 0, 0, 0.15),
-          -1px -1px 0 rgba(255, 0, 0, 0.15)   
+          10px 10px 0 rgba(25, 0, 255, 1),
+          9px 9px 0 rgba(25, 0, 255, 1), 
+          8px 8px 0 rgba(25, 0, 255, 1), 
+          7px 7px 0 rgba(25, 0, 255, 1),
+          6px 6px 0 rgba(25, 0, 255, 1), 
+          5px 5px 0 rgba(25, 0, 255, 1),
+          4px 4px 0 rgba(25, 0, 255, 1),
+          3px 3px 0 rgba(25, 0, 255, 1),
+          2px 2px 0 rgba(25, 0, 255, 1),
+          1px 1px 0 rgba(25, 0, 255, 1),
+          -10px -10px 0 rgba(255, 0, 0, 1), 
+          -9px -9px 0 rgba(255, 0, 0, 1), 
+          -8px -8px 0 rgba(255, 0, 0, 1), 
+          -7px -7px 0 rgba(255, 0, 0, 1), 
+          -6px -6px 0 rgba(255, 0, 0, 1), 
+          -5px -5px 0 rgba(255, 0, 0, 1), 
+          -4px -4px 0 rgba(255, 0, 0, 1),
+          -3px -3px 0 rgba(255, 0, 0, 1),
+          -2px -2px 0 rgba(255, 0, 0, 1),
+          -1px -1px 0 rgba(255, 0, 0, 1)   
           ;
         }
         100% {
           text-shadow:
-          10px -10px 0 rgba(255, 0, 0, 0.15), 
-          9px -9px 0 rgba(255, 0, 0, 0.15), 
-          8px -8px 0 rgba(255, 0, 0, 0.15), 
-          7px -7px 0 rgba(255, 0, 0, 0.15), 
-          6px -6px 0 rgba(255, 0, 0, 0.15), 
-          5px -5px 0 rgba(255, 0, 0, 0.15), 
-          4px -4px 0 rgba(255, 0, 0, 0.15),
-          3px -3px 0 rgba(255, 0, 0, 0.15),
-          2px -2px 0 rgba(255, 0, 0, 0.15),
-          1px -1px 0 rgba(255, 0, 0, 0.15),
-          -10px 10px 0 rgba(25, 0, 255, 0.15),
-          -9px 9px 0 rgba(25, 0, 255, 0.15), 
-          -8px 8px 0 rgba(25, 0, 255, 0.15), 
-          -7px 7px 0 rgba(25, 0, 255, 0.15),
-          -6px 6px 0 rgba(25, 0, 255, 0.15), 
-          -5px 5px 0 rgba(25, 0, 255, 0.15),
-          -4px 4px 0 rgba(25, 0, 255, 0.15),
-          -3px 3px 0 rgba(25, 0, 255, 0.15),
-          -2px 2px 0 rgba(25, 0, 255, 0.15),
-          -1px 1px 0 rgba(25, 0, 255, 0.15)
+          10px -10px 0 rgba(255, 0, 0, 1), 
+          9px -9px 0 rgba(255, 0, 0, 1), 
+          8px -8px 0 rgba(255, 0, 0, 1), 
+          7px -7px 0 rgba(255, 0, 0, 1), 
+          6px -6px 0 rgba(255, 0, 0, 1), 
+          5px -5px 0 rgba(255, 0, 0, 1), 
+          4px -4px 0 rgba(255, 0, 0, 1),
+          3px -3px 0 rgba(255, 0, 0, 1),
+          2px -2px 0 rgba(255, 0, 0, 1),
+          1px -1px 0 rgba(255, 0, 0, 1),
+          -10px 10px 0 rgba(25, 0, 255, 1),
+          -9px 9px 0 rgba(25, 0, 255, 1), 
+          -8px 8px 0 rgba(25, 0, 255, 1), 
+          -7px 7px 0 rgba(25, 0, 255, 1),
+          -6px 6px 0 rgba(25, 0, 255, 1), 
+          -5px 5px 0 rgba(25, 0, 255, 1),
+          -4px 4px 0 rgba(25, 0, 255, 1),
+          -3px 3px 0 rgba(25, 0, 255, 1),
+          -2px 2px 0 rgba(25, 0, 255, 1),
+          -1px 1px 0 rgba(25, 0, 255, 1)
           ;
         } 
       }

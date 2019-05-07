@@ -25,6 +25,7 @@ hr{
 
 .btn{
     color: blueviolet;
+    font-size: 20px;
     box-shadow: 1px 1px 2px red, 0 0 1em blue;
 }
 
@@ -61,6 +62,11 @@ hr{
 width: auto;
 box-shadow: none;
 }
+
+.player-background {
+    width: auto;
+    box-shadow: none;
+    }
 
 .player1-color1{
     background: red;
@@ -269,7 +275,7 @@ box-shadow: none;
 }
 
 #form{
-    width: 150%;
+    width: 100%;
     border: none;
     box-shadow: 1px 1px 2px red, 0 0 1em blue;
     padding: 12px 20px;
