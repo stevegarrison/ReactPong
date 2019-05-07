@@ -10,12 +10,14 @@ import Ball from "../../Game/Ball"
 import { Link } from "react-router-dom";
 import "../../styles/game.css"
 import API from "../../utils/API";
-import AIPaddle from "../../Game/AIPaddle"
+import AIPaddle from "../../Game/AIPaddle";
+import windowSize from "react-window-size";
 
 
 var contextWait = null;
 let winner = "";
-
+let width = 0;
+let height = 0;
 
 class GameCom extends Component {
 
@@ -76,8 +78,12 @@ class GameCom extends Component {
             this.setState({ context: canvas.getContext("2d") });
 
             // set game height and width
-            this.state.gameUIWidth = 1400;
-            this.state.gameUIHeight = 700;
+            height = this.props.windowHeight;
+            width = this.props.windowWidth;
+            console.log("DidMount height: " + height);
+            console.log("DidMount width: " + width);
+            this.state.gameUIWidth = width * .85;
+            this.state.gameUIHeight = height * .8;
 
             const color = "white";
             if (!this.state.player1Color)
@@ -98,15 +104,28 @@ class GameCom extends Component {
             this.state.player2.aiPaddle = new AIPaddle(this.state.gameUIWidth, this.state.gameUIHeight, this.state.player2Color, this.state.player2Size);
             this.state.player1.paddle.setPositionX(100);
             //this.state.player2.paddle.setPositionX(1260);
-            this.state.player2.aiPaddle.setPositionX(1260);
+            this.state.player2.aiPaddle.setPositionX(this.state.gameUIWidth - 100);
             //this.state.player2.paddle.setPositionX(1360);
             this.state.ball = new Ball(this.state.gameUIWidth, this.state.gameUIHeight, this.state.ballColor);
 
             document.addEventListener("keydown", this.handleInput, false);
             document.addEventListener("keyup", this.handleKeyUp, false);
+            window.addEventListener("resize", this.handleResize)
             requestAnimationFrame(() => { this.update() });
         });
     }
+
+    handleResize = (_event) => {
+        console.log("resizing");
+        height = this.props.windowHeight;
+        width = this.props.windowWidth;
+        this.state.gameUIWidth = width * .85;
+        this.state.gameUIHeight = height * .8;
+        this.state.player1.paddle.setPositionX(100);
+
+        this.state.player2.aiPaddle.setPositionX(this.state.gameUIWidth - 100);
+    }
+
 
     loadOptions = (_callback) => {
         console.log("LOADED OPTIONS (GamePage.js)");
@@ -217,33 +236,6 @@ class GameCom extends Component {
                 break;
         };
     }
-
-    processInput(_deltaTime) {
-
-        if (this.state.keys.w === 1) {
-
-            this.state.player1.paddle.movePaddle("up", _deltaTime);
-        }
-    }
-
-        handleKeyUp = _event => {
-            switch (_event.key) {
-                case 'w':
-                    this.setKey('w', 0);
-                    break;
-                case 's':
-                    this.setKey('s', 0);
-                    break;
-                case 'a':
-                    this.setKey('i', 0);
-                    break;
-                case 'd':
-                    this.setKey('k', 0);
-                    break;
-                default:
-                    break;
-            };
-        }
 
         processInput(_deltaTime) {
 
@@ -417,6 +409,7 @@ class GameCom extends Component {
 
 
         render() {
+            console.log("Height: " + this.props.windowHeight);
             return (
                 <>
                     <div className="text-center">
@@ -472,4 +465,4 @@ class GameCom extends Component {
 
     };
 
-    export default GameCom;
+    export default windowSize(GameCom);
