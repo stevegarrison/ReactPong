@@ -30,7 +30,9 @@ class GameCom extends Component {
         ballColor: "white",
         imageURL: "",
         gamePaused: false,
-        gameStart: false,
+        gameStart: true,
+        gameBorderColor: "yellow",
+        gameBorderWidth: "1px",
 
         context: null,
         // paddle: null,
@@ -150,6 +152,7 @@ class GameCom extends Component {
 
     handleInput = _event => {
 
+
         if (this.state.gameStart)
             this.setState({ gameStart: false });
 
@@ -173,6 +176,9 @@ class GameCom extends Component {
             case 'u':
                 this.unPauseGame();
                 break;
+                // case 'what ever letter or keyboard button you want to check':
+                // put whatever you want to happen here
+                // break;
             default:
                 break;
         };
@@ -364,6 +370,7 @@ class GameCom extends Component {
                                 <canvas
                                     className="gameUI"
                                     style={{
+                                        border: `${this.state.gameBorderWidth} solid ${this.state.gameBorderColor}`,
                                         backgroundImage: "url(" + this.state.imageURL + ")",
                                         backgroundSize: "cover",
                                         backgroundPosition: "center"
