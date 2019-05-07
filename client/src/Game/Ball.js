@@ -38,7 +38,7 @@ class Ball {
     }
     
     placeAtOrigin() { 
-        this.m_positionX = this.m_gameWidth / 2;
+        this.m_positionX = this.m_gameWidth / 2 - this.m_width/2;
         this.m_positionY = this.m_gameHeight / 2;
     }
 
@@ -79,7 +79,7 @@ class Ball {
       this.decelerateVelY(_dt);
 
         this.m_positionX += this.m_velX * _dt;
-       console.log("velyU: " + this.m_currentVelY);
+       //console.log("velyU: " + this.m_currentVelY);
         this.m_positionY += this.m_currentVelY * _dt;
 
 

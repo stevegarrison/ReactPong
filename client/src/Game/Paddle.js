@@ -14,6 +14,8 @@ class Paddle  {
     m_paddleColor = "red";
     m_gameWidth = 0;
     m_gameHeight = 0;
+    m_bIsMovingUp = false;
+    m_bIsMovingDown = false;
 
     collision = false;
     collisionRect = {
@@ -71,6 +73,11 @@ class Paddle  {
     //     } 
     // }
 
+    clearMovingFlags() { 
+        this.m_bIsMovingUp = false;
+        this.m_bIsMovingDown = false;
+    }
+
     movePaddle( _direction, _deltaTime) { 
 
         switch (_direction) { 
@@ -78,13 +85,15 @@ class Paddle  {
             case "up":
             //     console.log(this.m_positionY);
             //     console.log(_deltaTime);
+                this.m_bIsMovingUp = true;
               if (this.m_positionY - (this.m_velocityY * _deltaTime) > 0)
                 this.m_positionY = this.m_positionY - (this.m_velocityY * _deltaTime);
                // console.log(this.m_positionY);
                 break;
             case "down":
            //if (this.m_positionY + (this.m_velocityY * _deltaTime) > 0 && ((this.m_positionY + this.m_velocityY) * _deltaTime + this.m_height) < this.m_gameHeight)
-               if((this.m_positionY + (this.m_velocityY * _deltaTime) + this.m_height) < this.m_gameHeight)
+           this.m_bIsMovingDown = true;
+           if((this.m_positionY + (this.m_velocityY * _deltaTime) + this.m_height) < this.m_gameHeight)
                     this.m_positionY = this.m_positionY + (this.m_velocityY * _deltaTime);
                 break;
 
@@ -146,8 +155,18 @@ class Paddle  {
             if (_ball.m_positionX > this.m_positionX
                 && _ball.m_positionY > this.m_positionY
                 && _ball.m_positionY < this.m_positionY + this.m_height) {
-                    console.log("left");
-                    _ball.m_velX *= -1;    
+                
+                if (this.m_bIsMovingUp) {
+                    if (_ball.m_currentVelY < 0) {// if the ball is moving down
+                        _ball.m_currentVelY *= -1;   
+                    }
+                } else if(this.m_bIsMovingDown){ 
+                    if (_ball.m_currentVelY > 0) {// if the ball is moving up
+                        _ball.m_currentVelY *= -1;   
+                    }
+                }
+                console.log("left");
+                _ball.m_velX *= -1;    
                 _ball.m_positionX += ((this.m_positionX + this.m_width) - _ball.m_positionX);
             }
             
@@ -155,13 +174,24 @@ class Paddle  {
             else if (_ball.m_positionX < this.m_positionX + this.m_width
                 && _ball.m_positionY > this.m_positionY
                 && _ball.m_positionY < this.m_positionY + this.m_height) {
+        
+                    if (this.m_bIsMovingUp) {
+                        if (_ball.m_currentVelY < 0) {// if the ball is moving down
+                            _ball.m_currentVelY *= -1;   
+                        }
+                    } else if(this.m_bIsMovingDown){ 
+                        if (_ball.m_currentVelY > 0) {// if the ball is moving up
+                            _ball.m_currentVelY *= -1;   
+                        }
+                    }
                 console.log("right");
                 _ball.m_velX *= -1;    
-                    _ball.m_positionX -= (_ball.m_positionX + _ball.m_width) - this.m_positionX;
+                _ball.m_positionX -= (_ball.m_positionX + _ball.m_width) - this.m_positionX;
             }
      
             // // top
             else if (_ball.m_positionY < this.m_positionY) {
+                _ball.m_currentVelY *= -1;   
                 console.log("top");
                 if (_ball.m_currentVelY < 0)
                     _ball.m_currentVelY *= -1;
@@ -170,6 +200,7 @@ class Paddle  {
            
             // // bottom
              else if (_ball.m_positionY < this.m_positionY + this.m_height) {
+                _ball.m_currentVelY *= -1;   
                 console.log("bottom");
                 if (_ball.m_currentVelY > 0)
                 _ball.m_currentVelY *= -1;

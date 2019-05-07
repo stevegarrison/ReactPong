@@ -32,10 +32,12 @@ class AIPaddle extends Paddle {
 
         if (_dt >= 0.1)
             _dt = 0.16;
-        if (_targetPosY < this.m_positionY) {
+        if (_targetPosY < this.m_positionY) { // moving up
+            this.m_bIsMovingUp = true;
             this.m_positionY = this.m_positionY - (this.m_velocityY * _dt);
         }
-        else if (_targetPosY > this.m_positionY) { 
+        else if (_targetPosY > this.m_positionY) { // moving down
+            this.m_bIsMovingDown = true;
             this.m_positionY = this.m_positionY + (this.m_velocityY * _dt);            
         }
     }
@@ -44,7 +46,7 @@ class AIPaddle extends Paddle {
         if (!this.m_bIsDelayed) {
 
             if (_posY - 10 > 0 && _posY + this.m_height + 10 < this.m_gameHeight) {
-                console.log("tracking");
+                //console.log("tracking");
                 // this.m_positionY = _posY;
                 this.moveToBall(_posY, _dt);
 
