@@ -22,7 +22,7 @@ let height = 0;
 class GameCom extends Component {
 
     startTime = 0.0;
-    m_nScoreToWin = 2;
+    m_nScoreToWin = 20;
 
     state = {
         //Settings
@@ -136,7 +136,14 @@ class GameCom extends Component {
             .then(res => {
                 // I DON'T THINK I'M GETTING HERE
                 console.log("res (GamePage.js): ", res.data);
-                this.setState({ player1Color: res.data[0].player1Color, player1Size: res.data[0].player1Size, player2Color: res.data[0].player2Color, player2Size: res.data[0].player2Size, ballColor: res.data[0].ballColor, imageURL: res.data[0].imageURL });
+                this.setState({
+                    player1Color: res.data[0].player1Color,
+                    player1Size: res.data[0].player1Size,
+                    player2Color: res.data[0].player2Color,
+                    player2Size: res.data[0].player2Size,
+                    ballColor: res.data[0].ballColor,
+                    imageURL: res.data[0].imageURL
+                });
                 console.log("bc: " + this.state.ballColor);
                 console.log(this.state);
                 _callback();
@@ -191,29 +198,29 @@ class GameCom extends Component {
             }
         }
 
-            // console.log(_event);
-            switch (_event.key) {
-                case 'w':
-                    this.setKey('w', 1);
-                    break;
-                case 's':
-                    this.setKey('s', 1);
-                    break;
-                case 'a':
-                    this.setKey('i', 1);
-                    break;
-                case 'd':
-                    this.setKey('k', 1);
-                    break;
-                case 'p':
-                    this.pauseGame();
-                    break;
-                case 'u':
-                    this.unPauseGame();
-                    break;
-                // case 'what ever letter or keyboard button you want to check':
-                // put whatever you want to happen here
-                // break;
+        // console.log(_event);
+        switch (_event.key) {
+            case 'w':
+                this.setKey('w', 1);
+                break;
+            case 's':
+                this.setKey('s', 1);
+                break;
+            case 'a':
+                this.setKey('i', 1);
+                break;
+            case 'd':
+                this.setKey('k', 1);
+                break;
+            case 'p':
+                this.pauseGame();
+                break;
+            case 'u':
+                this.unPauseGame();
+                break;
+            // case 'what ever letter or keyboard button you want to check':
+            // put whatever you want to happen here
+            // break;
             default:
                 break;
         };
@@ -226,7 +233,7 @@ class GameCom extends Component {
         this.state.player2.aiPaddle.clearMovingFlags();
         switch (_event.key) {
             case 'w':
-        this.setKey('w', 0);
+                this.setKey('w', 0);
                 break;
             case 's':
                 this.setKey('s', 0);
@@ -242,244 +249,244 @@ class GameCom extends Component {
         };
     }
 
-        
 
-        processInput(_deltaTime) {
 
-            if (this.state.keys.w === 1) {
+    processInput(_deltaTime) {
 
-                this.state.player1.paddle.movePaddle("up", _deltaTime);
-            }
-            if (this.state.keys.s === 1) {
+        if (this.state.keys.w === 1) {
 
-                this.state.player1.paddle.movePaddle("down", _deltaTime);
-            }
-            if (this.state.keys.i === 1) {
+            this.state.player1.paddle.movePaddle("up", _deltaTime);
+        }
+        if (this.state.keys.s === 1) {
 
-                this.state.player1.paddle.movePaddle("right", _deltaTime);
+            this.state.player1.paddle.movePaddle("down", _deltaTime);
+        }
+        if (this.state.keys.i === 1) {
 
-                // this.state.player2.paddle.movePaddle("up", _deltaTime);
-            }
-            if (this.state.keys.k === 1) {
+            this.state.player1.paddle.movePaddle("right", _deltaTime);
 
-                this.state.player1.paddle.movePaddle("left", _deltaTime);
-                //  this.state.player2.paddle.movePaddle("down", _deltaTime);
-            }
+            // this.state.player2.paddle.movePaddle("up", _deltaTime);
+        }
+        if (this.state.keys.k === 1) {
 
+            this.state.player1.paddle.movePaddle("left", _deltaTime);
+            //  this.state.player2.paddle.movePaddle("down", _deltaTime);
         }
 
-        componentWillUnmount() {
-            document.removeEventListener("keyup", this.handleKeyUp, false);
-            document.removeEventListener("keydown", this.handleInput, false);
+    }
 
+    componentWillUnmount() {
+        document.removeEventListener("keyup", this.handleKeyUp, false);
+        document.removeEventListener("keydown", this.handleInput, false);
+
+    }
+
+    pauseGame() {
+        console.log("game paused");
+        this.setState({
+            gamePaused: true
+        });
+    }
+
+    unPauseGame() {
+        console.log("game un-paused");
+        this.setState({
+            gamePaused: false
+        });
+    }
+
+    toggleGamePause() {
+        this.setState({
+            gamePaused: !this.state.gamePaused
+        });
+    }
+
+    pauseGame2() {
+        return (
+            <div id="modal" className="text-center">
+                <h1 id="pong-text">Paused</h1>
+                <h4> Press  'U'  to resume</h4>
+            </div>
+        );
+    }
+
+    startGame() {
+        return (
+            <div id="modal" className="text-center">
+                <h1 id="pong-text">PONG!</h1>
+                <h3 className="mb-3"> Press the SPACEBAR to play</h3>
+                <h7> NOTE: You can pause the game at any moment by pressing the 'P' key</h7>
+            </div>
+        );
+    }
+
+    wonGameLogic() {
+        return (
+            <div id="modal" className="text-center">
+                <h1 className="mb-4 glow2" id="pong-text"> {winner} won!</h1>
+                <h5>Press SPACEBAR to play again</h5>
+            </div>
+        )
+    }
+
+    resetGame() {
+        var newState = { ...this.state };
+        newState.player1.score = 0;
+        newState.player1.paddle.placeAtOrigin();
+        newState.player2.score = 0;
+        // newState.player2.paddle.placeAtOrigin();
+        newState.player2.aiPaddle.placeAtOrigin();
+        newState.ball.placeAtOrigin();
+        newState.keys = { w: 0, s: 0, i: 0, k: 0 };
+        newState.gameStart = true;
+        this.setState(newState);
+    }
+
+    checkForWins() {
+        if (this.state.player1.score >= this.m_nScoreToWin) {
+            console.log("Player 1 Wins!!!");
+            this.setState({ m_bWon: true });
+            this.setState({ gameStart2: true });
+            winner = "Player One"
+            this.resetGame();
+        } else if (this.state.player2.score >= this.m_nScoreToWin) {
+            console.log("Player 2 Wins!!!");
+            this.setState({ m_bWon: true });
+            this.setState({ gameStart2: true });
+            winner = "Player Two"
+            this.resetGame();
         }
+    }
 
-        pauseGame() {
-            console.log("game paused");
-            this.setState({
-                gamePaused: true
+    update = () => {
+
+        if (!this.state.gamePaused && !this.state.gameStart && !this.state.m_bWon) {
+
+            // console.log("updating");
+
+            // find the time elapsed
+            var currentTime = new Date().getTime();
+            var deltaTime = (currentTime - this.startTime) / 1000;
+            this.startTime = currentTime;
+
+            this.state.player2.aiPaddle.update(deltaTime);
+            this.state.player2.aiPaddle.trackBall(this.state.ball.m_positionX, this.state.ball.m_positionY, deltaTime);
+
+
+            // update input
+            this.processInput(deltaTime);
+
+            // update objects
+            this.state.ball.update(deltaTime, _sideHit => {
+                switch (_sideHit) {
+                    case "left":
+                        var newPlayer = { ...this.state.player2 };
+                        newPlayer.score++;
+                        this.setState({ player2: newPlayer });
+                        // console.log("Player 2 score: " + newPlayer.score);
+                        break;
+                    case "right":
+                        var newPlayer = { ...this.state.player1 };
+                        newPlayer.score++;
+                        this.setState({ player1: newPlayer });
+                        // console.log("Player 1 score: " + newPlayer.score);
+                        break;
+                    default:
+                        break;
+                };
             });
-        }
 
-        unPauseGame() {
-            console.log("game un-paused");
-            this.setState({
-                gamePaused: false
-            });
-        }
+            // check for collision
+            this.checkCollision();
 
-        toggleGamePause() {
-            this.setState({
-                gamePaused: !this.state.gamePaused
-            });
-        }
+            // check for player wins
+            this.checkForWins();
 
-        pauseGame2() {
-            return (
-                <div id="modal" className="text-center">
-                    <h1 id="pong-text">Paused</h1>
-                    <h4> Press  'U'  to resume</h4>
-                </div>
-            );
-        }
+            if (this.state.context) {
+                this.state.context.clearRect(0, 0, this.state.gameUIWidth, this.state.gameUIHeight);
 
-        startGame() {
-            return (
-                <div id="modal" className="text-center">
-                    <h1 id="pong-text">PONG!</h1>
-                    <h3 className="mb-3"> Press the SPACEBAR to play</h3>
-                    <h7> NOTE: You can pause the game at any moment by pressing the 'P' key</h7>
-                </div>
-            );
-        }
-
-
-        wonGameLogic() {
-            return (
-                <div id="modal" className="text-center">
-                    <h1 className="mb-4 glow2" id="pong-text"> {winner} won!</h1>
-                    <h5>Press SPACEBAR to play again</h5>
-                </div>
-            )
-        }
-
-        resetGame() {
-            var newState = { ...this.state };
-            newState.player1.score = 0;
-            newState.player1.paddle.placeAtOrigin();
-            newState.player2.score = 0;
-            // newState.player2.paddle.placeAtOrigin();
-            newState.player2.aiPaddle.placeAtOrigin();
-            newState.ball.placeAtOrigin();
-            newState.keys = { w: 0, s: 0, i: 0, k: 0 };
-            newState.gameStart = true;
-            this.setState(newState);
-        }
-
-        checkForWins() {
-            if (this.state.player1.score >= this.m_nScoreToWin) {
-                console.log("Player 1 Wins!!!");
-                this.setState({ m_bWon: true });
-                this.setState({ gameStart2: true });
-                winner = "Player One"
-                this.resetGame();
-            } else if (this.state.player2.score >= this.m_nScoreToWin) {
-                console.log("Player 2 Wins!!!");
-                this.setState({ m_bWon: true });
-                this.setState({ gameStart2: true });
-                winner = "Player Two"
-                this.resetGame();
-            }
-        }
-
-        update = () => {
-
-            if (!this.state.gamePaused && !this.state.gameStart && !this.state.m_bWon) {
-
-                // console.log("updating");
-
-                // find the time elapsed
-                var currentTime = new Date().getTime();
-                var deltaTime = (currentTime - this.startTime) / 1000;
-                this.startTime = currentTime;
-
-                this.state.player2.aiPaddle.update(deltaTime);
-                this.state.player2.aiPaddle.trackBall(this.state.ball.m_positionY, deltaTime);
-
-
-                // update input
-                this.processInput(deltaTime);
-
-                // update objects
-                this.state.ball.update(deltaTime, _sideHit => {
-                    switch (_sideHit) {
-                        case "left":
-                            var newPlayer = { ...this.state.player2 };
-                            newPlayer.score++;
-                            this.setState({ player2: newPlayer });
-                            // console.log("Player 2 score: " + newPlayer.score);
-                            break;
-                        case "right":
-                            var newPlayer = { ...this.state.player1 };
-                            newPlayer.score++;
-                            this.setState({ player1: newPlayer });
-                            // console.log("Player 1 score: " + newPlayer.score);
-                            break;
-                        default:
-                            break;
-                    };
-                });
-
-                // check for collision
-                this.checkCollision();
-
-                // check for player wins
-                this.checkForWins();
-
-                if (this.state.context) {
-                    this.state.context.clearRect(0, 0, this.state.gameUIWidth, this.state.gameUIHeight);
-
-                     // render the line in the middle
+                // render the line in the middle
                 this.state.context.beginPath();
                 var prevColor = this.state.context.strokeStyle;
                 this.state.context.strokeStyle = this.state.gameBorderColor;
-                this.state.context.moveTo(this.state.gameUIWidth/2, 0);
-                this.state.context.lineTo(this.state.gameUIWidth/2, this.state.gameUIHeight);
+                this.state.context.moveTo(this.state.gameUIWidth / 2, 0);
+                this.state.context.lineTo(this.state.gameUIWidth / 2, this.state.gameUIHeight);
                 this.state.context.stroke();
                 this.state.context.strokeStyle = prevColor;
-                    this.state.context.closePath();
-                    
-                    // render objects
-                    this.state.ball.render(this.state.context, this.refs.ballImg, this.state.gameUIWidth, this.state.gameUIHeight);
-                    this.state.player1.paddle.render(this.state.context, this.refs.image);
-                    this.state.player2.aiPaddle.render(this.state.context, this.refs.image);
-                    //   this.state.player2.paddle.render(this.state.context, this.refs.image, this.state.player1.posX, this.state.player1.posY);
+                this.state.context.closePath();
 
-                    //this.state.paddle.render(this.state.context, this.refs.image, this.state.player2.posX, this.state.player2.posY);
-                }
-            } else {
-                this.startTime = new Date().getTime();
+                // render objects
+                this.state.ball.render(this.state.context, this.refs.ballImg, this.state.gameUIWidth, this.state.gameUIHeight);
+                this.state.player1.paddle.render(this.state.context, this.refs.image);
+                this.state.player2.aiPaddle.render(this.state.context, this.refs.image);
+                //   this.state.player2.paddle.render(this.state.context, this.refs.image, this.state.player1.posX, this.state.player1.posY);
+
+                //this.state.paddle.render(this.state.context, this.refs.image, this.state.player2.posX, this.state.player2.posY);
             }
-            // Next frame
-            requestAnimationFrame(() => { this.update() });
-
+        } else {
+            this.startTime = new Date().getTime();
         }
+        // Next frame
+        requestAnimationFrame(() => { this.update() });
+
+    }
 
 
-        render() {
-            console.log("Height: " + this.props.windowHeight);
-            return (
-                <>
-                    <div className="text-center">
-                        <div className="row">
-                            <div className="col-md-1"></div>
+    render() {
+        console.log("Height: " + this.props.windowHeight);
+        return (
+            <>
+                <div className="text-center">
+                    <div className="row">
+                        <div className="col-md-1"></div>
 
 
-                            <div className="col-md-10">
-                                {/* Player Scores */}
-                                <div className="row player-text mt-3 mb-4">
-                                    <div className="col-md-6">
-                                        <h2>Player One: {this.state.player1.score}</h2>
-                                    </div>
-                                    <div className="col-md-6">
-                                        <h2>Player Two: {this.state.player2.score}</h2>
-                                    </div>
+                        <div className="col-md-10">
+                            {/* Player Scores */}
+                            <div className="row player-text mt-3 mb-4">
+                                <div className="col-md-6">
+                                    <h2>Player One: {this.state.player1.score}</h2>
                                 </div>
-
-                                {/* Game UI */}
-                                <div className="row">
-                                    <canvas
-                                        className="gameUI"
-                                        style={{
-                                            backgroundImage: "url(" + this.state.imageURL + ")",
-                                            backgroundSize: "cover",
-                                            backgroundPosition: "center"
-                                        }}
-                                        width={this.state.gameUIWidth}
-                                        height={this.state.gameUIHeight}
-                                        ref="canvas" >
-
-
-
-                                    </canvas>
-                                    {this.state.m_bWon ? this.wonGameLogic() : ""}
-                                    {this.state.gamePaused ? this.pauseGame2() : ""}
-                                    {!this.state.gameStart2 && !this.state.gameStart3 ? this.startGame() : ""}
+                                <div className="col-md-6">
+                                    <h2>Player Two: {this.state.player2.score}</h2>
                                 </div>
                             </div>
 
-                            <div className="col-md-1">
-                                <div>
-                                    <Link onClick={this.resetGame} to={"/"}><i id="home-icon" className="m-3 fas fa-home fa-2x"></i></Link>
-                                </div>
+                            {/* Game UI */}
+                            <div className="row">
+                                <canvas
+                                    className="gameUI"
+                                    style={{
+                                        border: `${this.state.gameBorderWidth} solid ${this.state.gameBorderColor}`,
+                                        backgroundImage: "url(" + this.state.imageURL + ")",
+                                        backgroundSize: "cover",
+                                        backgroundPosition: "center"
+                                    }}
+                                    width={this.state.gameUIWidth}
+                                    height={this.state.gameUIHeight}
+                                    ref="canvas" >
+
+
+
+                                </canvas>
+                                {this.state.m_bWon ? this.wonGameLogic() : ""}
+                                {this.state.gamePaused ? this.pauseGame2() : ""}
+                                {!this.state.gameStart2 && !this.state.gameStart3 ? this.startGame() : ""}
+                            </div>
+                        </div>
+
+                        <div className="col-md-1">
+                            <div>
+                                <Link onClick={this.resetGame} to={"/"}><i id="home-icon" className="m-3 fas fa-home fa-2x"></i></Link>
                             </div>
                         </div>
                     </div>
+                </div>
 
-                </>
-            );
-        }
+            </>
+        );
+    }
 
-    };
+};
 
-    export default windowSize(GameCom);
+export default windowSize(GameCom);
