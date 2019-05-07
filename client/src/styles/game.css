@@ -50,7 +50,7 @@ canvas {
     color: rgb(255, 255, 255);
     text-shadow: 2px 2px 3px rgb(255, 0, 242), 0 0 1em blue, 0 0 0.2em rgb(61, 241, 61);
     width: 100%;
-    margin-top: 250px;
+    margin-top: 15%;
 }
 
 .modal-header{

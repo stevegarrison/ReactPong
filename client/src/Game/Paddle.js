@@ -220,6 +220,10 @@ class Paddle  {
         }
 
     }
+    updateGameSize(_gameWidth, _gameHeight) { 
+        this.m_gameWidth = _gameWidth;
+        this.m_gameHeight = _gameHeight;
+    }
 
     closePaddle() {
         

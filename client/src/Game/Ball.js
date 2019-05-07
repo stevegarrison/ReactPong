@@ -58,6 +58,11 @@ class Ball {
         }
     }
 
+    updateGameSize(_gameWidth, _gameHeight) { 
+        this.m_gameWidth = _gameWidth;
+        this.m_gameHeight = _gameHeight;
+    }
+
     decelerateVelY(_dt) { 
         if (this.m_currentVelY < 0) {
            
