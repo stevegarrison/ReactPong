@@ -120,6 +120,9 @@ class Paddle  {
         _context.fillStyle = this.m_paddleColor;
         _context.fillRect(this.m_positionX, this.m_positionY, this.m_width, this.m_height);
 
+        _context.fillStyle = "black";
+        _context.strokeRect(this.m_positionX, this.m_positionY, this.m_width, this.m_height);
+
         if (this.collision) { 
             console.log(this.collisionRect);
             _context.fillStyle = "red";
@@ -137,6 +140,7 @@ class Paddle  {
             && this.m_positionY + this.m_height > _ball.m_positionY // paddles botton >= balls top
             && this.m_positionX < _ball.m_positionX + _ball.m_width) { // paddles left <= balls right
 
+            _ball.addVelY(150);
            
             // left
             if (_ball.m_positionX > this.m_positionX
