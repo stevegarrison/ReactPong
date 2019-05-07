@@ -106,7 +106,7 @@ class GameCom extends Component {
             if (this.props.multiPlayer) {
                 this.state.player2.paddle = new Paddle(this.state.gameUIWidth, this.state.gameUIHeight, this.state.player2Color, this.state.player2Size);
                 this.state.player2.paddle.setPositionX(this.state.gameUIWidth - 100);
-        }
+            }
             else { // else its in 1 player mode
                 this.state.player2.aiPaddle = new AIPaddle(this.state.gameUIWidth, this.state.gameUIHeight, this.state.player2Color, this.state.player2Size);
                 this.state.player2.aiPaddle.setPositionX(this.state.gameUIWidth - 100);
@@ -126,7 +126,7 @@ class GameCom extends Component {
         });
     }
 
-    
+
 
     handleResize = (_event) => {
 
@@ -146,7 +146,7 @@ class GameCom extends Component {
         if (this.props.multiPlayer) {
             this.state.player2.paddle.setPositionX(this.state.gameUIWidth - 100);
             this.state.player2.paddle.updateGameSize(this.state.gameUIWidth, this.state.gameUIHeight);
-      
+
         }
         else { // AI
             this.state.player2.aiPaddle.setPositionX(this.state.gameUIWidth - 100);
@@ -211,7 +211,7 @@ class GameCom extends Component {
 
         // check the second player or the AIs collision against the ball
         if (this.props.multiPlayer) {
-               this.state.player2.paddle.checkForCollision(this.state.ball);
+            this.state.player2.paddle.checkForCollision(this.state.ball);
         }
         else { // AI
             this.state.player2.aiPaddle.checkForCollision(this.state.ball);
@@ -268,9 +268,9 @@ class GameCom extends Component {
         console.log("here");
         this.state.player1.paddle.clearMovingFlags();
         if (this.props.multiPlayer)
-        this.state.player2.paddle.clearMovingFlags();
-            else
-        this.state.player2.aiPaddle.clearMovingFlags();
+            this.state.player2.paddle.clearMovingFlags();
+        else
+            this.state.player2.aiPaddle.clearMovingFlags();
         switch (_event.key) {
             case 'w':
                 this.setKey('w', 0);
@@ -304,13 +304,13 @@ class GameCom extends Component {
         if (this.state.keys.i === 1) {
 
             // this.state.player1.paddle.movePaddle("right", _deltaTime);
-            if(this.props.multiPlayer)
-                 this.state.player2.paddle.movePaddle("up", _deltaTime);
+            if (this.props.multiPlayer)
+                this.state.player2.paddle.movePaddle("up", _deltaTime);
         }
         if (this.state.keys.k === 1) {
 
             // this.state.player1.paddle.movePaddle("left", _deltaTime);
-            if(this.props.multiPlayer)
+            if (this.props.multiPlayer)
                 this.state.player2.paddle.movePaddle("down", _deltaTime);
         }
 
@@ -383,7 +383,7 @@ class GameCom extends Component {
         if (this.props.multiPlayer) {
             newState.player2.paddle.placeAtOrigin();
         }
-        else { 
+        else {
             newState.player2.aiPaddle.placeAtOrigin();
         }
 
@@ -423,12 +423,12 @@ class GameCom extends Component {
             if (this.props.multiPlayer) {
 
             }
-            else { 
+            else {
                 this.state.player2.aiPaddle.update(deltaTime);
                 this.state.player2.aiPaddle.trackBall(this.state.ball.m_positionX, this.state.ball.m_positionY, deltaTime);
-    
+
             }
-         
+
 
             // update input
             this.processInput(deltaTime);
@@ -476,7 +476,7 @@ class GameCom extends Component {
                 this.state.ball.render(this.state.context, this.refs.ballImg, this.state.gameUIWidth, this.state.gameUIHeight);
                 this.state.player1.paddle.render(this.state.context, this.refs.image);
 
-                if(this.props.multiPlayer)
+                if (this.props.multiPlayer)
                     this.state.player2.paddle.render(this.state.context, this.refs.image);
                 else
                     this.state.player2.aiPaddle.render(this.state.context, this.refs.image);
@@ -494,7 +494,6 @@ class GameCom extends Component {
 
 
     render() {
-        console.log("Height: " + this.props.windowHeight);
         return (
             <>
                 <div className="text-center">
@@ -505,49 +504,54 @@ class GameCom extends Component {
                         <div className="col-md-10">
                             {/* Player Scores */}
                             <div className="row player-text mt-3 mb-4">
-                                <div className="col-md-6">
-                                    <h2>Player One: {this.state.player1.score}</h2>
-                                </div>
-                                <div className="col-md-6">
-                                    <h2>Player Two: {this.state.player2.score}</h2>
-                                </div>
+                                {this.m_nScoreToWin === 1 ? 
+                                    <div className="col-md-12">
+                                        <h2 className="suddenDeath">Sudden Death!</h2>
+                                    </div> : <>
+                                    <div className="col-md-6">
+                                        <h2>Player One: {this.state.player1.score}</h2>
+                                    </div>
+                                    <div className="col-md-6">
+                                        <h2>Player Two: {this.state.player2.score}</h2>
+                                </div></> }
+
                             </div>
 
                             {/* Game UI */}
                             <div className="row">
                                 <canvas
                                     className="gameUI"
-                                    style={{
-                                        border: `${this.state.gameBorderWidth} solid ${this.state.gameBorderColor}`,
-                                        backgroundImage: "url(" + this.state.imageURL + ")",
-                                        backgroundSize: "cover",
-                                        backgroundPosition: "center"
-                                    }}
-                                    width={this.state.gameUIWidth}
-                                    height={this.state.gameUIHeight}
-                                    ref="canvas" >
+                                        style={{
+                                            border: `${this.state.gameBorderWidth} solid ${this.state.gameBorderColor}`,
+                                            backgroundImage: "url(" + this.state.imageURL + ")",
+                                            backgroundSize: "cover",
+                                            backgroundPosition: "center"
+                                        }}
+                                        width={this.state.gameUIWidth}
+                                        height={this.state.gameUIHeight}
+                                        ref="canvas" >
 
 
 
-                                </canvas>
-                                {this.state.m_bWon ? this.wonGameLogic() : ""}
-                                {this.state.gamePaused ? this.pauseGame2() : ""}
-                                {!this.state.gameStart2 && !this.state.gameStart3 ? this.startGame() : ""}
+                                    </canvas>
+                                    {this.state.m_bWon ? this.wonGameLogic() : ""}
+                                    {this.state.gamePaused ? this.pauseGame2() : ""}
+                                    {!this.state.gameStart2 && !this.state.gameStart3 ? this.startGame() : ""}
+                                </div>
                             </div>
-                        </div>
 
-                        <div className="col-md-1">
-                            <div>
-                                <Link onClick={this.resetGame} to={"/"}><i id="home-icon" className="m-3 fas fa-home fa-2x"></i></Link>
+                            <div className="col-md-1">
+                                <div>
+                                    <Link onClick={this.resetGame} to={"/"}><i id="home-icon" className="m-3 fas fa-home fa-2x"></i></Link>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
             </>
-        );
-    }
-
-};
-
+                );
+            }
+        
+        };
+        
 export default windowSize(GameCom);

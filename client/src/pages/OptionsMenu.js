@@ -119,7 +119,7 @@ class Options extends Component {
                     <div className="col-md-8">
                       <div className='slider'>
                         <Slider
-                          min={3}
+                          min={1}
                           max={15}
                           value={value}
                           onChange={this.handleScoreChange}
@@ -127,7 +127,7 @@ class Options extends Component {
                       </div>
                     </div>
                     <div className="col-md-4">
-                      <div className="value">{value}</div>
+                      <div className="value">{value === 1 ? <p id="suddenDeath">SUDDEN DEATH!</p> : value}</div>
                     </div>
                   </div>
                 </div>
@@ -145,14 +145,14 @@ class Options extends Component {
                       <p className="options-text1">Color: </p>
                     </div>
                     <div className="col-md-8">
-                      <button className={`player1-color1 m-1 ${"red" === this.state.player1Color ? "active" : ""}`} data-color="red" onClick={this.handlePlayerOneColor}></button>
-                      <button className={`player1-color2 m-1 ${"blue" === this.state.player1Color ? "active" : ""}`} data-color="blue" onClick={this.handlePlayerOneColor}></button>
-                      <button className={`player1-color3 m-1 ${"lime" === this.state.player1Color ? "active" : ""}`} data-color="lime" onClick={this.handlePlayerOneColor}></button>
-                      <button className={`player1-color4 m-1 ${"yellow" === this.state.player1Color ? "active" : ""}`} data-color="yellow" onClick={this.handlePlayerOneColor}></button>
-                      <button className={`player1-color5 m-1 ${"#FF3399" === this.state.player1Color ? "active" : ""}`} data-color="#FF3399" onClick={this.handlePlayerOneColor}></button>
-                      <button className={`player1-color6 m-1 ${"purple" === this.state.player1Color ? "active" : ""}`} data-color="purple" onClick={this.handlePlayerOneColor}></button>
-                      <button className={`player1-color7 m-1 ${"orange" === this.state.player1Color ? "active" : ""}`} data-color="orange" onClick={this.handlePlayerOneColor}></button>
-                      <button className={`player1-color8 m-1 ${"mediumspringgreen" === this.state.player1Color ? "active" : ""}`} data-color="mediumspringgreen" onClick={this.handlePlayerOneColor}></button>
+                      <button id="color-btn" className={`player1-color1 m-1 ${"red" === this.state.player1Color ? "active" : ""}`} data-color="red" onClick={this.handlePlayerOneColor}></button>
+                      <button id="color-btn" className={`player1-color2 m-1 ${"blue" === this.state.player1Color ? "active" : ""}`} data-color="blue" onClick={this.handlePlayerOneColor}></button>
+                      <button id="color-btn" className={`player1-color3 m-1 ${"lime" === this.state.player1Color ? "active" : ""}`} data-color="lime" onClick={this.handlePlayerOneColor}></button>
+                      <button id="color-btn" className={`player1-color4 m-1 ${"yellow" === this.state.player1Color ? "active" : ""}`} data-color="yellow" onClick={this.handlePlayerOneColor}></button>
+                      <button id="color-btn" className={`player1-color5 m-1 ${"#FF3399" === this.state.player1Color ? "active" : ""}`} data-color="#FF3399" onClick={this.handlePlayerOneColor}></button>
+                      <button id="color-btn" className={`player1-color6 m-1 ${"purple" === this.state.player1Color ? "active" : ""}`} data-color="purple" onClick={this.handlePlayerOneColor}></button>
+                      <button id="color-btn" className={`player1-color7 m-1 ${"orange" === this.state.player1Color ? "active" : ""}`} data-color="orange" onClick={this.handlePlayerOneColor}></button>
+                      <button id="color-btn" className={`player1-color8 m-1 ${"mediumspringgreen" === this.state.player1Color ? "active" : ""}`} data-color="mediumspringgreen" onClick={this.handlePlayerOneColor}></button>
                     </div>
                   </div>
 
@@ -181,14 +181,14 @@ class Options extends Component {
                       <p className="options-text1 mt-4">Color: </p>
                     </div>
                     <div className="col-md-8 mt-4">
-                      <button className={`player2-color1 m-1 ${"red" === this.state.player2Color ? "active" : ""}`} data-color="red" onClick={this.handlePlayerTwoColor}></button>
-                      <button className={`player2-color2 m-1 ${"blue" === this.state.player2Color ? "active" : ""}`} data-color="blue" onClick={this.handlePlayerTwoColor}></button>
-                      <button className={`player2-color3 m-1 ${"lime" === this.state.player2Color ? "active" : ""}`} data-color="lime" onClick={this.handlePlayerTwoColor}></button>
-                      <button className={`player2-color4 m-1 ${"yellow" === this.state.player2Color ? "active" : ""}`} data-color="yellow" onClick={this.handlePlayerTwoColor}></button>
-                      <button className={`player2-color5 m-1 ${"#FF3399" === this.state.player2Color ? "active" : ""}`} data-color="#FF3399" onClick={this.handlePlayerTwoColor}></button>
-                      <button className={`player2-color6 m-1 ${"purple" === this.state.player2Color ? "active" : ""}`} data-color="purple" onClick={this.handlePlayerTwoColor}></button>
-                      <button className={`player2-color7 m-1 ${"orange" === this.state.player2Color ? "active" : ""}`} data-color="orange" onClick={this.handlePlayerTwoColor}></button>
-                      <button className={`player2-color8 m-1 ${"mediumspringgreen" === this.state.player2Color ? "active" : ""}`} data-color="mediumspringgreen" onClick={this.handlePlayerTwoColor}></button>
+                      <button id="color-btn" className={`player2-color1 m-1 ${"red" === this.state.player2Color ? "active" : ""}`} data-color="red" onClick={this.handlePlayerTwoColor}></button>
+                      <button id="color-btn" className={`player2-color2 m-1 ${"blue" === this.state.player2Color ? "active" : ""}`} data-color="blue" onClick={this.handlePlayerTwoColor}></button>
+                      <button id="color-btn" className={`player2-color3 m-1 ${"lime" === this.state.player2Color ? "active" : ""}`} data-color="lime" onClick={this.handlePlayerTwoColor}></button>
+                      <button id="color-btn" className={`player2-color4 m-1 ${"yellow" === this.state.player2Color ? "active" : ""}`} data-color="yellow" onClick={this.handlePlayerTwoColor}></button>
+                      <button id="color-btn" className={`player2-color5 m-1 ${"#FF3399" === this.state.player2Color ? "active" : ""}`} data-color="#FF3399" onClick={this.handlePlayerTwoColor}></button>
+                      <button id="color-btn" className={`player2-color6 m-1 ${"purple" === this.state.player2Color ? "active" : ""}`} data-color="purple" onClick={this.handlePlayerTwoColor}></button>
+                      <button id="color-btn" className={`player2-color7 m-1 ${"orange" === this.state.player2Color ? "active" : ""}`} data-color="orange" onClick={this.handlePlayerTwoColor}></button>
+                      <button id="color-btn" className={`player2-color8 m-1 ${"mediumspringgreen" === this.state.player2Color ? "active" : ""}`} data-color="mediumspringgreen" onClick={this.handlePlayerTwoColor}></button>
                     </div>
                   </div>
 
@@ -217,14 +217,14 @@ class Options extends Component {
                       <p className="options-text1 mt-3">Color: </p>
                     </div>
                     <div className="col-md-8 mt-3">
-                      <button className={`ball-color1 m-1 ${"red" === this.state.ballColor ? "active" : ""}`} data-color="red" onClick={this.handleBallColor}></button>
-                      <button className={`ball-color2 m-1 ${"blue" === this.state.ballColor ? "active" : ""}`} data-color="blue" onClick={this.handleBallColor}></button>
-                      <button className={`ball-color3 m-1 ${"lime" === this.state.ballColor ? "active" : ""}`} data-color="lime" onClick={this.handleBallColor}></button>
-                      <button className={`ball-color4 m-1 ${"yellow" === this.state.ballColor ? "active" : ""}`} data-color="yellow" onClick={this.handleBallColor}></button>
-                      <button className={`ball-color5 m-1 ${"#FF3399" === this.state.ballColor ? "active" : ""}`} data-color="#FF3399" onClick={this.handleBallColor}></button>
-                      <button className={`ball-color6 m-1 ${"purple" === this.state.ballColor ? "active" : ""}`} data-color="purple" onClick={this.handleBallColor}></button>
-                      <button className={`ball-color7 m-1 ${"orange" === this.state.ballColor ? "active" : ""}`} data-color="orange" onClick={this.handleBallColor}></button>
-                      <button className={`ball-color8 m-1 ${"mediumspringgreen" === this.state.ballColor ? "active" : ""}`} data-color="mediumspringgreen" onClick={this.handleBallColor}></button>
+                      <button id="color-btn" className={`ball-color1 m-1 ${"red" === this.state.ballColor ? "active" : ""}`} data-color="red" onClick={this.handleBallColor}></button>
+                      <button id="color-btn" className={`ball-color2 m-1 ${"blue" === this.state.ballColor ? "active" : ""}`} data-color="blue" onClick={this.handleBallColor}></button>
+                      <button id="color-btn" className={`ball-color3 m-1 ${"lime" === this.state.ballColor ? "active" : ""}`} data-color="lime" onClick={this.handleBallColor}></button>
+                      <button id="color-btn" className={`ball-color4 m-1 ${"yellow" === this.state.ballColor ? "active" : ""}`} data-color="yellow" onClick={this.handleBallColor}></button>
+                      <button id="color-btn" className={`ball-color5 m-1 ${"#FF3399" === this.state.ballColor ? "active" : ""}`} data-color="#FF3399" onClick={this.handleBallColor}></button>
+                      <button id="color-btn" className={`ball-color6 m-1 ${"purple" === this.state.ballColor ? "active" : ""}`} data-color="purple" onClick={this.handleBallColor}></button>
+                      <button id="color-btn" className={`ball-color7 m-1 ${"orange" === this.state.ballColor ? "active" : ""}`} data-color="orange" onClick={this.handleBallColor}></button>
+                      <button id="color-btn" className={`ball-color8 m-1 ${"mediumspringgreen" === this.state.ballColor ? "active" : ""}`} data-color="mediumspringgreen" onClick={this.handleBallColor}></button>
                     </div>
                   </div>
                 </div>
