@@ -169,7 +169,7 @@ class GameCom extends Component {
             }
         }
 
-            //console.log(_event);
+            // console.log(_event);
             switch (_event.key) {
                 case 'w':
                     this.setKey('w', 1);
@@ -199,10 +199,12 @@ class GameCom extends Component {
 
     handleKeyUp = _event => {
 
+        console.log("here");
         this.state.player1.paddle.clearMovingFlags();
+        this.state.player2.aiPaddle.clearMovingFlags();
         switch (_event.key) {
             case 'w':
-                this.setKey('w', 0);
+        this.setKey('w', 0);
                 break;
             case 's':
                 this.setKey('s', 0);
@@ -218,32 +220,7 @@ class GameCom extends Component {
         };
     }
 
-    processInput(_deltaTime) {
-
-        if (this.state.keys.w === 1) {
-
-            this.state.player1.paddle.movePaddle("up", _deltaTime);
-        }
-    }
-
-        handleKeyUp = _event => {
-            switch (_event.key) {
-                case 'w':
-                    this.setKey('w', 0);
-                    break;
-                case 's':
-                    this.setKey('s', 0);
-                    break;
-                case 'a':
-                    this.setKey('i', 0);
-                    break;
-                case 'd':
-                    this.setKey('k', 0);
-                    break;
-                default:
-                    break;
-            };
-        }
+        
 
         processInput(_deltaTime) {
 
@@ -270,6 +247,7 @@ class GameCom extends Component {
         }
 
         componentWillUnmount() {
+            document.removeEventListener("keyup", this.handleKeyUp, false);
             document.removeEventListener("keydown", this.handleInput, false);
 
         }
@@ -399,6 +377,16 @@ class GameCom extends Component {
                 if (this.state.context) {
                     this.state.context.clearRect(0, 0, this.state.gameUIWidth, this.state.gameUIHeight);
 
+                     // render the line in the middle
+                this.state.context.beginPath();
+                var prevColor = this.state.context.strokeStyle;
+                this.state.context.strokeStyle = this.state.gameBorderColor;
+                this.state.context.moveTo(this.state.gameUIWidth/2, 0);
+                this.state.context.lineTo(this.state.gameUIWidth/2, this.state.gameUIHeight);
+                this.state.context.stroke();
+                this.state.context.strokeStyle = prevColor;
+                    this.state.context.closePath();
+                    
                     // render objects
                     this.state.ball.render(this.state.context, this.refs.ballImg, this.state.gameUIWidth, this.state.gameUIHeight);
                     this.state.player1.paddle.render(this.state.context, this.refs.image);

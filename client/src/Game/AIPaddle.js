@@ -32,11 +32,11 @@ class AIPaddle extends Paddle {
 
         if (_dt >= 0.1)
             _dt = 0.16;
-        if (_targetPosY < this.m_positionY) { // moving up
+        if (_targetPosY < this.m_positionY + this.m_height/2) { // moving up
             this.m_bIsMovingUp = true;
             this.m_positionY = this.m_positionY - (this.m_velocityY * _dt);
         }
-        else if (_targetPosY > this.m_positionY) { // moving down
+        else if (_targetPosY > this.m_positionY - this.m_height/2) { // moving down
             this.m_bIsMovingDown = true;
             this.m_positionY = this.m_positionY + (this.m_velocityY * _dt);            
         }

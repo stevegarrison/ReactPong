@@ -16,9 +16,9 @@ class Ball {
     m_positionX = 400.0;
     m_positionY = 500.0;
     m_velX = 750.0;
-    m_minVelY = 350.0;
+    m_minVelY = 100.0;
     m_maxVelY = 950.0;
-    m_currentVelY = 650.0;
+    m_currentVelY = 350.0;
 
     m_width = 25;
     m_height = 25;
@@ -27,7 +27,7 @@ class Ball {
     m_originX = 0.0;
     m_originY = 0.0;
     m_ballColor = "red";
-    m_friction = 110.0;
+    m_friction = 100.0;
 
     constructor(_gameWidth, _gameHeight, _ballColor) { 
         this.m_gameWidth = _gameWidth;
@@ -42,15 +42,19 @@ class Ball {
         this.m_positionY = this.m_gameHeight / 2;
     }
 
-    addVelY(_amt) { 
+    addVelY() { 
+        var amtToAdd = 350;
         if (this.m_currentVelY < 0) {
 
             if (this.m_currentVelY >= -this.m_maxVelY)
-                this.m_currentVelY -= _amt;
+                this.m_currentVelY -= amtToAdd;
+        }
+        else if (this.m_currentVelY > 0) {
+            if (this.m_currentVelY <= this.m_maxVelY)
+                this.m_currentVelY += amtToAdd;
         }
         else { 
-            if (this.m_currentVelY <= this.m_maxVelY)
-            this.m_currentVelY += _amt;
+            this.m_currentVelY += amtToAdd;            
         }
     }
 
