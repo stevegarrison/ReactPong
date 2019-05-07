@@ -10,6 +10,7 @@ module.exports = {
     let newPlayer2Size = _settings.player2Size;
     let newBallColor = _settings.ballColor;
     let newImageURL = _settings.imageURL;
+    let newValue = _settings.value
 
     db.options
       .findOneAndUpdate({}, {
@@ -18,7 +19,8 @@ module.exports = {
         player2Color: newPlayer2Color,
         player2Size: newPlayer2Size,
         ballColor: newBallColor,
-        imageURL: newImageURL
+        imageURL: newImageURL,
+        value: newValue
       })
       .then(dbModel => { console.log("The model" + dbModel); _callback(dbModel) })
       .catch(err => console.log(err));

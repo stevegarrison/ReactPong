@@ -3,6 +3,7 @@ import "../styles/optionsMenu.css";
 import API from "../utils/API";
 import { Link } from "react-router-dom";
 import { Input, TextArea, FormBtn } from "../components/Input";
+import Slider from 'react-rangeslider';
 
 let imageURL = "";
 let player1Color = "";
@@ -10,7 +11,7 @@ let player1Size = "";
 let player2Color = "";
 let player2Size = "";
 let ballColor = "";
-
+let value1 = 0;
 
 class Options extends Component {
 
@@ -20,8 +21,19 @@ class Options extends Component {
     ballColor: "",
     imageURL: "",
     player1Size: 0,
-    player2Size: 0
+    player2Size: 0,
+    value: 5
   };
+
+  handleScoreChange = value => {
+    value1 = value;
+    console.log(value1);
+    // value = event.target.getAttribute("value");
+    this.setState({
+      value: value1
+    })
+  };
+
 
   handleSave = event => {
     // Save Options to DB
@@ -31,7 +43,8 @@ class Options extends Component {
       player2Color: this.state.player2Color,
       player2Size: this.state.player2Size,
       ballColor: this.state.ballColor,
-      imageURL: this.state.imageURL
+      imageURL: this.state.imageURL,
+      value: this.state.value
     })
 
   };
@@ -83,6 +96,9 @@ class Options extends Component {
   }
 
   render() {
+
+    const { value } = this.state
+
     return (
       <>
         <div className="text-center text-light container">
@@ -93,8 +109,32 @@ class Options extends Component {
               <p className="mt-2">(Default style set to white on black)</p>
               <hr></hr>
 
+              {/* Set score limit */}
+              <div className="row mb-4">
+                <div className="col-md-4" id="flex">
+                  <h1 className="options-text">Score Limit</h1>
+                </div>
+                <div className="col-md-8">
+                  <div className="row">
+                    <div className="col-md-8">
+                      <div className='slider'>
+                        <Slider
+                          min={3}
+                          max={15}
+                          value={value}
+                          onChange={this.handleScoreChange}
+                        />
+                      </div>
+                    </div>
+                    <div className="col-md-4">
+                      <div className="value">{value}</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <hr></hr>
 
-              {/* Options */}
+              {/* Player one Options */}
               <div className="row mb-4">
                 <div className="col-md-4" id="flex">
                   <h1 className="options-text">Player One</h1>
@@ -219,18 +259,19 @@ class Options extends Component {
                       <p className="options-text1 mt-3">(OR choose a preset) </p>
                     </div>
                     <div className="col-md-8">
-                        <button className={`btn player-background m-1 ${"./images/space.jpg" === this.state.imageURL ? "active2" : ""}`} data-image="./images/space.jpg" onClick={this.handleImageURL}>Space</button>
-                        <button className={`btn player-background m-1 ${"./images/jungle.jpg" === this.state.imageURL ? "active2" : ""}`} data-image="./images/jungle.jpg" onClick={this.handleImageURL}>Jungle</button>
-                        <button className={`btn player-background m-1 ${"./images/clouds.jpg" === this.state.imageURL ? "active2" : ""}`} data-image="./images/clouds.jpg" onClick={this.handleImageURL}>Clouds</button>
-                        <button className={`btn player-background m-1 ${"./images/ocean.jpg" === this.state.imageURL ? "active2" : ""}`} data-image="./images/ocean.jpg" onClick={this.handleImageURL}>Ocean</button>
-                        <button className={`btn player-background m-1 ${"./images/beach.jpg" === this.state.imageURL ? "active2" : ""}`} data-image="./images/beach.jpg" onClick={this.handleImageURL}>Beach</button>
-                        <button className={`btn player-background m-1 ${"./images/winter.jpg" === this.state.imageURL ? "active2" : ""}`} data-image="./images/winter.jpg" onClick={this.handleImageURL}>Winter</button>
-                        <button className={`btn player-background m-1 ${"./images/lava.jpg" === this.state.imageURL ? "active2" : ""}`} data-image="./images/lava.jpg" onClick={this.handleImageURL}>Lava</button>
-                        <button className={`btn player-background m-1 ${"./images/snow.jpg" === this.state.imageURL ? "active2" : ""}`} data-image="./images/snow.jpg" onClick={this.handleImageURL}>Snow</button>
+                      <button className={`btn player-background m-1 ${"./images/space.jpg" === this.state.imageURL ? "active2" : ""}`} data-image="./images/space.jpg" onClick={this.handleImageURL}>Space</button>
+                      <button className={`btn player-background m-1 ${"./images/jungle.jpg" === this.state.imageURL ? "active2" : ""}`} data-image="./images/jungle.jpg" onClick={this.handleImageURL}>Jungle</button>
+                      <button className={`btn player-background m-1 ${"./images/clouds.jpg" === this.state.imageURL ? "active2" : ""}`} data-image="./images/clouds.jpg" onClick={this.handleImageURL}>Clouds</button>
+                      <button className={`btn player-background m-1 ${"./images/ocean.jpg" === this.state.imageURL ? "active2" : ""}`} data-image="./images/ocean.jpg" onClick={this.handleImageURL}>Ocean</button>
+                      <button className={`btn player-background m-1 ${"./images/beach.jpg" === this.state.imageURL ? "active2" : ""}`} data-image="./images/beach.jpg" onClick={this.handleImageURL}>Beach</button>
+                      <button className={`btn player-background m-1 ${"./images/winter.jpg" === this.state.imageURL ? "active2" : ""}`} data-image="./images/winter.jpg" onClick={this.handleImageURL}>Winter</button>
+                      <button className={`btn player-background m-1 ${"./images/lava.jpg" === this.state.imageURL ? "active2" : ""}`} data-image="./images/lava.jpg" onClick={this.handleImageURL}>Lava</button>
+                      <button className={`btn player-background m-1 ${"./images/snow.jpg" === this.state.imageURL ? "active2" : ""}`} data-image="./images/snow.jpg" onClick={this.handleImageURL}>Snow</button>
                     </div>
                   </div>
                 </div>
               </div>
+              <hr></hr>
               {/* Save Button */}
               <Link to={"/"}><button className="save-btn mt-4 mb-4" onClick={this.handleSave}>Save</button></Link>
             </div>

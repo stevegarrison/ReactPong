@@ -22,7 +22,7 @@ let height = 0;
 class GameCom extends Component {
 
     startTime = 0.0;
-    m_nScoreToWin = 20;
+    m_nScoreToWin = 0;
 
     audio = {
         file: "",
@@ -176,6 +176,7 @@ class GameCom extends Component {
                     ballColor: res.data[0].ballColor,
                     imageURL: res.data[0].imageURL
                 });
+                this.m_nScoreToWin = res.data[0].value;
                 console.log("bc: " + this.state.ballColor);
                 console.log(this.state);
                 _callback();
