@@ -15,7 +15,7 @@ background-size: cover;
 }
 
 canvas {
-    box-shadow: 1px 1px 2px rgb(255, 255, 255), 0 0 1em rgb(238, 255, 0), 0 0 0.2em rgb(241, 61, 241);
+    box-shadow: 1px 1px 2px rgb(195, 0, 255), 0 0 1em rgb(195, 0, 255), 0 0 0.2em rgb(241, 61, 241);
 }
 
 .player-text{
@@ -28,10 +28,6 @@ canvas {
 
 .gameUI{
     background: rgb(0, 0, 0);
-    /* height: 80vh;
-    width: 100%; */
-    /* height: 700px;
-    width: 1400px; */
 }
 
 
@@ -64,3 +60,130 @@ text-align: center;
     font-size: 75px;
     font-family: 'Wendy One', sans-serif;
 }
+
+.glow {
+        animation: move linear 2000ms infinite;  
+      }
+      
+      @keyframes move {
+        0% {
+          text-shadow:
+            10px -10px 0 rgba(255, 0, 0, 1), 
+            9px -9px 0 rgba(255, 0, 0, 1), 
+            8px -8px 0 rgba(255, 0, 0, 1), 
+            7px -7px 0 rgba(255, 0, 0, 1), 
+            6px -6px 0 rgba(255, 0, 0, 1), 
+            5px -5px 0 rgba(255, 0, 0, 1), 
+            4px -4px 0 rgba(255, 0, 0, 1),
+            3px -3px 0 rgba(255, 0, 0, 1),
+            2px -2px 0 rgba(255, 0, 0, 1),
+            1px -1px 0 rgba(255, 0, 0, 1),
+            -10px 10px 0 rgba(25, 0, 255, 1),
+            -9px 9px 0 rgba(25, 0, 255, 1), 
+            -8px 8px 0 rgba(25, 0, 255, 1), 
+            -7px 7px 0 rgba(25, 0, 255, 1),
+            -6px 6px 0 rgba(25, 0, 255, 1), 
+            -5px 5px 0 rgba(25, 0, 255, 1),
+            -4px 4px 0 rgba(25, 0, 255, 1),
+            -3px 3px 0 rgba(25, 0, 255, 1),
+            -2px 2px 0 rgba(25, 0, 255, 1),
+            -1px 1px 0 rgba(25, 0, 255, 1)
+          ;
+        }
+        25% {    
+          text-shadow:      
+          -10px -10px 0 rgba(25, 0, 255, 1),
+          -9px -9px 0 rgba(25, 0, 255, 1), 
+          -8px -8px 0 rgba(25, 0, 255, 1), 
+          -7px -7px 0 rgba(25, 0, 255, 1),
+          -6px -6px 0 rgba(25, 0, 255, 1), 
+          -5px -5px 0 rgba(25, 0, 255, 1),
+          -4px -4px 0 rgba(25, 0, 255, 1),
+          -3px -3px 0 rgba(25, 0, 255, 1),
+          -2px -2px 0 rgba(25, 0, 255, 1),
+          -1px -1px 0 rgba(25, 0, 255, 1),
+          10px 10px 0 rgba(255, 0, 0, 1), 
+          9px 9px 0 rgba(255, 0, 0, 1), 
+          8px 8px 0 rgba(255, 0, 0, 1), 
+          7px 7px 0 rgba(255, 0, 0, 1), 
+          6px 6px 0 rgba(255, 0, 0, 1), 
+          5px 5px 0 rgba(255, 0, 0, 1), 
+          4px 4px 0 rgba(255, 0, 0, 1),
+          3px 3px 0 rgba(255, 0, 0, 1),
+          2px 2px 0 rgba(255, 0, 0, 1),
+          1px 1px 0 rgba(255, 0, 0, 1)  
+          ;
+        }
+        50% {
+          text-shadow:
+          -10px 10px 0 rgba(255, 0, 0, 1), 
+          -9px 9px 0 rgba(255, 0, 0, 1), 
+          -8px 8px 0 rgba(255, 0, 0, 1), 
+          -7px 7px 0 rgba(255, 0, 0, 1), 
+          -6px 6px 0 rgba(255, 0, 0, 1), 
+          -5px 5px 0 rgba(255, 0, 0, 1), 
+          -4px 4px 0 rgba(255, 0, 0, 1),
+          -3px 3px 0 rgba(255, 0, 0, 1),
+          -2px 2px 0 rgba(255, 0, 0, 1),
+          -1px 1px 0 rgba(255, 0, 0, 1),
+          10px -10px 0 rgba(25, 0, 255, 1),
+          9px -9px 0 rgba(25, 0, 255, 1), 
+          8px -8px 0 rgba(25, 0, 255, 1), 
+          7px -7px 0 rgba(25, 0, 255, 1),
+          6px -6px 0 rgba(25, 0, 255, 1), 
+          5px -5px 0 rgba(25, 0, 255, 1),
+          4px -4px 0 rgba(25, 0, 255, 1),
+          3px -3px 0 rgba(25, 0, 255, 1),
+          2px -2px 0 rgba(25, 0, 255, 1),
+          1px -1px 0 rgba(25, 0, 255, 1)
+          ;
+        }
+        75% {
+          text-shadow:
+          10px 10px 0 rgba(25, 0, 255, 1),
+          9px 9px 0 rgba(25, 0, 255, 1), 
+          8px 8px 0 rgba(25, 0, 255, 1), 
+          7px 7px 0 rgba(25, 0, 255, 1),
+          6px 6px 0 rgba(25, 0, 255, 1), 
+          5px 5px 0 rgba(25, 0, 255, 1),
+          4px 4px 0 rgba(25, 0, 255, 1),
+          3px 3px 0 rgba(25, 0, 255, 1),
+          2px 2px 0 rgba(25, 0, 255, 1),
+          1px 1px 0 rgba(25, 0, 255, 1),
+          -10px -10px 0 rgba(255, 0, 0, 1), 
+          -9px -9px 0 rgba(255, 0, 0, 1), 
+          -8px -8px 0 rgba(255, 0, 0, 1), 
+          -7px -7px 0 rgba(255, 0, 0, 1), 
+          -6px -6px 0 rgba(255, 0, 0, 1), 
+          -5px -5px 0 rgba(255, 0, 0, 1), 
+          -4px -4px 0 rgba(255, 0, 0, 1),
+          -3px -3px 0 rgba(255, 0, 0, 1),
+          -2px -2px 0 rgba(255, 0, 0, 1),
+          -1px -1px 0 rgba(255, 0, 0, 1)   
+          ;
+        }
+        100% {
+          text-shadow:
+          10px -10px 0 rgba(255, 0, 0, 1), 
+          9px -9px 0 rgba(255, 0, 0, 1), 
+          8px -8px 0 rgba(255, 0, 0, 1), 
+          7px -7px 0 rgba(255, 0, 0, 1), 
+          6px -6px 0 rgba(255, 0, 0, 1), 
+          5px -5px 0 rgba(255, 0, 0, 1), 
+          4px -4px 0 rgba(255, 0, 0, 1),
+          3px -3px 0 rgba(255, 0, 0, 1),
+          2px -2px 0 rgba(255, 0, 0, 1),
+          1px -1px 0 rgba(255, 0, 0, 1),
+          -10px 10px 0 rgba(25, 0, 255, 1),
+          -9px 9px 0 rgba(25, 0, 255, 1), 
+          -8px 8px 0 rgba(25, 0, 255, 1), 
+          -7px 7px 0 rgba(25, 0, 255, 1),
+          -6px 6px 0 rgba(25, 0, 255, 1), 
+          -5px 5px 0 rgba(25, 0, 255, 1),
+          -4px 4px 0 rgba(25, 0, 255, 1),
+          -3px 3px 0 rgba(25, 0, 255, 1),
+          -2px 2px 0 rgba(25, 0, 255, 1),
+          -1px 1px 0 rgba(25, 0, 255, 1)
+          ;
+        } 
+      }

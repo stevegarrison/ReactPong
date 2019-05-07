@@ -122,7 +122,6 @@ class GameCom extends Component {
         this.state.gameUIWidth = width * .85;
         this.state.gameUIHeight = height * .8;
         this.state.player1.paddle.setPositionX(100);
-
         this.state.player2.aiPaddle.setPositionX(this.state.gameUIWidth - 100);
     }
 
@@ -309,7 +308,7 @@ class GameCom extends Component {
         wonGameLogic() {
             return (
                 <div id="modal" className="text-center">
-                    <h1 className="mb-4" id="pong-text"> {winner} won!</h1>
+                    <h1 className="mb-4 glow" id="pong-text"> {winner} won!</h1>
                     <h5>Press SPACEBAR to play again</h5>
                 </div>
             )
@@ -433,7 +432,6 @@ class GameCom extends Component {
                                     <canvas
                                         className="gameUI"
                                         style={{
-                                            border: `${this.state.gameBorderWidth} solid ${this.state.gameBorderColor}`,
                                             backgroundImage: "url(" + this.state.imageURL + ")",
                                             backgroundSize: "cover",
                                             backgroundPosition: "center"
