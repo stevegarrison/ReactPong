@@ -15,6 +15,12 @@ hr{
     align-items: center;
 }
 
+
+.value{
+    font-size: 38px;
+    text-shadow: 1px 1px 2px rgb(0, 47, 255), 0 0 1em rgb(0, 38, 255), 0 0 0.2em rgb(61, 241, 61);
+}
+
 .header{
     color: rgb(255, 255, 255);
     font-size:80px;

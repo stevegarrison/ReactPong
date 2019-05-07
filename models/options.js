@@ -7,7 +7,8 @@ const optionsSchema = new Schema({
     player2Color: { type: String, default: "white"},
     player2Size:{ type: Number, default: 130},
     ballColor: { type: String, default: "white"},
-    imageURL: { type: String}
+    imageURL: { type: String},
+    value: { type: Number, default: 5}
 
 });
 
