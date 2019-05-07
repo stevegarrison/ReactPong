@@ -18,6 +18,11 @@ canvas {
     box-shadow: 1px 1px 2px rgb(195, 0, 255), 0 0 1em rgb(195, 0, 255), 0 0 0.2em rgb(241, 61, 241);
 }
 
+.suddenDeath{
+  font-size: 50px;
+  text-shadow: 1px 1px 2px rgb(255, 0, 0), 0 0 1em blue, 0 0 0.2em rgb(61, 241, 61);
+}
+
 .player-text{
     color: rgb(255, 255, 255);
     font-size:80px;

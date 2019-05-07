@@ -10,6 +10,12 @@ hr{
     width: 100%;
 }
 
+#suddenDeath{
+    font-size: 22px;
+    font-weight: 700;
+    padding-top: 5%;
+}
+
 #flex{
     display: flex;
     align-items: center;
@@ -51,8 +57,13 @@ hr{
 }
 
 .btn:hover{
-    background-color: rgba(55, 43, 226, 0.226);
+    background-color: rgba(255, 255, 255, 0.555);
     color: white;
+}
+
+#color-btn:hover{
+    cursor: pointer;
+    opacity: .5;
 }
 
 .options-text{
