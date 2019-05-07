@@ -8,7 +8,7 @@ body{
     font-size:250px;
     font-family: 'Wendy One', sans-serif;
     font-weight: 600;
-    text-shadow: 1px 1px 2px red, 0 0 1em blue, 0 0 0.2em rgb(61, 241, 61);
+    text-shadow: 5px 5px 2px rgb(255, 0, 0), 0 0 1em blue, 0 0 0.2em rgb(61, 241, 61);
     padding-top: 10%;
 }
 
@@ -21,3 +21,20 @@ body{
     background-color: rgb(126, 0, 243);
     color: white;
 }
+
+.glow {
+    color: #fff;
+    text-align: center;
+    -webkit-animation: glow 3s ease-in-out infinite alternate;
+    -moz-animation: glow 3s ease-in-out infinite alternate;
+    animation: glow 3s ease-in-out infinite alternate;
+  }
+  
+  @-webkit-keyframes glow {
+    from {
+        text-shadow: 5px 5px 2px rgb(255, 0, 0), 0 0 1em blue, 0 0 0.2em rgb(61, 241, 61);
+    }
+    to {
+        text-shadow: 5px 5px 2px rgb(0, 4, 255), 0 0 1em rgb(255, 255, 255), 0 0 0.2em rgb(255, 255, 255);
+    }
+  }

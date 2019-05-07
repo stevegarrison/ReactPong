@@ -14,12 +14,16 @@ background-image: url("./images/BG-IMG.png");
 background-size: cover;
 }
 
+canvas {
+    box-shadow: 1px 1px 2px rgb(255, 255, 255), 0 0 1em rgb(238, 255, 0), 0 0 0.2em rgb(241, 61, 241);
+}
+
 .player-text{
     color: rgb(255, 255, 255);
     font-size:80px;
     font-family: 'Wendy One', sans-serif;
     font-weight:200;
-    text-shadow: 1px 1px 2px rgb(255, 0, 0), 0 0 1em blue, 0 0 0.2em rgb(61, 241, 61);
+    text-shadow: 2px 2px 3px rgb(0, 0, 0), 0 0 1em blue, 0 0 0.2em rgb(193, 241, 61);
 }
 
 .gameUI{
@@ -41,19 +45,22 @@ background-size: cover;
     text-shadow: 1px 1px 2px rgba(255, 0, 0, 0.2), 0 0 1em rgba(0, 0, 255, 0.4), 0 0 0.2em rgba(61, 241, 61, 0.4);
 }
 
-.paddleOne{
+#modal{
     position: absolute;
-    margin-left: 10px;
-    top: 40%;
-    width: 3%;
-    height: 25%;
+    color: rgb(255, 255, 255);
+    text-shadow: 2px 2px 3px rgb(255, 0, 242), 0 0 1em blue, 0 0 0.2em rgb(61, 241, 61);
+    width: 100%;
+    margin-top: 250px;
 }
 
-.paddleTwo{
-    position: absolute;
-    right: 0px;
-    top: 40%;
-    margin-right: 10px;
-    width: 3%;
-    height: 25%;
+.modal-header{
+    color: rgb(255, 255, 255);
+    text-shadow: 1px 1px 2px rgb(255, 0, 0), 0 0 1em blue, 0 0 0.2em rgb(61, 241, 61);
+    display: flex;
+text-align: center;
+}
+
+#pong-text{
+    font-size: 75px;
+    font-family: 'Wendy One', sans-serif;
 }
