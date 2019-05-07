@@ -16,6 +16,7 @@ class Ball {
     m_currentVelY = 350.0;
     m_startingVel = 350.0;
 
+
     m_width = 25;
     m_height = 25;
     m_gameWidth = 0;
@@ -41,6 +42,16 @@ class Ball {
 
     resetBall() { 
         this.m_currentVelY = this.m_startingVel;
+
+        this.m_currentVelY = Math.floor(Math.random() * this.m_startingVel) + 100.0;
+        console.log("random ball vel" + this.m_currentVelY);
+
+        if (Math.floor(Math.random() * 3) === 0) {
+            console.log("flipping Y");
+            this.m_currentVelY *= -1;
+        }
+        if (Math.floor(Math.random() * 3) === 0)
+            this.m_velX *= -1;
         this.placeAtOrigin();
     }
 

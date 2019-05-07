@@ -13,6 +13,7 @@ import API from "../../utils/API";
 import AIPaddle from "../../Game/AIPaddle";
 import windowSize from "react-window-size";
 
+
 var contextWait = null;
 let winner = "";
 let width = 0;
@@ -73,6 +74,7 @@ class GameCom extends Component {
         // this.update();
         console.log("mounted");
         this.loadOptions(() => {
+
 
             console.log(this.state);
             const canvas = this.refs.canvas;

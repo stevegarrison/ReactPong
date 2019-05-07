@@ -3,6 +3,7 @@
  *      Paddle.js
  * 
  */
+
 class Paddle  {
 
     m_positionX = 10.0;
@@ -16,10 +17,12 @@ class Paddle  {
     m_gameHeight = 0;
     m_bIsMovingUp = false;
     m_bIsMovingDown = false;
+    m_sfxPositive = new Audio("./audio/positive.mp3");
 
-    sfx = {
-        file: "",
-    };
+    // sfx = {
+    //     handle: null,
+    //     file: "../../public/audio/positive.mp3",
+    // };
 
     collision = false;
     collisionRect = {
@@ -36,6 +39,11 @@ class Paddle  {
         this.m_height = _paddleHeight;
         this.m_positionY = _gameHeight / 2 - this.m_height / 2;
         this.m_paddleColor = _color;
+
+       // this.sfx.handle = new Audio(this.sfx.file);
+        // console.log("sfx" + this.m_sfxPositive);
+        // this.m_sfxPositive.play();
+       // console.log("sfx" + this.sfx.handle);
 
     }
     setPosition(_posX, _posY) { 
@@ -146,13 +154,18 @@ class Paddle  {
 
     }
 
-    checkForCollision(_ball) { 
+    checkForCollision = (_ball) =>{ 
 
         // check to see if there has been a collision
         if (this.m_positionX + this.m_width > _ball.m_positionX // paddle right >= balls left
             && this.m_positionY < _ball.m_positionY + _ball.m_height // paddle top <= balls bottom
             && this.m_positionY + this.m_height > _ball.m_positionY // paddles botton >= balls top
             && this.m_positionX < _ball.m_positionX + _ball.m_width) { // paddles left <= balls right
+
+                this.m_sfxPositive.play();
+            
+                // console.log("sfx" + this.m_sfxPositive);
+                // this.m_sfxPositive.play();
 
             var thirdOfPaddle = this.m_height / 3;
             if (_ball.m_positionY >= this.m_positionY + thirdOfPaddle && _ball.m_positionY <= (this.m_positionY + this.m_height - thirdOfPaddle)) {
