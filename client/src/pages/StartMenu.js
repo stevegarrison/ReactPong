@@ -25,10 +25,12 @@ class Start extends Component {
           <h1 className="pong-header glow">PONG!</h1>
 
           {/* Start Button */}
-            <Link to={"/game"}><button className="btn m-2">Start Game!</button></Link>
+          <Link to={"/game"}><button className="btn m-2">Start Game!</button></Link>
 
           {/* Otions Button */}
-            <Link to={"/options"}><button className="btn m-2">Options</button></Link>
+          <div className="text-light">
+            <Link to={"/options"}><i id="cog" className="fas fa-cog fa-3x"></i></Link>
+          </div>
         </div>
       </>
     );

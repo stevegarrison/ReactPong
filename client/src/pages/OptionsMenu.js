@@ -68,6 +68,13 @@ class Options extends Component {
     console.log("Player two color: " + player2Color);
   }
 
+  handleImageURL = event => {
+    event.preventDefault();
+    imageURL = event.target.getAttribute("data-image");
+    this.setState({ imageURL: imageURL });
+    console.log("Theme: " + imageURL);
+  }
+
   handleBallColor = event => {
     event.preventDefault();
     ballColor = event.target.getAttribute("data-color");
@@ -192,9 +199,9 @@ class Options extends Component {
                 <div className="col-md-8">
                   <div className="row">
                     <div className="col-md-4">
-                      <p className="options-text1 mt-3">Image Adrress: </p>
+                      <p className="options-text1 mt-3">Image Adress: </p>
                     </div>
-                    <div className="col-md-8" id="flex">
+                    <div className="col-md-8">
                       <form className="form">
                         <Input
                           value={this.state.imageURL}
@@ -206,17 +213,32 @@ class Options extends Component {
                       </form>
                     </div>
                   </div>
+
+                  <div className="row">
+                    <div className="col-md-4">
+                      <p className="options-text1 mt-3">(OR choose a preset) </p>
+                    </div>
+                    <div className="col-md-8">
+                        <button className={`btn player-background m-1 ${"https://cdn.pixabay.com/photo/2017/08/15/08/23/galaxy-2643089_1280.jpg" === this.state.imageURL ? "active2" : ""}`} data-image="https://cdn.pixabay.com/photo/2017/08/15/08/23/galaxy-2643089_1280.jpg" onClick={this.handleImageURL}>Space</button>
+                        <button className={`btn player-background m-1 ${"https://cdn.pixabay.com/photo/2015/07/02/10/19/bamboo-828703_1280.jpg" === this.state.imageURL ? "active2" : ""}`} data-image="https://cdn.pixabay.com/photo/2015/07/02/10/19/bamboo-828703_1280.jpg" onClick={this.handleImageURL}>Jungle</button>
+                        <button className={`btn player-background m-1 ${"https://cdn.pixabay.com/photo/2015/03/26/09/47/sky-690293_1280.jpg" === this.state.imageURL ? "active2" : ""}`} data-image="https://cdn.pixabay.com/photo/2015/03/26/09/47/sky-690293_1280.jpg" onClick={this.handleImageURL}>Clouds</button>
+                        <button className={`btn player-background m-1 ${"https://cdn.pixabay.com/photo/2012/03/04/00/02/animal-21731_1280.jpg" === this.state.imageURL ? "active2" : ""}`} data-image="https://cdn.pixabay.com/photo/2012/03/04/00/02/animal-21731_1280.jpg" onClick={this.handleImageURL}>Ocean</button>
+                        <button className={`btn player-background m-1 ${"https://cdn.pixabay.com/photo/2016/09/07/11/37/tropical-1651426_1280.jpg" === this.state.imageURL ? "active2" : ""}`} data-image="https://cdn.pixabay.com/photo/2016/09/07/11/37/tropical-1651426_1280.jpg" onClick={this.handleImageURL}>Beach</button>
+                        <button className={`btn player-background m-1 ${"https://media3.giphy.com/media/Fh3ezinVpi4yk/giphy.gif?cid=790b76115cd1cbbb47556e436b4fdaaa&rid=giphy.gif" === this.state.imageURL ? "active2" : ""}`} data-image="https://media3.giphy.com/media/Fh3ezinVpi4yk/giphy.gif?cid=790b76115cd1cbbb47556e436b4fdaaa&rid=giphy.gif" onClick={this.handleImageURL}>Winter</button>
+                        <button className={`btn player-background m-1 ${"https://cdn.pixabay.com/photo/2015/03/03/01/51/lava-656827_1280.jpg" === this.state.imageURL ? "active2" : ""}`} data-image="https://cdn.pixabay.com/photo/2015/03/03/01/51/lava-656827_1280.jpg" onClick={this.handleImageURL}>Lava</button>
+                        <button className={`btn player-background m-1 ${"https://cdn.pixabay.com/photo/2016/08/09/21/54/yellowstone-national-park-1581879_1280.jpg" === this.state.imageURL ? "active2" : ""}`} data-image="https://cdn.pixabay.com/photo/2016/08/09/21/54/yellowstone-national-park-1581879_1280.jpg" onClick={this.handleImageURL}>Snow</button>
+                    </div>
+                  </div>
                 </div>
               </div>
-
               {/* Save Button */}
               <Link to={"/"}><button className="save-btn mt-4 mb-4" onClick={this.handleSave}>Save</button></Link>
             </div>
-          </div>
 
-          <div className="col-md-1">
+            <div className="col-md-1">
+            </div>
+            <Link onClick={this.resetGame} to={"/"}><i id="home-icon" className="m-3 fas fa-home fa-3x"></i></Link>
           </div>
-          <Link onClick={this.resetGame} to={"/"}><i id="home-icon" className="m-3 fas fa-home fa-3x"></i></Link>
         </div>
 
       </>

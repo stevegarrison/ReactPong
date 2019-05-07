@@ -37,7 +37,7 @@ class GameCom extends Component {
         gameStart2: false,
         gameStart3: false,
         m_bWon: false,
-        gameBorderColor: "yellow",
+        gameBorderColor: "white",
         gameBorderWidth: "1px",
 
         context: null,
@@ -317,7 +317,7 @@ class GameCom extends Component {
         wonGameLogic() {
             return (
                 <div id="modal" className="text-center">
-                    <h1 className="mb-4 glow" id="pong-text"> {winner} won!</h1>
+                    <h1 className="mb-4 glow2" id="pong-text"> {winner} won!</h1>
                     <h5>Press SPACEBAR to play again</h5>
                 </div>
             )
