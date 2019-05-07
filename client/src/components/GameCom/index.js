@@ -24,6 +24,10 @@ class GameCom extends Component {
     startTime = 0.0;
     m_nScoreToWin = 20;
 
+    audio = {
+        file: "",
+    };
+
     state = {
         //Settings
         player1Color: "white",
@@ -41,7 +45,6 @@ class GameCom extends Component {
         gameBorderWidth: "1px",
 
         context: null,
-        // paddle: null,
         ball: null,
         gameUIWidth: 0,
         gameUIHeight: 0,
@@ -49,7 +52,6 @@ class GameCom extends Component {
         player1: {
             paddle: null,
             score: 0
-
         },
 
         player2: {

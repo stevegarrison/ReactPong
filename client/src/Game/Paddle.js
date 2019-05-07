@@ -85,14 +85,16 @@ class Paddle  {
             case "up":
             //     console.log(this.m_positionY);
                 this.m_bIsMovingUp = true;
-              if (this.m_positionY - (this.m_velocityY * _deltaTime) > 0)
+                // - (this.m_velocityY * _deltaTime) 
+              if (this.m_positionY+1 > 0)
                 this.m_positionY = this.m_positionY - (this.m_velocityY * _deltaTime);
                // console.log(this.m_positionY);
                 break;
             case "down":
            //if (this.m_positionY + (this.m_velocityY * _deltaTime) > 0 && ((this.m_positionY + this.m_velocityY) * _deltaTime + this.m_height) < this.m_gameHeight)
-           this.m_bIsMovingDown = true;
-           if((this.m_positionY + (this.m_velocityY * _deltaTime) + this.m_height) < this.m_gameHeight)
+                this.m_bIsMovingDown = true;
+                //+ (this.m_velocityY * _deltaTime)
+           if((this.m_positionY  + this.m_height)-1 < this.m_gameHeight)
                     this.m_positionY = this.m_positionY + (this.m_velocityY * _deltaTime);
                 break;
 

@@ -24,6 +24,7 @@ class Ball {
     m_originY = 0.0;
     m_ballColor = "red";
     m_friction = 100.0;
+    
 
     constructor(_gameWidth, _gameHeight, _ballColor) { 
         this.m_gameWidth = _gameWidth;
