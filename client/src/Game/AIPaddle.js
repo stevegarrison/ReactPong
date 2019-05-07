@@ -14,6 +14,8 @@ class AIPaddle extends Paddle {
     m_dDelayTime = 0.0;
     m_dCurDelayTime = 0.0;
     m_bIsDelayed = false;
+    m_prevBallPosition = 0.0;
+    m_changeInPosition = 0.0;
 
     constructor(_gameWidth, _gameHeight, _color, _paddleHeight) { 
 
@@ -30,6 +32,17 @@ class AIPaddle extends Paddle {
 
     moveToBall(_targetPosY, _dt) { 
 
+        if (this.m_positionY <= 10) {
+            this.m_positionY = 11;
+            return;
+        }
+
+        // if (this.m_positionY + this.m_height >= this.m_gameHeight) { 
+        //     this.m_positionY = this.m_positionY + this.m_height;
+        //     return;
+        // }
+
+
         if (_dt >= 0.1)
             _dt = 0.16;
         if (_targetPosY < this.m_positionY + this.m_height/2) { // moving up
@@ -42,27 +55,34 @@ class AIPaddle extends Paddle {
         }
     }
 
-    trackBall(_posY, _dt) {
-        if (!this.m_bIsDelayed) {
+    trackBall(_posX, _posY, _dt) {
 
-            if (_posY - 10 > 0 && _posY + this.m_height + 10 < this.m_gameHeight) {
-                //console.log("tracking");
-                // this.m_positionY = _posY;
-                this.moveToBall(_posY, _dt);
-
-            }
-            // if (this.m_positionY - 10 <= 0)
-            //     this.m_positionY = 11;
-            // if (this.m_positionY + this.m_height + 10 >= this.m_gameHeight)
-            //     this.m_positionY = this._gameHeight - this.m_height - 11;
-
+        if (_posY >= this.m_positionY && _posY <= this.m_positionY + this.m_height) { 
+            return;
         }
-        //&& this.m_positionY + 55 < this.m_gameHeight
+
+        this.m_changeInPosition = Math.abs(_posY - this.m_prevBallPosition);
+        if (this.m_changeInPosition >= 15 || this.m_positionX - _posX <= 100) {
+            
+            this.m_prevBallPosition = _posY;
+            
+            if (!this.m_bIsDelayed) {
+
+                    //console.log("tracking");
+                    // this.m_positionY = _posY;
+                    this.moveToBall(_posY, _dt);
+    
+            }
+
+        } 
+
     }
 
     update(_dt) { 
         super.update(_dt);
         this.m_dCurDelayTime += _dt;
+
+        
 
         if (this.m_bIsDelayed) {
             console.log("is delayed for :" + this.m_dDelayTime);

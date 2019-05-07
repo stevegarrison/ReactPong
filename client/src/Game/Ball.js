@@ -19,6 +19,7 @@ class Ball {
     m_minVelY = 100.0;
     m_maxVelY = 950.0;
     m_currentVelY = 350.0;
+    m_startingVel = 350.0;
 
     m_width = 25;
     m_height = 25;
@@ -40,6 +41,11 @@ class Ball {
     placeAtOrigin() { 
         this.m_positionX = this.m_gameWidth / 2 - this.m_width/2;
         this.m_positionY = this.m_gameHeight / 2;
+    }
+
+    resetBall() { 
+        this.m_currentVelY = this.m_startingVel;
+        this.placeAtOrigin();
     }
 
     addVelY() { 
@@ -94,12 +100,12 @@ class Ball {
 
         var sideHit = "";
         if (this.m_positionX < 0) {
-            this.placeAtOrigin();
+            this.resetBall();
             this.m_velX *= -1;
             sideHit = "left";
         }
         if (this.m_positionX + this.m_width > this.m_gameWidth) {
-            this.placeAtOrigin();
+            this.resetBall();
             this.m_velX *= -1;
             sideHit = "right";
         }
