@@ -31,7 +31,10 @@ class GameCom extends Component {
         imageURL: "",
         gamePaused: false,
         gameStart: true,
+        gameStart2: true,
         m_bWon: false,
+        gameBorderColor: "yellow",
+        gameBorderWidth: "1px",
 
         context: null,
         // paddle: null,
@@ -151,270 +154,279 @@ class GameCom extends Component {
 
     handleInput = _event => {
 
-        if (this.state.m_bWon === true) { 
+        if (this.state.m_bWon === true) {
             if (_event.keyCode === 32) {  // 32 is the keycode for the space bad
-				this.setState({ m_bWon: false });
+                this.setState({ m_bWon: false });
             }
         }
 
-        if (this.state.gameStart)
-            this.setState({ gameStart: false });
-
-        //console.log(_event);
-        switch (_event.key) {
-            case 'w':
-                this.setKey('w', 1);
-                break;
-            case 's':
-                this.setKey('s', 1);
-                break;
-            case 'a':
-                this.setKey('i', 1);
-                break;
-            case 'd':
-                this.setKey('k', 1);
-                break;
-            case 'p':
-                this.pauseGame();
-                break;
-            case 'u':
-                this.unPauseGame();
-                break;
-            default:
-                break;
-        };
-    }
-
-    handleKeyUp = _event => {
-        switch (_event.key) {
-            case 'w':
-                this.setKey('w', 0);
-                break;
-            case 's':
-                this.setKey('s', 0);
-                break;
-            case 'a':
-                this.setKey('i', 0);
-                break;
-            case 'd':
-                this.setKey('k', 0);
-                break;
-            default:
-                break;
-        };
-    }
-
-    processInput(_deltaTime) {
-
-        if (this.state.keys.w === 1) {
-
-            this.state.player1.paddle.movePaddle("up", _deltaTime);
-        }
-        if (this.state.keys.s === 1) {
-
-            this.state.player1.paddle.movePaddle("down", _deltaTime);
-        }
-        if (this.state.keys.i === 1) {
-
-            this.state.player1.paddle.movePaddle("right", _deltaTime);
-
-            // this.state.player2.paddle.movePaddle("up", _deltaTime);
-        }
-        if (this.state.keys.k === 1) {
-
-            this.state.player1.paddle.movePaddle("left", _deltaTime);
-            //  this.state.player2.paddle.movePaddle("down", _deltaTime);
+        if (this.state.gameStart) {
+            this.startGame();
+            if (_event.keyCode === 32) {
+                this.setState({ gameStart: false });
+            }
         }
 
-    }
-
-    componentWillUnmount() {
-        document.removeEventListener("keydown", this.handleInput, false);
-
-    }
-
-    pauseGame() {
-        console.log("game paused");
-        this.setState({
-            gamePaused: true
-        });
-    }
-
-    unPauseGame() {
-        console.log("game un-paused");
-        this.setState({
-            gamePaused: false
-        });
-    }
-
-    toggleGamePause() {
-        this.setState({
-            gamePaused: !this.state.gamePaused
-        });
-    }
-
-    startGame() {
-        return (
-            <div id="modal" className="text-center">
-                <h1>PONG!</h1>
-                <h3> Press the SPACEBAR to play</h3>
-            </div>
-        )
-    }
-
-
-    wonGameLogic() {
-        return (
-            <div id="modal" className="text-center">
-                <h1>GAME OVER</h1>
-                <h3> Player one wins!</h3>
-                <h5>Press spacebar to play again</h5>
-            </div>
-        )
-    }
-
-    resetGame() {
-        var newState = { ...this.state };
-        newState.player1.score = 0;
-        newState.player1.paddle.placeAtOrigin();
-        newState.player2.score = 0;
-        // newState.player2.paddle.placeAtOrigin();
-        newState.player2.aiPaddle.placeAtOrigin();
-        newState.ball.placeAtOrigin();
-        newState.keys = { w: 0, s: 0, i: 0, k: 0 };
-        newState.gameStart = true;
-        this.setState(newState);
-    }
-
-    checkForWins() {
-        if (this.state.player1.score >= this.m_nScoreToWin) {
-            console.log("Player 1 Wins!!!");
-            this.setState({ m_bWon: true });
-            this.resetGame();
-        } else if (this.state.player2.score >= this.m_nScoreToWin) {
-            console.log("Player 2 Wins!!!");
-            this.setState({ m_bWon: true });
-            this.resetGame();
+            //console.log(_event);
+            switch (_event.key) {
+                case 'w':
+                    this.setKey('w', 1);
+                    break;
+                case 's':
+                    this.setKey('s', 1);
+                    break;
+                case 'a':
+                    this.setKey('i', 1);
+                    break;
+                case 'd':
+                    this.setKey('k', 1);
+                    break;
+                case 'p':
+                    this.pauseGame();
+                    break;
+                case 'u':
+                    this.unPauseGame();
+                    break;
+                // case 'what ever letter or keyboard button you want to check':
+                // put whatever you want to happen here
+                // break;
+                default:
+                    break;
+            };
         }
-    }
 
-    update = () => {
+        handleKeyUp = _event => {
+            switch (_event.key) {
+                case 'w':
+                    this.setKey('w', 0);
+                    break;
+                case 's':
+                    this.setKey('s', 0);
+                    break;
+                case 'a':
+                    this.setKey('i', 0);
+                    break;
+                case 'd':
+                    this.setKey('k', 0);
+                    break;
+                default:
+                    break;
+            };
+        }
 
-        // console.log("game paused: " + this.state.gamePaused);
-        // console.log("game start: " + this.state.gameStart);
-        if (!this.state.gamePaused && !this.state.gameStart) {
+        processInput(_deltaTime) {
 
-            // console.log("updating");
+            if (this.state.keys.w === 1) {
 
-            // find the time elapsed
-            var currentTime = new Date().getTime();
-            var deltaTime = (currentTime - this.startTime) / 1000;
-            this.startTime = currentTime;
+                this.state.player1.paddle.movePaddle("up", _deltaTime);
+            }
+            if (this.state.keys.s === 1) {
 
-            this.state.player2.aiPaddle.update(deltaTime);
-            this.state.player2.aiPaddle.trackBall(this.state.ball.m_positionY, deltaTime);
+                this.state.player1.paddle.movePaddle("down", _deltaTime);
+            }
+            if (this.state.keys.i === 1) {
 
+                this.state.player1.paddle.movePaddle("right", _deltaTime);
 
-            // update input
-            this.processInput(deltaTime);
+                // this.state.player2.paddle.movePaddle("up", _deltaTime);
+            }
+            if (this.state.keys.k === 1) {
 
-            // update objects
-            this.state.ball.update(deltaTime, _sideHit => {
-                switch (_sideHit) {
-                    case "left":
-                        var newPlayer = { ...this.state.player2 };
-                        newPlayer.score++;
-                        this.setState({ player2: newPlayer });
-                        // console.log("Player 2 score: " + newPlayer.score);
-                        break;
-                    case "right":
-                        var newPlayer = { ...this.state.player1 };
-                        newPlayer.score++;
-                        this.setState({ player1: newPlayer });
-                        // console.log("Player 1 score: " + newPlayer.score);
-                        break;
-                    default:
-                        break;
-                };
+                this.state.player1.paddle.movePaddle("left", _deltaTime);
+                //  this.state.player2.paddle.movePaddle("down", _deltaTime);
+            }
+
+        }
+
+        componentWillUnmount() {
+            document.removeEventListener("keydown", this.handleInput, false);
+
+        }
+
+        pauseGame() {
+            console.log("game paused");
+            this.setState({
+                gamePaused: true
             });
-
-            // check for collision
-            this.checkCollision();
-
-            // check for player wins
-            this.checkForWins();
-
-            if (this.state.context) {
-                this.state.context.clearRect(0, 0, this.state.gameUIWidth, this.state.gameUIHeight);
-
-                // render objects
-                this.state.ball.render(this.state.context, this.refs.ballImg, this.state.gameUIWidth, this.state.gameUIHeight);
-                this.state.player1.paddle.render(this.state.context, this.refs.image);
-                this.state.player2.aiPaddle.render(this.state.context, this.refs.image);
-                //   this.state.player2.paddle.render(this.state.context, this.refs.image, this.state.player1.posX, this.state.player1.posY);
-
-                //this.state.paddle.render(this.state.context, this.refs.image, this.state.player2.posX, this.state.player2.posY);
-            }
-        } else {
-            this.startTime = new Date().getTime();
         }
-        // Next frame
-        requestAnimationFrame(() => { this.update() });
 
-    }
+        unPauseGame() {
+            console.log("game un-paused");
+            this.setState({
+                gamePaused: false
+            });
+        }
+
+        toggleGamePause() {
+            this.setState({
+                gamePaused: !this.state.gamePaused
+            });
+        }
+
+        startGame() {
+            return (
+                <div id="modal" className="text-center">
+                    <h1>PONG!</h1>
+                    <h3> Press the SPACEBAR to play</h3>
+                </div>
+            )
+        }
 
 
-    render() {
-        return (
-            <>
-                <div className="text-center">
-                    <div className="row">
-                        <div className="col-md-1"></div>
+        wonGameLogic() {
+            return (
+                <div id="modal" className="text-center">
+                    <h1>GAME OVER</h1>
+                    <h3> Player one wins!</h3>
+                    <h5>Press spacebar to play again</h5>
+                </div>
+            )
+        }
+
+        resetGame() {
+            var newState = { ...this.state };
+            newState.player1.score = 0;
+            newState.player1.paddle.placeAtOrigin();
+            newState.player2.score = 0;
+            // newState.player2.paddle.placeAtOrigin();
+            newState.player2.aiPaddle.placeAtOrigin();
+            newState.ball.placeAtOrigin();
+            newState.keys = { w: 0, s: 0, i: 0, k: 0 };
+            newState.gameStart = true;
+            this.setState(newState);
+        }
+
+        checkForWins() {
+            if (this.state.player1.score >= this.m_nScoreToWin) {
+                console.log("Player 1 Wins!!!");
+                this.setState({ m_bWon: true });
+                this.resetGame();
+            } else if (this.state.player2.score >= this.m_nScoreToWin) {
+                console.log("Player 2 Wins!!!");
+                this.setState({ m_bWon: true });
+                this.resetGame();
+            }
+        }
+
+        update = () => {
+
+            // console.log("game paused: " + this.state.gamePaused);
+            // console.log("game start: " + this.state.gameStart);
+            if (!this.state.gamePaused && !this.state.gameStart) {
+
+                // console.log("updating");
+
+                // find the time elapsed
+                var currentTime = new Date().getTime();
+                var deltaTime = (currentTime - this.startTime) / 1000;
+                this.startTime = currentTime;
+
+                this.state.player2.aiPaddle.update(deltaTime);
+                this.state.player2.aiPaddle.trackBall(this.state.ball.m_positionY, deltaTime);
 
 
-                        <div className="col-md-10">
-                            {/* Player Scores */}
-                            <div className="row player-text mt-3 mb-4">
-                                <div className="col-md-6">
-                                    <h2>Player One: {this.state.player1.score}</h2>
+                // update input
+                this.processInput(deltaTime);
+
+                // update objects
+                this.state.ball.update(deltaTime, _sideHit => {
+                    switch (_sideHit) {
+                        case "left":
+                            var newPlayer = { ...this.state.player2 };
+                            newPlayer.score++;
+                            this.setState({ player2: newPlayer });
+                            // console.log("Player 2 score: " + newPlayer.score);
+                            break;
+                        case "right":
+                            var newPlayer = { ...this.state.player1 };
+                            newPlayer.score++;
+                            this.setState({ player1: newPlayer });
+                            // console.log("Player 1 score: " + newPlayer.score);
+                            break;
+                        default:
+                            break;
+                    };
+                });
+
+                // check for collision
+                this.checkCollision();
+
+                // check for player wins
+                this.checkForWins();
+
+                if (this.state.context) {
+                    this.state.context.clearRect(0, 0, this.state.gameUIWidth, this.state.gameUIHeight);
+
+                    // render objects
+                    this.state.ball.render(this.state.context, this.refs.ballImg, this.state.gameUIWidth, this.state.gameUIHeight);
+                    this.state.player1.paddle.render(this.state.context, this.refs.image);
+                    this.state.player2.aiPaddle.render(this.state.context, this.refs.image);
+                    //   this.state.player2.paddle.render(this.state.context, this.refs.image, this.state.player1.posX, this.state.player1.posY);
+
+                    //this.state.paddle.render(this.state.context, this.refs.image, this.state.player2.posX, this.state.player2.posY);
+                }
+            } else {
+                this.startTime = new Date().getTime();
+            }
+            // Next frame
+            requestAnimationFrame(() => { this.update() });
+
+        }
+
+
+        render() {
+            return (
+                <>
+                    <div className="text-center">
+                        <div className="row">
+                            <div className="col-md-1"></div>
+
+
+                            <div className="col-md-10">
+                                {/* Player Scores */}
+                                <div className="row player-text mt-3 mb-4">
+                                    <div className="col-md-6">
+                                        <h2>Player One: {this.state.player1.score}</h2>
+                                    </div>
+                                    <div className="col-md-6">
+                                        <h2>Player Two: {this.state.player2.score}</h2>
+                                    </div>
                                 </div>
-                                <div className="col-md-6">
-                                    <h2>Player Two: {this.state.player2.score}</h2>
+
+                                {/* Game UI */}
+                                <div className="row">
+                                    <canvas
+                                        className="gameUI"
+                                        style={{
+                                            border: `${this.state.gameBorderWidth} solid ${this.state.gameBorderColor}`,
+                                            backgroundImage: "url(" + this.state.imageURL + ")",
+                                            backgroundSize: "cover",
+                                            backgroundPosition: "center"
+                                        }}
+                                        width={this.state.gameUIWidth}
+                                        height={this.state.gameUIHeight}
+                                        ref="canvas" >
+
+
+
+                                    </canvas>
+                                    {this.state.m_bWon ? this.wonGameLogic() : ""}
+                                    {this.state.gameStart ? this.startGame() : ""}
                                 </div>
                             </div>
 
-                            {/* Game UI */}
-                            <div className="row">
-                                <canvas
-                                    className="gameUI"
-                                    style={{
-                                        backgroundImage: "url(" + this.state.imageURL + ")",
-                                        backgroundSize: "cover",
-                                        backgroundPosition: "center"
-                                    }}
-                                    width={this.state.gameUIWidth}
-                                    height={this.state.gameUIHeight}
-                                    ref="canvas" >
-
-                          
-
-                                </canvas>
-                                {this.state.m_bWon ? this.wonGameLogic() : ""}
-                            </div>
-                        </div>
-
-                        <div className="col-md-1">
-                            <div>
-                                <Link onClick={this.resetGame} to={"/"}><i id="home-icon" className="m-3 fas fa-home fa-2x"></i></Link>
+                            <div className="col-md-1">
+                                <div>
+                                    <Link onClick={this.resetGame} to={"/"}><i id="home-icon" className="m-3 fas fa-home fa-2x"></i></Link>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
-            </>
-        );
-    }
+                </>
+            );
+        }
 
-};
+    };
 
-export default GameCom;
+    export default GameCom;
