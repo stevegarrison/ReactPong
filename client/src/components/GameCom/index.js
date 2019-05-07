@@ -98,33 +98,62 @@ class GameCom extends Component {
             if (!this.state.player2Size)
                 this.setState({ player2Size: size });
 
+            // create player 1 paddle
             this.state.player1.paddle = new Paddle(this.state.gameUIWidth, this.state.gameUIHeight, this.state.player1Color, this.state.player1Size);
-            //this.state.player2.paddle = new Paddle(this.state.gameUIWidth, this.state.gameUIHeight, this.state.player2Color, this.state.player2Size);
-            this.state.player2.aiPaddle = new AIPaddle(this.state.gameUIWidth, this.state.gameUIHeight, this.state.player2Color, this.state.player2Size);
             this.state.player1.paddle.setPositionX(100);
-            //this.state.player2.paddle.setPositionX(1260);
-            this.state.player2.aiPaddle.setPositionX(this.state.gameUIWidth - 100);
-            //this.state.player2.paddle.setPositionX(1360);
+
+            // check which mode the game was started in
+            if (this.props.multiPlayer) {
+                this.state.player2.paddle = new Paddle(this.state.gameUIWidth, this.state.gameUIHeight, this.state.player2Color, this.state.player2Size);
+                this.state.player2.paddle.setPositionX(this.state.gameUIWidth - 100);
+        }
+            else { // else its in 1 player mode
+                this.state.player2.aiPaddle = new AIPaddle(this.state.gameUIWidth, this.state.gameUIHeight, this.state.player2Color, this.state.player2Size);
+                this.state.player2.aiPaddle.setPositionX(this.state.gameUIWidth - 100);
+
+            }
+
+            // create the ball
             this.state.ball = new Ball(this.state.gameUIWidth, this.state.gameUIHeight, this.state.ballColor);
 
+            // add events to listen for
             document.addEventListener("keydown", this.handleInput, false);
             document.addEventListener("keyup", this.handleKeyUp, false);
-            window.addEventListener("resize", this.handleResize)
+            window.addEventListener("resize", this.handleResize);
+
+            // request the update function to be called as an animation frame
             requestAnimationFrame(() => { this.update() });
         });
     }
 
+    
+
     handleResize = (_event) => {
+
         console.log("resizing");
+
+        // update the games playing area
         height = this.props.windowHeight;
         width = this.props.windowWidth;
         this.state.gameUIWidth = width * .85;
         this.state.gameUIHeight = height * .8;
-        this.state.player1.paddle.setPositionX(100);
-        this.state.player2.aiPaddle.setPositionX(this.state.gameUIWidth - 100);
 
+        // update the first player
+        this.state.player1.paddle.setPositionX(100);
         this.state.player1.paddle.updateGameSize(this.state.gameUIWidth, this.state.gameUIHeight);
-        this.state.player2.aiPaddle.updateGameSize(this.state.gameUIWidth, this.state.gameUIHeight);
+
+        // update the second player or the AI
+        if (this.props.multiPlayer) {
+            this.state.player2.paddle.setPositionX(this.state.gameUIWidth - 100);
+            this.state.player2.paddle.updateGameSize(this.state.gameUIWidth, this.state.gameUIHeight);
+      
+        }
+        else { // AI
+            this.state.player2.aiPaddle.setPositionX(this.state.gameUIWidth - 100);
+            this.state.player2.aiPaddle.updateGameSize(this.state.gameUIWidth, this.state.gameUIHeight);
+        }
+
+        // update the ball
         this.state.ball.updateGameSize(this.state.gameUIWidth, this.state.gameUIHeight);
     }
 
@@ -176,9 +205,17 @@ class GameCom extends Component {
 
     checkCollision() {
 
+        // check first players collision against the ball
         this.state.player1.paddle.checkForCollision(this.state.ball);
-        this.state.player2.aiPaddle.checkForCollision(this.state.ball);
-        //        this.state.player2.paddle.checkForCollision(this.state.ball);
+
+        // check the second player or the AIs collision against the ball
+        if (this.props.multiPlayer) {
+               this.state.player2.paddle.checkForCollision(this.state.ball);
+        }
+        else { // AI
+            this.state.player2.aiPaddle.checkForCollision(this.state.ball);
+
+        }
     }
 
     handleInput = _event => {
@@ -205,10 +242,10 @@ class GameCom extends Component {
             case 's':
                 this.setKey('s', 1);
                 break;
-            case 'a':
+            case 'i':
                 this.setKey('i', 1);
                 break;
-            case 'd':
+            case 'k':
                 this.setKey('k', 1);
                 break;
             case 'p':
@@ -229,6 +266,9 @@ class GameCom extends Component {
 
         console.log("here");
         this.state.player1.paddle.clearMovingFlags();
+        if (this.props.multiPlayer)
+        this.state.player2.paddle.clearMovingFlags();
+            else
         this.state.player2.aiPaddle.clearMovingFlags();
         switch (_event.key) {
             case 'w':
@@ -237,10 +277,10 @@ class GameCom extends Component {
             case 's':
                 this.setKey('s', 0);
                 break;
-            case 'a':
+            case 'i':
                 this.setKey('i', 0);
                 break;
-            case 'd':
+            case 'k':
                 this.setKey('k', 0);
                 break;
             default:
@@ -262,21 +302,26 @@ class GameCom extends Component {
         }
         if (this.state.keys.i === 1) {
 
-            this.state.player1.paddle.movePaddle("right", _deltaTime);
-
-            // this.state.player2.paddle.movePaddle("up", _deltaTime);
+            // this.state.player1.paddle.movePaddle("right", _deltaTime);
+            if(this.props.multiPlayer)
+                 this.state.player2.paddle.movePaddle("up", _deltaTime);
         }
         if (this.state.keys.k === 1) {
 
-            this.state.player1.paddle.movePaddle("left", _deltaTime);
-            //  this.state.player2.paddle.movePaddle("down", _deltaTime);
+            // this.state.player1.paddle.movePaddle("left", _deltaTime);
+            if(this.props.multiPlayer)
+                this.state.player2.paddle.movePaddle("down", _deltaTime);
         }
 
     }
 
+    // when the game closes
     componentWillUnmount() {
+
+        // remove event listeners
         document.removeEventListener("keyup", this.handleKeyUp, false);
         document.removeEventListener("keydown", this.handleInput, false);
+        window.removeEventListener("resize", this.handleResize);
 
     }
 
@@ -333,8 +378,14 @@ class GameCom extends Component {
         newState.player1.score = 0;
         newState.player1.paddle.placeAtOrigin();
         newState.player2.score = 0;
-        // newState.player2.paddle.placeAtOrigin();
-        newState.player2.aiPaddle.placeAtOrigin();
+
+        if (this.props.multiPlayer) {
+            newState.player2.paddle.placeAtOrigin();
+        }
+        else { 
+            newState.player2.aiPaddle.placeAtOrigin();
+        }
+
         newState.ball.placeAtOrigin();
         newState.keys = { w: 0, s: 0, i: 0, k: 0 };
         newState.gameStart = true;
@@ -368,9 +419,15 @@ class GameCom extends Component {
             var deltaTime = (currentTime - this.startTime) / 1000;
             this.startTime = currentTime;
 
-            this.state.player2.aiPaddle.update(deltaTime);
-            this.state.player2.aiPaddle.trackBall(this.state.ball.m_positionX, this.state.ball.m_positionY, deltaTime);
+            if (this.props.multiPlayer) {
 
+            }
+            else { 
+                this.state.player2.aiPaddle.update(deltaTime);
+                this.state.player2.aiPaddle.trackBall(this.state.ball.m_positionX, this.state.ball.m_positionY, deltaTime);
+    
+            }
+         
 
             // update input
             this.processInput(deltaTime);
@@ -417,7 +474,11 @@ class GameCom extends Component {
                 // render objects
                 this.state.ball.render(this.state.context, this.refs.ballImg, this.state.gameUIWidth, this.state.gameUIHeight);
                 this.state.player1.paddle.render(this.state.context, this.refs.image);
-                this.state.player2.aiPaddle.render(this.state.context, this.refs.image);
+
+                if(this.props.multiPlayer)
+                    this.state.player2.paddle.render(this.state.context, this.refs.image);
+                else
+                    this.state.player2.aiPaddle.render(this.state.context, this.refs.image);
                 //   this.state.player2.paddle.render(this.state.context, this.refs.image, this.state.player1.posX, this.state.player1.posY);
 
                 //this.state.paddle.render(this.state.context, this.refs.image, this.state.player2.posX, this.state.player2.posY);

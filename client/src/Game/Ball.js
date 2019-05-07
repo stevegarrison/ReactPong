@@ -4,11 +4,6 @@
  * 
  */
 
-/**
-* 
-*      Paddle.js
-* 
-*/
 
 
 class Ball {

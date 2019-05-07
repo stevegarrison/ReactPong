@@ -37,11 +37,10 @@ class AIPaddle extends Paddle {
             return;
         }
 
-        // if (this.m_positionY + this.m_height >= this.m_gameHeight) { 
-        //     this.m_positionY = this.m_positionY + this.m_height;
-        //     return;
-        // }
-
+        if (this.m_positionY + this.m_height >= this.m_gameHeight) { 
+            this.m_positionY = this.m_positionY - this.m_height;
+            return;
+        }
 
         if (_dt >= 0.1)
             _dt = 0.16;
