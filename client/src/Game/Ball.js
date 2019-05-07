@@ -16,7 +16,9 @@ class Ball {
     m_positionX = 400.0;
     m_positionY = 500.0;
     m_velX = 750.0;
-    m_velY = 750.0;
+    m_minVelY = 650.0;
+    m_maxVelY = 950.0;
+    m_currentVelY = 650.0;
 
     m_width = 25;
     m_height = 25;
@@ -25,6 +27,7 @@ class Ball {
     m_originX = 0.0;
     m_originY = 0.0;
     m_ballColor = "red";
+    m_friction = 30.0;
 
     constructor(_gameWidth, _gameHeight, _ballColor) { 
         this.m_gameWidth = _gameWidth;
@@ -39,10 +42,30 @@ class Ball {
         this.m_positionY = this.m_gameHeight / 2;
     }
 
+    addVelY(_amt) { 
+
+        if(this.m_currentVelY <= this.m_maxVelY)
+            this.m_currentVelY += _amt;
+    }
+
+    decelerateVelY(_dt) { 
+        
+        this.m_currentVelY -= this.m_friction * _dt;
+
+        if (this.m_currentVelY < this.m_minVelY) { 
+            this.m_currentVelY = this.m_minVelY;
+        }
+        
+    }
+
+
     update(_dt, _callback) {
 
+      // this.decelerateVelY();
+
         this.m_positionX += this.m_velX * _dt;
-        this.m_positionY += this.m_velY * _dt;
+        console.log(this.m_currentVelY);
+        this.m_positionY += this.m_currentVelY * _dt;
 
 
         var sideHit = "";
@@ -59,7 +82,7 @@ class Ball {
 
         if (this.m_positionY < 0) {
             this.m_positionY += Math.abs(this.m_positionY);
-            this.m_velY *= -1;
+            this.m_currentVelY *= -1;
         }
 
         if (this.m_positionY + this.m_height > this.m_gameHeight) {
@@ -67,7 +90,7 @@ class Ball {
             console.log("amt: " + ((this.m_positionY + this.m_height) - this.m_gameHeight));
             
             this.m_positionY -= ((this.m_positionY + this.m_height) - this.m_gameHeight);
-            this.m_velY *= -1;
+            this.m_currentVelY *= -1;
         }
 
         _callback(sideHit);
@@ -80,7 +103,7 @@ class Ball {
     }
 
     flipVelY() { 
-        this.m_velY *= -1;
+        this.m_currentVelY *= -1;
     }
     
     renderCollisionRect(_context) { 
@@ -96,10 +119,10 @@ class Ball {
        _context.fillStyle = this.m_ballColor;
         // _context.fillRect(this.m_positionX, this.m_positionY, this.m_width, this.m_height);
 
-        // _context.beginPath();
-        // _context.ellipse(this.m_positionX, this.m_positionY, this.m_width/2, this.m_height/2, Math.PI * this.m_width, 0,  Math.PI * this.m_width);
-        // _context.fill();
-       this.renderCollisionRect(_context);
+        _context.beginPath();
+        _context.ellipse(this.m_positionX + this.m_width/2, this.m_positionY + this.m_height/2, this.m_width/2, this.m_height/2, Math.PI * this.m_width, 0,  Math.PI * this.m_width);
+        _context.fill();
+    //    this.renderCollisionRect(_context);
 
     }
 
