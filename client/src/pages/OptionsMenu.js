@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import "../styles/optionsMenu.css"
+import "../styles/optionsMenu.css";
 import API from "../utils/API";
 import { Link } from "react-router-dom";
 import { Input, TextArea, FormBtn } from "../components/Input";
@@ -219,14 +219,14 @@ class Options extends Component {
                       <p className="options-text1 mt-3">(OR choose a preset) </p>
                     </div>
                     <div className="col-md-8">
-                        <button className={`btn player-background m-1 ${"https://cdn.pixabay.com/photo/2017/08/15/08/23/galaxy-2643089_1280.jpg" === this.state.imageURL ? "active2" : ""}`} data-image="https://cdn.pixabay.com/photo/2017/08/15/08/23/galaxy-2643089_1280.jpg" onClick={this.handleImageURL}>Space</button>
-                        <button className={`btn player-background m-1 ${"https://cdn.pixabay.com/photo/2015/07/02/10/19/bamboo-828703_1280.jpg" === this.state.imageURL ? "active2" : ""}`} data-image="https://cdn.pixabay.com/photo/2015/07/02/10/19/bamboo-828703_1280.jpg" onClick={this.handleImageURL}>Jungle</button>
-                        <button className={`btn player-background m-1 ${"https://cdn.pixabay.com/photo/2015/03/26/09/47/sky-690293_1280.jpg" === this.state.imageURL ? "active2" : ""}`} data-image="https://cdn.pixabay.com/photo/2015/03/26/09/47/sky-690293_1280.jpg" onClick={this.handleImageURL}>Clouds</button>
-                        <button className={`btn player-background m-1 ${"https://cdn.pixabay.com/photo/2012/03/04/00/02/animal-21731_1280.jpg" === this.state.imageURL ? "active2" : ""}`} data-image="https://cdn.pixabay.com/photo/2012/03/04/00/02/animal-21731_1280.jpg" onClick={this.handleImageURL}>Ocean</button>
-                        <button className={`btn player-background m-1 ${"https://cdn.pixabay.com/photo/2016/09/07/11/37/tropical-1651426_1280.jpg" === this.state.imageURL ? "active2" : ""}`} data-image="https://cdn.pixabay.com/photo/2016/09/07/11/37/tropical-1651426_1280.jpg" onClick={this.handleImageURL}>Beach</button>
-                        <button className={`btn player-background m-1 ${"https://media3.giphy.com/media/Fh3ezinVpi4yk/giphy.gif?cid=790b76115cd1cbbb47556e436b4fdaaa&rid=giphy.gif" === this.state.imageURL ? "active2" : ""}`} data-image="https://media3.giphy.com/media/Fh3ezinVpi4yk/giphy.gif?cid=790b76115cd1cbbb47556e436b4fdaaa&rid=giphy.gif" onClick={this.handleImageURL}>Winter</button>
-                        <button className={`btn player-background m-1 ${"https://cdn.pixabay.com/photo/2015/03/03/01/51/lava-656827_1280.jpg" === this.state.imageURL ? "active2" : ""}`} data-image="https://cdn.pixabay.com/photo/2015/03/03/01/51/lava-656827_1280.jpg" onClick={this.handleImageURL}>Lava</button>
-                        <button className={`btn player-background m-1 ${"https://cdn.pixabay.com/photo/2016/08/09/21/54/yellowstone-national-park-1581879_1280.jpg" === this.state.imageURL ? "active2" : ""}`} data-image="https://cdn.pixabay.com/photo/2016/08/09/21/54/yellowstone-national-park-1581879_1280.jpg" onClick={this.handleImageURL}>Snow</button>
+                        <button className={`btn player-background m-1 ${"./images/space.jpg" === this.state.imageURL ? "active2" : ""}`} data-image="./images/space.jpg" onClick={this.handleImageURL}>Space</button>
+                        <button className={`btn player-background m-1 ${"./images/jungle.jpg" === this.state.imageURL ? "active2" : ""}`} data-image="./images/jungle.jpg" onClick={this.handleImageURL}>Jungle</button>
+                        <button className={`btn player-background m-1 ${"./images/clouds.jpg" === this.state.imageURL ? "active2" : ""}`} data-image="./images/clouds.jpg" onClick={this.handleImageURL}>Clouds</button>
+                        <button className={`btn player-background m-1 ${"./images/ocean.jpg" === this.state.imageURL ? "active2" : ""}`} data-image="./images/ocean.jpg" onClick={this.handleImageURL}>Ocean</button>
+                        <button className={`btn player-background m-1 ${"./images/beach.jpg" === this.state.imageURL ? "active2" : ""}`} data-image="./images/beach.jpg" onClick={this.handleImageURL}>Beach</button>
+                        <button className={`btn player-background m-1 ${"./images/winter.jpg" === this.state.imageURL ? "active2" : ""}`} data-image="./images/winter.jpg" onClick={this.handleImageURL}>Winter</button>
+                        <button className={`btn player-background m-1 ${"./images/lava.jpg" === this.state.imageURL ? "active2" : ""}`} data-image="./images/lava.jpg" onClick={this.handleImageURL}>Lava</button>
+                        <button className={`btn player-background m-1 ${"./images/snow.jpg" === this.state.imageURL ? "active2" : ""}`} data-image="./images/snow.jpg" onClick={this.handleImageURL}>Snow</button>
                     </div>
                   </div>
                 </div>

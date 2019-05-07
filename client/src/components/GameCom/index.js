@@ -13,7 +13,6 @@ import API from "../../utils/API";
 import AIPaddle from "../../Game/AIPaddle";
 import windowSize from "react-window-size";
 
-
 var contextWait = null;
 let winner = "";
 let width = 0;

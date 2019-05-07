@@ -17,6 +17,10 @@ class Paddle  {
     m_bIsMovingUp = false;
     m_bIsMovingDown = false;
 
+    sfx = {
+        file: "",
+    };
+
     collision = false;
     collisionRect = {
         topLeft: 0.0,

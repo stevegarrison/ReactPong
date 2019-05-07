@@ -56,9 +56,9 @@ class AIPaddle extends Paddle {
 
     trackBall(_posX, _posY, _dt) {
 
-        // if (_posY >= this.m_positionY && _posY <= this.m_positionY + this.m_height) { 
-        //     return;
-        // }
+        if (_posY >= this.m_positionY && _posY <= this.m_positionY + this.m_height) { 
+            return;
+        }
 
         this.m_changeInPosition = Math.abs(_posY - this.m_prevBallPosition);
         if (this.m_changeInPosition >= 15 || this.m_positionX - _posX <= 100) {
