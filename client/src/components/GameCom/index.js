@@ -185,6 +185,8 @@ class GameCom extends Component {
     }
 
     handleKeyUp = _event => {
+
+        this.state.player1.paddle.clearMovingFlags();
         switch (_event.key) {
             case 'w':
                 this.setKey('w', 0);
@@ -329,10 +331,22 @@ class GameCom extends Component {
             if (this.state.context) {
                 this.state.context.clearRect(0, 0, this.state.gameUIWidth, this.state.gameUIHeight);
 
+                // render the line in the middle
+                this.state.context.beginPath();
+                var prevColor = this.state.context.strokeStyle;
+                this.state.context.strokeStyle = this.state.gameBorderColor;
+                this.state.context.moveTo(this.state.gameUIWidth/2, 0);
+                this.state.context.lineTo(this.state.gameUIWidth/2, this.state.gameUIHeight);
+                this.state.context.stroke();
+                this.state.context.strokeStyle = prevColor;
+                this.state.context.closePath();
+
                 // render objects
                 this.state.ball.render(this.state.context, this.refs.ballImg, this.state.gameUIWidth, this.state.gameUIHeight);
                 this.state.player1.paddle.render(this.state.context, this.refs.image);
                 this.state.player2.aiPaddle.render(this.state.context, this.refs.image);
+
+               
                 //   this.state.player2.paddle.render(this.state.context, this.refs.image, this.state.player1.posX, this.state.player1.posY);
 
                 //this.state.paddle.render(this.state.context, this.refs.image, this.state.player2.posX, this.state.player2.posY);
@@ -390,7 +404,6 @@ class GameCom extends Component {
                                         alt="paddleImg" /> */}
 
                                 </canvas>
-                                <p>Press Any Key To Begin</p>
                             </div>
                         </div>
 
