@@ -331,9 +331,16 @@ class GameCom extends Component {
     }
 
     pauseGame() {
+
+
         console.log("game paused");
+
+        var gamePause = true;
+        if (this.state.gamePaused)
+            gamePause = false;
+        
         this.setState({
-            gamePaused: true
+            gamePaused: gamePause
         });
     }
 
@@ -354,7 +361,7 @@ class GameCom extends Component {
         return (
             <div id="modal" className="text-center">
                 <h1 id="pong-text">Paused</h1>
-                <h4> Press  'U'  to resume</h4>
+                <h4> Press  'P'  to resume</h4>
             </div>
         );
     }
