@@ -13,6 +13,7 @@ import API from "../../utils/API";
 import AIPaddle from "../../Game/AIPaddle";
 import windowSize from "react-window-size";
 
+
 var contextWait = null;
 let winner = "";
 let width = 0;
@@ -22,6 +23,10 @@ class GameCom extends Component {
 
     startTime = 0.0;
     m_nScoreToWin = 0;
+
+    audio = {
+        file: "",
+    };
 
     state = {
         //Settings
@@ -40,7 +45,6 @@ class GameCom extends Component {
         gameBorderWidth: "1px",
 
         context: null,
-        // paddle: null,
         ball: null,
         gameUIWidth: 0,
         gameUIHeight: 0,
@@ -48,7 +52,6 @@ class GameCom extends Component {
         player1: {
             paddle: null,
             score: 0
-
         },
 
         player2: {
@@ -71,6 +74,7 @@ class GameCom extends Component {
         // this.update();
         console.log("mounted");
         this.loadOptions(() => {
+
 
             console.log(this.state);
             const canvas = this.refs.canvas;
@@ -327,9 +331,16 @@ class GameCom extends Component {
     }
 
     pauseGame() {
+
+
         console.log("game paused");
+
+        var gamePause = true;
+        if (this.state.gamePaused)
+            gamePause = false;
+        
         this.setState({
-            gamePaused: true
+            gamePaused: gamePause
         });
     }
 
@@ -350,7 +361,7 @@ class GameCom extends Component {
         return (
             <div id="modal" className="text-center">
                 <h1 id="pong-text">Paused</h1>
-                <h4> Press  'U'  to resume</h4>
+                <h4> Press  'P'  to resume</h4>
             </div>
         );
     }
