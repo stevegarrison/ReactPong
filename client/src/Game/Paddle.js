@@ -201,14 +201,24 @@ class Paddle  {
             }
      
             // // top
-            else if (_ball.m_positionY < this.m_positionY) {
-                _ball.m_currentVelY *= -1;   
+            else if (_ball.m_positionY - _ball.m_height < this.m_positionY) {
+
+
+                if(_ball.m_currentVelY > 0)
+                    _ball.m_currentVelY *= -1;   
                 console.log("top");
-                _ball.m_positionY -= (_ball.m_positionY + _ball.m_width) - this.m_positionY;
+                console.log("ball y" + _ball.m_positionY);
+                console.log("ball height" + _ball.m_height);
+                console.log("paddle y "  + this.m_positionY);
+
+                // _ball.m_positionY = _ball.m_positionY - (_ball.m_positionY + _ball.m_height) - this.m_positionY;
+                console.log("ball y" + _ball.m_positionY);
+                _ball.m_positionY -= (_ball.m_positionY + _ball.m_height) - this.m_positionY;
             }
            
             // // bottom
              else if (_ball.m_positionY < this.m_positionY + this.m_height) {
+                if(_ball.m_currentVelY < 0)
                 _ball.m_currentVelY *= -1;   
                 console.log("bottom");
                 _ball.m_positionY += (this.m_positionY + this.m_height) - _ball.m_positionY;
@@ -218,6 +228,10 @@ class Paddle  {
         else {
             this.collision = false;
         }
+        // console.log("ball position type" + typeof( _ball.m_positionY));
+        // console.log("ball height type" + typeof (_ball.m_height));
+        // var t = _ball.m_positionY + _ball.m_height;
+        // console.log("ball height + position" + t);
 
     }
     updateGameSize(_gameWidth, _gameHeight) { 
