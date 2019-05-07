@@ -22,7 +22,7 @@ class Start extends Component {
     return (
       <>
         <div className="text-center">
-          <h1 className="pong-header">PONG!</h1>
+          <h1 className="pong-header glow">PONG!</h1>
 
           {/* Start Button */}
             <Link to={"/game"}><button className="btn m-2">Start Game!</button></Link>

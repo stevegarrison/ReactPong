@@ -23,7 +23,7 @@ canvas {
     font-size:80px;
     font-family: 'Wendy One', sans-serif;
     font-weight:200;
-    text-shadow: 1px 1px 2px rgb(255, 0, 0), 0 0 1em blue, 0 0 0.2em rgb(61, 241, 61);
+    text-shadow: 2px 2px 3px rgb(0, 0, 0), 0 0 1em blue, 0 0 0.2em rgb(193, 241, 61);
 }
 
 .gameUI{
@@ -48,9 +48,8 @@ canvas {
 #modal{
     position: absolute;
     color: rgb(255, 255, 255);
-    text-shadow: 1px 1px 2px rgb(255, 0, 0), 0 0 1em blue, 0 0 0.2em rgb(61, 241, 61);
+    text-shadow: 2px 2px 3px rgb(255, 0, 242), 0 0 1em blue, 0 0 0.2em rgb(61, 241, 61);
     width: 100%;
-    height: 100%;
     margin-top: 250px;
 }
 
@@ -59,4 +58,9 @@ canvas {
     text-shadow: 1px 1px 2px rgb(255, 0, 0), 0 0 1em blue, 0 0 0.2em rgb(61, 241, 61);
     display: flex;
 text-align: center;
+}
+
+#pong-text{
+    font-size: 75px;
+    font-family: 'Wendy One', sans-serif;
 }

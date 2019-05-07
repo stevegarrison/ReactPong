@@ -14,6 +14,7 @@ import AIPaddle from "../../Game/AIPaddle"
 
 
 var contextWait = null;
+let winner = "";
 
 
 class GameCom extends Component {
@@ -31,7 +32,8 @@ class GameCom extends Component {
         imageURL: "",
         gamePaused: false,
         gameStart: true,
-        gameStart2: true,
+        gameStart2: false,
+        gameStart3: false,
         m_bWon: false,
         gameBorderColor: "yellow",
         gameBorderWidth: "1px",
@@ -104,7 +106,6 @@ class GameCom extends Component {
             document.addEventListener("keyup", this.handleKeyUp, false);
             requestAnimationFrame(() => { this.update() });
         });
-        //console.log(canvas);
     }
 
     loadOptions = (_callback) => {
@@ -164,6 +165,7 @@ class GameCom extends Component {
             this.startGame();
             if (_event.keyCode === 32) {
                 this.setState({ gameStart: false });
+                this.setState({ gameStart3: true });
             }
         }
 
@@ -190,10 +192,39 @@ class GameCom extends Component {
                 // case 'what ever letter or keyboard button you want to check':
                 // put whatever you want to happen here
                 // break;
-                default:
-                    break;
-            };
+            default:
+                break;
+        };
+    }
+
+    handleKeyUp = _event => {
+
+        this.state.player1.paddle.clearMovingFlags();
+        switch (_event.key) {
+            case 'w':
+                this.setKey('w', 0);
+                break;
+            case 's':
+                this.setKey('s', 0);
+                break;
+            case 'a':
+                this.setKey('i', 0);
+                break;
+            case 'd':
+                this.setKey('k', 0);
+                break;
+            default:
+                break;
+        };
+    }
+
+    processInput(_deltaTime) {
+
+        if (this.state.keys.w === 1) {
+
+            this.state.player1.paddle.movePaddle("up", _deltaTime);
         }
+    }
 
         handleKeyUp = _event => {
             switch (_event.key) {
@@ -263,22 +294,31 @@ class GameCom extends Component {
             });
         }
 
+        pauseGame2() {
+            return (
+                <div id="modal" className="text-center">
+                    <h1 id="pong-text">Paused</h1>
+                    <h4> Press  'U'  to resume</h4>
+                </div>
+            );
+        }
+
         startGame() {
             return (
                 <div id="modal" className="text-center">
-                    <h1>PONG!</h1>
-                    <h3> Press the SPACEBAR to play</h3>
+                    <h1 id="pong-text">PONG!</h1>
+                    <h3 className="mb-3"> Press the SPACEBAR to play</h3>
+                    <h7> NOTE: You can pause the game at any moment by pressing the 'P' key</h7>
                 </div>
-            )
+            );
         }
 
 
         wonGameLogic() {
             return (
                 <div id="modal" className="text-center">
-                    <h1>GAME OVER</h1>
-                    <h3> Player one wins!</h3>
-                    <h5>Press spacebar to play again</h5>
+                    <h1 className="mb-4" id="pong-text"> {winner} won!</h1>
+                    <h5>Press SPACEBAR to play again</h5>
                 </div>
             )
         }
@@ -300,19 +340,21 @@ class GameCom extends Component {
             if (this.state.player1.score >= this.m_nScoreToWin) {
                 console.log("Player 1 Wins!!!");
                 this.setState({ m_bWon: true });
+                this.setState({ gameStart2: true });
+                winner = "Player One"
                 this.resetGame();
             } else if (this.state.player2.score >= this.m_nScoreToWin) {
                 console.log("Player 2 Wins!!!");
                 this.setState({ m_bWon: true });
+                this.setState({ gameStart2: true });
+                winner = "Player Two"
                 this.resetGame();
             }
         }
 
         update = () => {
 
-            // console.log("game paused: " + this.state.gamePaused);
-            // console.log("game start: " + this.state.gameStart);
-            if (!this.state.gamePaused && !this.state.gameStart) {
+            if (!this.state.gamePaused && !this.state.gameStart && !this.state.m_bWon) {
 
                 // console.log("updating");
 
@@ -411,7 +453,8 @@ class GameCom extends Component {
 
                                     </canvas>
                                     {this.state.m_bWon ? this.wonGameLogic() : ""}
-                                    {this.state.gameStart ? this.startGame() : ""}
+                                    {this.state.gamePaused ? this.pauseGame2() : ""}
+                                    {!this.state.gameStart2 && !this.state.gameStart3 ? this.startGame() : ""}
                                 </div>
                             </div>
 
