@@ -19,8 +19,12 @@ let winner = "";
 let width = 0;
 let height = 0;
 
+let computer = "The Computer";
+
 class GameCom extends Component {
 
+    m_sfxWin = new Audio("./audio/winner.wav");
+    m_sfxLoss = new Audio("./audio/loss.wav");
     startTime = 0.0;
     m_nScoreToWin = 0;
 
@@ -338,7 +342,7 @@ class GameCom extends Component {
         var gamePause = true;
         if (this.state.gamePaused)
             gamePause = false;
-        
+
         this.setState({
             gamePaused: gamePause
         });
@@ -377,11 +381,22 @@ class GameCom extends Component {
     }
 
     wonGameLogic() {
+
         return (
-            <div id="modal" className="text-center">
-                <h1 className="mb-4 glow2" id="pong-text"> {winner} won!</h1>
-                <h5>Press SPACEBAR to play again</h5>
-            </div>
+            <>
+                {(this.props.multiPlayer) ?
+                    
+                    <div id="modal" className="text-center">
+                        <h1 className="mb-4 glow2" id="pong-text"> {winner} won!</h1>
+                        <h5>Press SPACEBAR to play again</h5>
+                    </div>
+                    : 
+                    <div id="modal" className="text-center">
+                        <h1 className="mb-4 glow2" id="pong-text"> {winner === "Player One" ? winner : computer } won!</h1>
+                        <h5>Press SPACEBAR to play again</h5>
+                    </div>
+                }
+            </>
         )
     }
 
@@ -406,18 +421,26 @@ class GameCom extends Component {
 
     checkForWins() {
         if (this.state.player1.score >= this.m_nScoreToWin) {
+            this.m_sfxWin.play();
             console.log("Player 1 Wins!!!");
             this.setState({ m_bWon: true });
             this.setState({ gameStart2: true });
             winner = "Player One"
             this.resetGame();
+
         } else if (this.state.player2.score >= this.m_nScoreToWin) {
+            if(this.props.multiPlayer){
+                this.m_sfxWin.play();
+
+            } else {
+                this.m_sfxLoss.play();
+            }
             console.log("Player 2 Wins!!!");
             this.setState({ m_bWon: true });
             this.setState({ gameStart2: true });
             winner = "Player Two"
             this.resetGame();
-        }
+        } 
     }
 
     update = () => {
@@ -515,16 +538,16 @@ class GameCom extends Component {
                         <div className="col-md-10">
                             {/* Player Scores */}
                             <div className="row player-text mt-3 mb-4">
-                                {this.m_nScoreToWin === 1 ? 
+                                {this.m_nScoreToWin === 1 ?
                                     <div className="col-md-12">
                                         <h2 className="suddenDeath">Sudden Death!</h2>
                                     </div> : <>
-                                    <div className="col-md-6">
-                                        <h2>Player One: {this.state.player1.score}</h2>
-                                    </div>
-                                    <div className="col-md-6">
-                                        <h2>Player Two: {this.state.player2.score}</h2>
-                                </div></> }
+                                        <div className="col-md-6">
+                                            <h2>Player One: {this.state.player1.score}</h2>
+                                        </div>
+                                        <div className="col-md-6">
+                                            <h2>Player Two: {this.state.player2.score}</h2>
+                                        </div></>}
 
                             </div>
 
@@ -532,37 +555,37 @@ class GameCom extends Component {
                             <div className="row">
                                 <canvas
                                     className="gameUI"
-                                        style={{
-                                            border: `${this.state.gameBorderWidth} solid ${this.state.gameBorderColor}`,
-                                            backgroundImage: "url(" + this.state.imageURL + ")",
-                                            backgroundSize: "cover",
-                                            backgroundPosition: "center"
-                                        }}
-                                        width={this.state.gameUIWidth}
-                                        height={this.state.gameUIHeight}
-                                        ref="canvas" >
+                                    style={{
+                                        border: `${this.state.gameBorderWidth} solid ${this.state.gameBorderColor}`,
+                                        backgroundImage: "url(" + this.state.imageURL + ")",
+                                        backgroundSize: "cover",
+                                        backgroundPosition: "center"
+                                    }}
+                                    width={this.state.gameUIWidth}
+                                    height={this.state.gameUIHeight}
+                                    ref="canvas" >
 
 
 
-                                    </canvas>
-                                    {this.state.m_bWon ? this.wonGameLogic() : ""}
-                                    {this.state.gamePaused ? this.pauseGame2() : ""}
-                                    {!this.state.gameStart2 && !this.state.gameStart3 ? this.startGame() : ""}
-                                </div>
+                                </canvas>
+                                {this.state.m_bWon ? this.wonGameLogic() : ""}
+                                {this.state.gamePaused ? this.pauseGame2() : ""}
+                                {!this.state.gameStart2 && !this.state.gameStart3 ? this.startGame() : ""}
                             </div>
+                        </div>
 
-                            <div className="col-md-1">
-                                <div>
-                                    <Link onClick={this.resetGame} to={"/"}><i id="home-icon" className="m-3 fas fa-home fa-2x"></i></Link>
-                                </div>
+                        <div className="col-md-1">
+                            <div>
+                                <Link onClick={this.resetGame} to={"/"}><i id="home-icon" className="m-3 fas fa-home fa-2x"></i></Link>
                             </div>
                         </div>
                     </div>
+                </div>
 
             </>
-                );
-            }
-        
-        };
-        
+        );
+    }
+
+};
+
 export default windowSize(GameCom);
