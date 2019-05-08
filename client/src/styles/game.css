@@ -1,13 +1,4 @@
-html
-{
-height: 100%;
-margin: 0;
-padding: 0;
-}
-
-body
-{
-height: 100%;
+body{
 margin: 0;
 padding: 0;
 background-image: url("./images/BG-IMG.png");
@@ -24,7 +15,10 @@ canvas {
 }
 
 .countdown{
-  top: 0px;
+  font-size: 25px;
+  font-family: sans-serif;
+  font-weight: 600;
+  text-shadow: 3px 3px 3px rgb(0, 0, 0), 0 0 1em rgb(255, 255, 255), 0 0 0.2em rgb(61, 241, 61);
 }
 
 .player-text{

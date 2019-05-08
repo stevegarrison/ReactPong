@@ -62,6 +62,7 @@ class GameCom extends Component {
         m_bWon: false,
         gameBorderColor: "white",
         gameBorderWidth: "1px",
+        events: "false",
 
         context: null,
         ball: null,
@@ -106,9 +107,11 @@ class GameCom extends Component {
                     this.state.player2.aiPaddle.enterTinyPaddleEvent();
                 break;
             case "split-ball":
-
-                for (let i = 0; i < 3; ++i) {
-                    var splitBall = new Ball(this.state.gameUIWidth, this.state.gameUIWidth, "yellow");
+                console.log("creating 3 split balls");
+                for (let i = 0; i < 100; ++i) {
+                    var splitBall = new Ball(this.state.gameUIWidth, this.state.gameUIHeight, "lightgrey");
+                    splitBall.resetBall();
+                    console.log(splitBall.m_positionX + " " + splitBall.m_positionY);
                     this.eventLogic.m_splitBalls.push(splitBall);
                 }
                 break;
@@ -120,25 +123,32 @@ class GameCom extends Component {
 
     updateEvents = _dt => {
 
+        var i = 0;
         switch (this.eventLogic.m_szCurrentEvent) {
             case "split-ball":
 
                 var ballsToRemove = [];
-                for (let i = 0; i < this.eventLogic.m_splitBalls.length; ++i) {
+                for (i = 0; i < this.eventLogic.m_splitBalls.length; ++i) {
 
-                    this.eventLogic.m_splitBalls[i].update(_dt, function (_sideHit) {
+                    this.eventLogic.m_splitBalls[i].update(_dt, _sideHit => {
 
                         switch (_sideHit) {
                             case "left":
-                                this.eventLogic.m_splitBalls.splice(i, 1);
+
+                                ballsToRemove.push(this.eventLogic.m_splitBalls.splice(i, 1));
                                 break;
                             case "right":
-                                this.eventLogic.m_splitBalls.splice(i, 1);
+                                ballsToRemove.push(this.eventLogic.m_splitBalls.splice(i, 1));
                                 break;
                             default:
                         };
+
+
                     });
+                    console.log("splitballslength " + this.eventLogic.m_splitBalls.length);
+
                 }
+
 
                 break;
             case "tiny-paddle":
@@ -165,12 +175,13 @@ class GameCom extends Component {
 
 
     renderEvents() {
-        console.log("rendering events");
+        //console.log("rendering events");
 
-        switch (this.m_szCurrentEvent) {
+        switch (this.eventLogic.m_szCurrentEvent) {
             case "split-ball":
+                //console.log("rendering splitballs");
                 for (let i = 0; i < this.eventLogic.m_splitBalls.length; ++i) {
-                    this.eventLogic.m_splitBalls.render(this.state.context, null, 0, 0);
+                    this.eventLogic.m_splitBalls[i].render(this.state.context, 0, 0, 0);
                 }
                 break;
             case "no-event":
@@ -297,6 +308,9 @@ class GameCom extends Component {
                 this.m_nScoreToWin = res.data[0].value;
                 console.log("bc: " + this.state.ballColor);
                 console.log(this.state);
+                if (this.state.multiBall === "true" || this.state.paddleShrink === "true" || this.state.fastBall === "true") {
+                    this.setState({ events: "true" });
+                }
                 _callback();
             })
             .catch(err => console.log("GameCon console", err));
@@ -379,9 +393,7 @@ class GameCom extends Component {
                 break;
             case 't':
                 // this.startEvent("fast-ball");
-            this.startEvent("split-ball");
-            case 'e':
-                this.startEvent("tiny-paddle");
+                this.startEvent("split-ball");
 
                 break;
             // case 'what ever letter or keyboard button you want to check':
@@ -457,9 +469,6 @@ class GameCom extends Component {
 
     pauseGame() {
 
-
-        console.log("game paused");
-
         var gamePause = true;
         if (this.state.gamePaused)
             gamePause = false;
@@ -492,17 +501,17 @@ class GameCom extends Component {
     }
 
     startGame() {
-        if(this.state.paddleShrink || this.state.multiBall || this.state.fastBall) {
-            
+        if (this.state.paddleShrink || this.state.multiBall || this.state.fastBall) {
+
         }
 
         return (
             <>
-            <div id="modal" className="text-center">
-                <h1 id="pong-text">PONG!</h1>
-                <h3 className="mb-3"> Press the SPACEBAR to play</h3>
-                <h7> NOTE: You can pause the game at any moment by pressing the 'P' key</h7>
-            </div>
+                <div id="modal" className="text-center">
+                    <h1 id="pong-text">PONG!</h1>
+                    <h3 className="mb-3"> Press the SPACEBAR to play</h3>
+                    <h7> NOTE: You can pause the game at any moment by pressing the 'P' key</h7>
+                </div>
             </>
         );
     }
@@ -682,8 +691,13 @@ class GameCom extends Component {
                                         <div className="col-md-6">
                                             <h2>Player Two: {this.state.player2.score}</h2>
                                         </div></>}
-
+                               {this.state.events === "true" ? 
+                                <div className="countdown col-md-12">Event in: {m_nTimeTillEvent}</div> 
+                                : 
+                                null
+                                }
                             </div>
+
 
                             {/* Game UI */}
                             <div className="row">
