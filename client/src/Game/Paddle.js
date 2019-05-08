@@ -6,6 +6,10 @@
 
 class Paddle  {
 
+
+    eventLogic = {
+        m_prevSize: 0
+    };
     m_positionX = 10.0;
     m_positionY = 10.0;
     m_velocityX = 300.0;
@@ -84,6 +88,16 @@ class Paddle  {
     //             this.setState({ positionY: this.state.positionY + 30.0 });
     //     } 
     // }
+
+    enterTinyPaddleEvent() { 
+        this.eventLogic.m_prevSize = this.m_height;
+        this.m_height = 65;
+
+    }
+    exitTinyPaddleEvent() { 
+
+        this.m_height = this.eventLogic.m_prevSize;
+    }
 
     clearMovingFlags() { 
         this.m_bIsMovingUp = false;
