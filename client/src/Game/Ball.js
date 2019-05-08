@@ -25,19 +25,42 @@ class Ball {
     m_originY = 0.0;
     m_ballColor = "red";
     m_friction = 100.0;
+    m_bFastBallEvent = false;
+
+    delayLogic = {
+        m_dCurrentDelayTime :  0.0,
+        m_dMaxDelayTime :  1.0
+    };
     
 
     constructor(_gameWidth, _gameHeight, _ballColor) { 
         this.m_gameWidth = _gameWidth;
         this.m_gameHeight = _gameHeight;
         this.m_ballColor = _ballColor;
-    //     console.log("widht " + this.m_gameWidth);
-    //     console.log("height " + this.m_gameHeight);
     }
     
     placeAtOrigin() { 
         this.m_positionX = this.m_gameWidth / 2 - this.m_width/2;
         this.m_positionY = this.m_gameHeight / 2;
+    }
+
+    enterFastBallEvent() { 
+        this.m_bFastBallEvent = true;
+
+       // this.m_currentVelY = m_currentVelY + (m_currentVelY * 0.5);
+        if (this.m_velX > 0)
+            this.m_velX = 1700.0;
+        else
+            this.m_velX = -1700.0;
+
+    }
+    exitFastBallEvent() { 
+        this.m_bFastBallEvent = false;
+        if (this.m_velX > 0)
+            this.m_velX = 750.0;
+        else
+            this.m_velX = -750.0;
+
     }
 
     resetBall() { 
@@ -53,9 +76,11 @@ class Ball {
         if (Math.floor(Math.random() * 3) === 0)
             this.m_velX *= -1;
         this.placeAtOrigin();
+        this.exitFastBallEvent();
     }
 
     addVelY() { 
+
         var amtToAdd = 350;
         if (this.m_currentVelY < 0) {
 
@@ -77,6 +102,7 @@ class Ball {
     }
 
     decelerateVelY(_dt) { 
+
         if (this.m_currentVelY < 0) {
            
             this.m_currentVelY += this.m_friction * _dt;

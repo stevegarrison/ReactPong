@@ -4,6 +4,7 @@
  * 
  */
 
+
 import React, { Component } from "react"
 import Paddle from "../../Game/Paddle"
 import Ball from "../../Game/Ball"
@@ -12,6 +13,7 @@ import "../../styles/game.css"
 import API from "../../utils/API";
 import AIPaddle from "../../Game/AIPaddle";
 import windowSize from "react-window-size";
+import { SSL_OP_SSLEAY_080_CLIENT_DH_BUG } from "constants";
 
 
 var contextWait = null;
@@ -23,6 +25,15 @@ class GameCom extends Component {
 
     startTime = 0.0;
     m_nScoreToWin = 0;
+
+    eventLogic = {
+        m_szCurrentEvent: "no-event",
+        m_splitBalls: [],
+        m_tinyPaddleEvent: false,
+        m_nMaxTinyPaddleTime: 10,
+        m_dCurTime: 0.0
+
+    };
 
     audio = {
         file: "",
@@ -67,6 +78,108 @@ class GameCom extends Component {
             k: 0
         }
     };
+
+
+    startEvent(_eventName) {
+
+        this.eventLogic.m_szCurrentEvent = _eventName;
+        switch (this.eventLogic.m_szCurrentEvent) {
+            case "fast-ball":
+                this.state.ball.enterFastBallEvent();
+                break;
+            case "tiny-paddle":
+                this.eventLogic.m_dCurTime = 0.0;
+                this.eventLogic.m_tinyPaddleEvent = true;
+                this.state.player1.paddle.enterTinyPaddleEvent();
+
+                if (this.props.multiPlayer)
+                    this.state.player2.paddle.enterTinyPaddleEvent();
+                else
+                    this.state.player2.aiPaddle.enterTinyPaddleEvent();
+                break;
+            case "split-ball":
+                
+            for (let i = 0; i < 3; ++i) {
+                var splitBall = new Ball(this.state.gameUIWidth, this.state.gameUIWidth, "yellow");
+                this.eventLogic.m_splitBalls.push(splitBall);
+            }
+                break;
+            case "no-event":
+                break;
+            default:
+        };
+    }
+
+    updateEvents(_dt) {
+
+        switch (this.eventLogic.m_szCurrentEvent) {
+            case "split-ball":
+                
+                for (let i = 0; i < 3; ++i) {
+                    this.eventLogic.m_splitBalls[i].update(_dt, function (_sideHit) { 
+
+                        switch (_sideHit) { 
+                            case "left":
+                                break;
+                            case "right":
+                                break;
+                                default:
+                        };
+                    });
+            }
+                
+                break;
+            case "tiny-paddle":
+                this.eventLogic.m_dCurTime += _dt;
+                console.log("current time: " + this.eventLogic.m_dCurTime);
+                if (this.eventLogic.m_dCurTime >= this.eventLogic.m_nMaxTinyPaddleTime) {
+                    this.eventLogic.m_tinyPaddleEvent = false;
+                    this.eventLogic.m_dCurTime = 0.0;
+                    this.state.player1.paddle.exitTinyPaddleEvent();
+
+                    if (this.props.multiPlayer)
+                        this.state.player2.paddle.exitTinyPaddleEvent();
+                    else
+                        this.state.player2.aiPaddle.exitTinyPaddleEvent();
+                    this.startEvent("no-event");
+                }
+
+                break;
+            case "no-event":
+                break;
+            default:
+        };
+    }
+    endEvent(_eventName) {
+
+        switch (this.m_szCurrentEvent) {
+            case "fast-ball":
+                //  this.state.ball.exitFastBallEvent();
+                break;
+            case "tiny-paddle":
+                break;
+            case "split-ball":
+                break;
+            case "no-event":
+                break;
+            default:
+        };
+    }
+
+    renderEvents() {
+
+        switch (this.m_szCurrentEvent) {
+            case "fast-ball":
+                break;
+            case "tiny-paddle":
+                break;
+            case "split-ball":
+                break;
+            case "no-event":
+                break;
+            default:
+        };
+    }
 
 
     componentDidMount() {
@@ -114,6 +227,10 @@ class GameCom extends Component {
             else { // else its in 1 player mode
                 this.state.player2.aiPaddle = new AIPaddle(this.state.gameUIWidth, this.state.gameUIHeight, this.state.player2Color, this.state.player2Size);
                 this.state.player2.aiPaddle.setPositionX(this.state.gameUIWidth - 100);
+                this.state.player2.aiPaddle.setNormalMode();
+
+                if (this.props.practiceMode)
+                    this.state.player2.aiPaddle.setPracticeMode();
 
             }
 
@@ -259,6 +376,11 @@ class GameCom extends Component {
             case 'u':
                 this.unPauseGame();
                 break;
+            case 't':
+                //this.startEvent("fast-ball");
+                this.startEvent("fast-ball");
+
+                break;
             // case 'what ever letter or keyboard button you want to check':
             // put whatever you want to happen here
             // break;
@@ -338,7 +460,7 @@ class GameCom extends Component {
         var gamePause = true;
         if (this.state.gamePaused)
             gamePause = false;
-        
+
         this.setState({
             gamePaused: gamePause
         });
@@ -431,6 +553,9 @@ class GameCom extends Component {
             var deltaTime = (currentTime - this.startTime) / 1000;
             this.startTime = currentTime;
 
+            // update events
+            this.updateEvents(deltaTime);
+
             if (this.props.multiPlayer) {
 
             }
@@ -515,16 +640,16 @@ class GameCom extends Component {
                         <div className="col-md-10">
                             {/* Player Scores */}
                             <div className="row player-text mt-3 mb-4">
-                                {this.m_nScoreToWin === 1 ? 
+                                {this.m_nScoreToWin === 1 ?
                                     <div className="col-md-12">
                                         <h2 className="suddenDeath">Sudden Death!</h2>
                                     </div> : <>
-                                    <div className="col-md-6">
-                                        <h2>Player One: {this.state.player1.score}</h2>
-                                    </div>
-                                    <div className="col-md-6">
-                                        <h2>Player Two: {this.state.player2.score}</h2>
-                                </div></> }
+                                        <div className="col-md-6">
+                                            <h2>Player One: {this.state.player1.score}</h2>
+                                        </div>
+                                        <div className="col-md-6">
+                                            <h2>Player Two: {this.state.player2.score}</h2>
+                                        </div></>}
 
                             </div>
 
@@ -532,37 +657,37 @@ class GameCom extends Component {
                             <div className="row">
                                 <canvas
                                     className="gameUI"
-                                        style={{
-                                            border: `${this.state.gameBorderWidth} solid ${this.state.gameBorderColor}`,
-                                            backgroundImage: "url(" + this.state.imageURL + ")",
-                                            backgroundSize: "cover",
-                                            backgroundPosition: "center"
-                                        }}
-                                        width={this.state.gameUIWidth}
-                                        height={this.state.gameUIHeight}
-                                        ref="canvas" >
+                                    style={{
+                                        border: `${this.state.gameBorderWidth} solid ${this.state.gameBorderColor}`,
+                                        backgroundImage: "url(" + this.state.imageURL + ")",
+                                        backgroundSize: "cover",
+                                        backgroundPosition: "center"
+                                    }}
+                                    width={this.state.gameUIWidth}
+                                    height={this.state.gameUIHeight}
+                                    ref="canvas" >
 
 
 
-                                    </canvas>
-                                    {this.state.m_bWon ? this.wonGameLogic() : ""}
-                                    {this.state.gamePaused ? this.pauseGame2() : ""}
-                                    {!this.state.gameStart2 && !this.state.gameStart3 ? this.startGame() : ""}
-                                </div>
+                                </canvas>
+                                {this.state.m_bWon ? this.wonGameLogic() : ""}
+                                {this.state.gamePaused ? this.pauseGame2() : ""}
+                                {!this.state.gameStart2 && !this.state.gameStart3 ? this.startGame() : ""}
                             </div>
+                        </div>
 
-                            <div className="col-md-1">
-                                <div>
-                                    <Link onClick={this.resetGame} to={"/"}><i id="home-icon" className="m-3 fas fa-home fa-2x"></i></Link>
-                                </div>
+                        <div className="col-md-1">
+                            <div>
+                                <Link onClick={this.resetGame} to={"/"}><i id="home-icon" className="m-3 fas fa-home fa-2x"></i></Link>
                             </div>
                         </div>
                     </div>
+                </div>
 
             </>
-                );
-            }
-        
-        };
-        
+        );
+    }
+
+};
+
 export default windowSize(GameCom);

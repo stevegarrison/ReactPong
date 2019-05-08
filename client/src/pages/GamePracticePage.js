@@ -2,14 +2,14 @@ import React, { Component } from "react";
 import GameCom from "../components/GameCom"
 
 
-class GameAIPage extends Component {
+class GamePage extends Component {
     render() {
         return (
             <>
-                <GameCom multiPlayer={1} practiceMode={0}></GameCom>
+                <GameCom multiPlayer={0} practiceMode={1}></GameCom>
             </>
         );
     }
 }
 
-export default GameAIPage;
+export default GamePage;
