@@ -20,8 +20,8 @@ var contextWait = null;
 let winner = "";
 let width = 0;
 let height = 0;
-
 let computer = "The Computer";
+let m_nTimeTillEvent = 10;
 
 class GameCom extends Component {
 
@@ -30,13 +30,14 @@ class GameCom extends Component {
     startTime = 0.0;
     m_nScoreToWin = 0;
 
+
     eventLogic = {
         m_szCurrentEvent: "no-event",
         m_splitBalls: [],
         m_tinyPaddleEvent: false,
         m_nMaxTinyPaddleTime: 10,
         m_dCurTime: 0.0,
-        m_dMaxEventTimer : 0.0
+        m_dMaxEventTimer: 0.0
 
     };
 
@@ -54,6 +55,9 @@ class GameCom extends Component {
         player2Size: 130,
         ballColor: "white",
         imageURL: "",
+        fastBall: "false",
+        paddleShrink: "false",
+        multiBall: "false",
         gamePaused: false,
         gameStart: true,
         gameStart2: false,
@@ -61,6 +65,7 @@ class GameCom extends Component {
         m_bWon: false,
         gameBorderColor: "white",
         gameBorderWidth: "1px",
+        events: "false",
 
         context: null,
         ball: null,
@@ -89,7 +94,7 @@ class GameCom extends Component {
 
     startEvent(_eventName) {
 
-        this.setState({m_szCurrentEvent : _eventName});
+        this.setState({ m_szCurrentEvent: _eventName });
         //this.eventLogic.m_szCurrentEvent = _eventName;
         switch (this.eventLogic.m_szCurrentEvent) {
             case "fast-ball":
@@ -110,7 +115,7 @@ class GameCom extends Component {
                 for (let i = 0; i < 100; ++i) {
                     var splitBall = new Ball(this.state.gameUIWidth, this.state.gameUIHeight, "lightgrey");
                     splitBall.resetBall();
-                    console.log(splitBall.m_positionX + " " +  splitBall.m_positionY);
+                    console.log(splitBall.m_positionX + " " + splitBall.m_positionY);
                     this.eventLogic.m_splitBalls.push(splitBall);
                 }
                 break;
@@ -128,26 +133,27 @@ class GameCom extends Component {
 
                 var ballsToRemove = [];
                 for (i = 0; i < this.eventLogic.m_splitBalls.length; ++i) {
-                
+
                     this.eventLogic.m_splitBalls[i].update(_dt, _sideHit => {
 
                         switch (_sideHit) {
                             case "left":
-                                
-                               ballsToRemove.push( this.eventLogic.m_splitBalls.splice(i, 1));
+
+                                ballsToRemove.push(this.eventLogic.m_splitBalls.splice(i, 1));
                                 break;
                             case "right":
-                            ballsToRemove.push(this.eventLogic.m_splitBalls.splice(i, 1));
+                                ballsToRemove.push(this.eventLogic.m_splitBalls.splice(i, 1));
                                 break;
                             default:
                         };
 
-                    
+
                     });
                     console.log("splitballslength " + this.eventLogic.m_splitBalls.length);
-                    
+
                 }
-                
+
+
 
                 break;
             case "tiny-paddle":
@@ -171,7 +177,7 @@ class GameCom extends Component {
             default:
         };
     }
-    
+
 
     renderEvents() {
         //console.log("rendering events");
@@ -207,7 +213,7 @@ class GameCom extends Component {
             console.log("DidMount height: " + height);
             console.log("DidMount width: " + width);
             this.state.gameUIWidth = width * .85;
-            this.state.gameUIHeight = height * .8;
+            this.state.gameUIHeight = height * .77;
 
             const color = "white";
             if (!this.state.player1Color)
@@ -299,11 +305,17 @@ class GameCom extends Component {
                     player2Color: res.data[0].player2Color,
                     player2Size: res.data[0].player2Size,
                     ballColor: res.data[0].ballColor,
-                    imageURL: res.data[0].imageURL
+                    imageURL: res.data[0].imageURL,
+                    multiBall: res.data[0].multiBall,
+                    paddleShrink: res.data[0].paddleShrink,
+                    fastBall: res.data[0].fastBall
                 });
                 this.m_nScoreToWin = res.data[0].value;
                 console.log("bc: " + this.state.ballColor);
                 console.log(this.state);
+                if (this.state.multiBall === "true" || this.state.paddleShrink === "true" || this.state.fastBall === "true") {
+                    this.setState({ events: "true" });
+                }
                 _callback();
             })
             .catch(err => console.log("GameCon console", err));
@@ -494,12 +506,18 @@ class GameCom extends Component {
     }
 
     startGame() {
+        if (this.state.paddleShrink || this.state.multiBall || this.state.fastBall) {
+
+        }
+
         return (
-            <div id="modal" className="text-center">
-                <h1 id="pong-text">PONG!</h1>
-                <h3 className="mb-3"> Press the SPACEBAR to play</h3>
-                <h7> NOTE: You can pause the game at any moment by pressing the 'P' key</h7>
-            </div>
+            <>
+                <div id="modal" className="text-center">
+                    <h1 id="pong-text">PONG!</h1>
+                    <h3 className="mb-3"> Press the SPACEBAR to play</h3>
+                    <h7> NOTE: You can pause the game at any moment by pressing the 'P' key</h7>
+                </div>
+            </>
         );
     }
 
@@ -508,14 +526,14 @@ class GameCom extends Component {
         return (
             <>
                 {(this.props.multiPlayer) ?
-                    
+
                     <div id="modal" className="text-center">
                         <h1 className="mb-4 glow2" id="pong-text"> {winner} won!</h1>
                         <h5>Press SPACEBAR to play again</h5>
                     </div>
-                    : 
+                    :
                     <div id="modal" className="text-center">
-                        <h1 className="mb-4 glow2" id="pong-text"> {winner === "Player One" ? winner : computer } won!</h1>
+                        <h1 className="mb-4 glow2" id="pong-text"> {winner === "Player One" ? winner : computer} won!</h1>
                         <h5>Press SPACEBAR to play again</h5>
                     </div>
                 }
@@ -552,7 +570,7 @@ class GameCom extends Component {
             this.resetGame();
 
         } else if (this.state.player2.score >= this.m_nScoreToWin) {
-            if(this.props.multiPlayer){
+            if (this.props.multiPlayer) {
                 this.m_sfxWin.play();
 
             } else {
@@ -563,7 +581,7 @@ class GameCom extends Component {
             this.setState({ gameStart2: true });
             winner = "Player Two"
             this.resetGame();
-        } 
+        }
     }
 
     update = () => {
@@ -584,24 +602,24 @@ class GameCom extends Component {
 
                 var numToChooseEvent = Math.floor(Math.random() * 3);
 
-                if (numToChooseEvent === 0) { 
+                if (numToChooseEvent === 0) {
                     this.startEvent("fast-ball");
                 }
-                else if(numToChooseEvent === 1) {
+                else if (numToChooseEvent === 1) {
                     this.startEvent("split-ball");
 
                 }
-                    else if(numToChooseEvent === 2) {
-                        this.startEvent("tiny-paddle");
+                else if (numToChooseEvent === 2) {
+                    this.startEvent("tiny-paddle");
 
                 }
-                
-                this.setState({m_dNextEventTimer : 3.0});
+
+                this.setState({ m_dNextEventTimer: 3.0 });
             }
-            else { 
-                this.setState({m_dNextEventTimer : this.state.m_dNextEventTimer - deltaTime});
+            else {
+                this.setState({ m_dNextEventTimer: this.state.m_dNextEventTimer - deltaTime });
             }
-            
+
             // update events
             this.updateEvents(deltaTime);
             //////////////////////////////////////////////////////
@@ -666,7 +684,7 @@ class GameCom extends Component {
                     this.state.player2.paddle.render(this.state.context, this.refs.image);
                 else
                     this.state.player2.aiPaddle.render(this.state.context, this.refs.image);
-                
+
                 // rende events
                 this.renderEvents();
 
@@ -698,18 +716,22 @@ class GameCom extends Component {
                                     <div className="col-md-12">
                                         <h2 className="suddenDeath">Sudden Death!</h2>
                                     </div> : <>
-                                        <div className="col-md-6">
+                                        <div className="col-md-3">
                                             <h2>Player One: {this.state.player1.score}</h2>
                                         </div>
-                                        <div>
-                                            <h2>Current Event: {this.eventLogic.m_szCurrentEvent}</h2>
-                                            <h2>Next Event Timer: {this.state.m_dNextEventTimer}</h2>
-                                        </div>
-                                        <div className="col-md-6">
+                                        {this.state.events === "true" ?
+                                            <div className="col-md-6">
+                                                <h2>Current Event: {this.eventLogic.m_szCurrentEvent}</h2>
+                                                <h2>Event in: {this.state.m_dNextEventTimer}</h2>
+                                            </div>
+                                            :
+                                            <div className="col-md-6"></div>
+                                        }
+                                        <div className="col-md-3">
                                             <h2>Player Two: {this.state.player2.score}</h2>
                                         </div></>}
-
                             </div>
+
 
                             {/* Game UI */}
                             <div className="row">
@@ -719,7 +741,8 @@ class GameCom extends Component {
                                         border: `${this.state.gameBorderWidth} solid ${this.state.gameBorderColor}`,
                                         backgroundImage: "url(" + this.state.imageURL + ")",
                                         backgroundSize: "cover",
-                                        backgroundPosition: "center"
+                                        backgroundPosition: "center",
+                                        marginBottom: "20px"
                                     }}
                                     width={this.state.gameUIWidth}
                                     height={this.state.gameUIHeight}

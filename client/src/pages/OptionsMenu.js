@@ -23,12 +23,12 @@ class Options extends Component {
     player2Color: "",
     ballColor: "",
     imageURL: "",
-    player1Size: 0,
-    player2Size: 0,
+    player1Size: 130,
+    player2Size: 130,
     value: 5,
-    multiBall: "",
-    paddleShrink: "",
-    fastBall: ""
+    multiBall: "false",
+    paddleShrink: "false",
+    fastBall: "false"
   };
 
   handleScoreChange = value => {
