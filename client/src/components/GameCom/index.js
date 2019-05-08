@@ -20,8 +20,8 @@ var contextWait = null;
 let winner = "";
 let width = 0;
 let height = 0;
-
 let computer = "The Computer";
+let m_nTimeTillEvent = 10;
 
 class GameCom extends Component {
 
@@ -29,6 +29,7 @@ class GameCom extends Component {
     m_sfxLoss = new Audio("./audio/loss.wav");
     startTime = 0.0;
     m_nScoreToWin = 0;
+
 
     eventLogic = {
         m_szCurrentEvent: "no-event",
@@ -51,6 +52,9 @@ class GameCom extends Component {
         player2Size: 130,
         ballColor: "white",
         imageURL: "",
+        fastBall: "false",
+        paddleShrink: "false",
+        multiBall: "false",
         gamePaused: false,
         gameStart: true,
         gameStart2: false,
@@ -102,11 +106,11 @@ class GameCom extends Component {
                     this.state.player2.aiPaddle.enterTinyPaddleEvent();
                 break;
             case "split-ball":
-                
-            for (let i = 0; i < 3; ++i) {
-                var splitBall = new Ball(this.state.gameUIWidth, this.state.gameUIWidth, "yellow");
-                this.eventLogic.m_splitBalls.push(splitBall);
-            }
+
+                for (let i = 0; i < 3; ++i) {
+                    var splitBall = new Ball(this.state.gameUIWidth, this.state.gameUIWidth, "yellow");
+                    this.eventLogic.m_splitBalls.push(splitBall);
+                }
                 break;
             case "no-event":
                 break;
@@ -121,7 +125,7 @@ class GameCom extends Component {
 
                 var ballsToRemove = [];
                 for (let i = 0; i < this.eventLogic.m_splitBalls.length; ++i) {
-                
+
                     this.eventLogic.m_splitBalls[i].update(_dt, function (_sideHit) {
 
                         switch (_sideHit) {
@@ -158,7 +162,7 @@ class GameCom extends Component {
             default:
         };
     }
-    
+
 
     renderEvents() {
         console.log("rendering events");
@@ -167,7 +171,7 @@ class GameCom extends Component {
             case "split-ball":
                 for (let i = 0; i < this.eventLogic.m_splitBalls.length; ++i) {
                     this.eventLogic.m_splitBalls.render(this.state.context, null, 0, 0);
-                }                
+                }
                 break;
             case "no-event":
                 break;
@@ -374,8 +378,10 @@ class GameCom extends Component {
                 this.unPauseGame();
                 break;
             case 't':
-                this.startEvent("fast-ball");
-                // this.startEvent("split-ball");
+                // this.startEvent("fast-ball");
+            this.startEvent("split-ball");
+            case 'e':
+                this.startEvent("tiny-paddle");
 
                 break;
             // case 'what ever letter or keyboard button you want to check':
@@ -486,12 +492,18 @@ class GameCom extends Component {
     }
 
     startGame() {
+        if(this.state.paddleShrink || this.state.multiBall || this.state.fastBall) {
+            
+        }
+
         return (
+            <>
             <div id="modal" className="text-center">
                 <h1 id="pong-text">PONG!</h1>
                 <h3 className="mb-3"> Press the SPACEBAR to play</h3>
                 <h7> NOTE: You can pause the game at any moment by pressing the 'P' key</h7>
             </div>
+            </>
         );
     }
 
@@ -500,14 +512,14 @@ class GameCom extends Component {
         return (
             <>
                 {(this.props.multiPlayer) ?
-                    
+
                     <div id="modal" className="text-center">
                         <h1 className="mb-4 glow2" id="pong-text"> {winner} won!</h1>
                         <h5>Press SPACEBAR to play again</h5>
                     </div>
-                    : 
+                    :
                     <div id="modal" className="text-center">
-                        <h1 className="mb-4 glow2" id="pong-text"> {winner === "Player One" ? winner : computer } won!</h1>
+                        <h1 className="mb-4 glow2" id="pong-text"> {winner === "Player One" ? winner : computer} won!</h1>
                         <h5>Press SPACEBAR to play again</h5>
                     </div>
                 }
@@ -544,7 +556,7 @@ class GameCom extends Component {
             this.resetGame();
 
         } else if (this.state.player2.score >= this.m_nScoreToWin) {
-            if(this.props.multiPlayer){
+            if (this.props.multiPlayer) {
                 this.m_sfxWin.play();
 
             } else {
@@ -555,7 +567,7 @@ class GameCom extends Component {
             this.setState({ gameStart2: true });
             winner = "Player Two"
             this.resetGame();
-        } 
+        }
     }
 
     update = () => {
@@ -632,7 +644,7 @@ class GameCom extends Component {
                     this.state.player2.paddle.render(this.state.context, this.refs.image);
                 else
                     this.state.player2.aiPaddle.render(this.state.context, this.refs.image);
-                
+
                 // rende events
                 this.renderEvents();
 
