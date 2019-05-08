@@ -21,7 +21,7 @@ class Paddle  {
     m_gameHeight = 0;
     m_bIsMovingUp = false;
     m_bIsMovingDown = false;
-    m_sfxPositive = new Audio("./audio/positive.mp3");
+    m_sfxPositive = new Audio("./audio/ping.wav");
 
     // sfx = {
     //     handle: null,

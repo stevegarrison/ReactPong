@@ -21,8 +21,12 @@ let winner = "";
 let width = 0;
 let height = 0;
 
+let computer = "The Computer";
+
 class GameCom extends Component {
 
+    m_sfxWin = new Audio("./audio/winner.wav");
+    m_sfxLoss = new Audio("./audio/loss.wav");
     startTime = 0.0;
     m_nScoreToWin = 0;
 
@@ -499,11 +503,22 @@ class GameCom extends Component {
     }
 
     wonGameLogic() {
+
         return (
-            <div id="modal" className="text-center">
-                <h1 className="mb-4 glow2" id="pong-text"> {winner} won!</h1>
-                <h5>Press SPACEBAR to play again</h5>
-            </div>
+            <>
+                {(this.props.multiPlayer) ?
+                    
+                    <div id="modal" className="text-center">
+                        <h1 className="mb-4 glow2" id="pong-text"> {winner} won!</h1>
+                        <h5>Press SPACEBAR to play again</h5>
+                    </div>
+                    : 
+                    <div id="modal" className="text-center">
+                        <h1 className="mb-4 glow2" id="pong-text"> {winner === "Player One" ? winner : computer } won!</h1>
+                        <h5>Press SPACEBAR to play again</h5>
+                    </div>
+                }
+            </>
         )
     }
 
@@ -528,18 +543,26 @@ class GameCom extends Component {
 
     checkForWins() {
         if (this.state.player1.score >= this.m_nScoreToWin) {
+            this.m_sfxWin.play();
             console.log("Player 1 Wins!!!");
             this.setState({ m_bWon: true });
             this.setState({ gameStart2: true });
             winner = "Player One"
             this.resetGame();
+
         } else if (this.state.player2.score >= this.m_nScoreToWin) {
+            if(this.props.multiPlayer){
+                this.m_sfxWin.play();
+
+            } else {
+                this.m_sfxLoss.play();
+            }
             console.log("Player 2 Wins!!!");
             this.setState({ m_bWon: true });
             this.setState({ gameStart2: true });
             winner = "Player Two"
             this.resetGame();
-        }
+        } 
     }
 
     update = () => {
