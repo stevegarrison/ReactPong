@@ -178,7 +178,10 @@ class GameCom extends Component {
                     player2Color: res.data[0].player2Color,
                     player2Size: res.data[0].player2Size,
                     ballColor: res.data[0].ballColor,
-                    imageURL: res.data[0].imageURL
+                    imageURL: res.data[0].imageURL,
+                    multiBall: res.data[0].multiBall,
+                    paddleShrink: res.data[0].paddleShrink,
+                    fastBall: res.data[0].fastBall
                 });
                 this.m_nScoreToWin = res.data[0].value;
                 console.log("bc: " + this.state.ballColor);
