@@ -16,15 +16,24 @@ class AIPaddle extends Paddle {
     m_bIsDelayed = false;
     m_prevBallPosition = 0.0;
     m_changeInPosition = 0.0;
+    m_bPracticeMode = false;
 
     constructor(_gameWidth, _gameHeight, _color, _paddleHeight) { 
 
         super(_gameWidth, _gameHeight, _color, _paddleHeight);
         this.findNextDelayTime();
-
         
     }
 
+    setPracticeMode() {
+        this.m_bPracticeMode = true;
+        this.m_velocityY = 1000.0;
+     }
+
+    setNormalMode() { 
+        this.m_bPracticeMode = false;
+        this.m_velocityY = 720.0;
+    }
     findNextDelayTime() { 
         this.m_dNextDelayTime = (Math.random() * 5) + 1;
         this.m_dDelayTime = ((Math.random() * 100) + 1)/ 100;
@@ -32,8 +41,8 @@ class AIPaddle extends Paddle {
 
     moveToBall(_targetPosY, _dt) { 
 
-        if (this.m_positionY <= 10) {
-            this.m_positionY = 11;
+        if (this.m_positionY <= 0) {
+            this.m_positionY = 1;
             return;
         }
 
@@ -42,8 +51,7 @@ class AIPaddle extends Paddle {
             return;
         }
 
-        if (_dt >= 0.1)
-            _dt = 0.16;
+        
         if (_targetPosY < this.m_positionY + this.m_height/2) { // moving up
             this.m_bIsMovingUp = true;
             this.m_positionY = this.m_positionY - (this.m_velocityY * _dt);
@@ -54,14 +62,37 @@ class AIPaddle extends Paddle {
         }
     }
 
+    stayWithBall(_targetPosY) { 
+        
+        this.m_positionY = _targetPosY - this.m_height/2;
+
+        if (this.m_positionY <= 0) {
+            this.m_positionY = 0;
+            return;
+        }
+
+        if (this.m_positionY + this.m_height >= this.m_gameHeight) { 
+            this.m_positionY = this.m_gameHeight - this.m_height;
+            return;
+        }
+       
+
+
+    }
+
     trackBall(_posX, _posY, _dt) {
+
+        if (this.m_bPracticeMode) { 
+            this.stayWithBall(_posY);
+            return;
+        }
 
         if (_posY >= this.m_positionY && _posY <= this.m_positionY + this.m_height) { 
             return;
         }
 
         this.m_changeInPosition = Math.abs(_posY - this.m_prevBallPosition);
-        if (this.m_changeInPosition >= 15 || this.m_positionX - _posX <= 100) {
+        if (this.m_changeInPosition >= 10 || this.m_positionX - _posX <= 200) {
             
             this.m_prevBallPosition = _posY;
             
@@ -81,8 +112,9 @@ class AIPaddle extends Paddle {
         super.update(_dt);
         this.m_dCurDelayTime += _dt;
 
+        if (this.m_bPracticeMode)
+            return;
         
-
         if (this.m_bIsDelayed) {
             console.log("is delayed for :" + this.m_dDelayTime);
             if (this.m_dCurDelayTime >= this.m_dDelayTime) { 

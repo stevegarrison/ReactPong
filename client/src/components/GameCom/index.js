@@ -4,6 +4,7 @@
  * 
  */
 
+
 import React, { Component } from "react"
 import Paddle from "../../Game/Paddle"
 import Ball from "../../Game/Ball"
@@ -12,6 +13,7 @@ import "../../styles/game.css"
 import API from "../../utils/API";
 import AIPaddle from "../../Game/AIPaddle";
 import windowSize from "react-window-size";
+import { SSL_OP_SSLEAY_080_CLIENT_DH_BUG } from "constants";
 
 
 var contextWait = null;
@@ -27,6 +29,15 @@ class GameCom extends Component {
     m_sfxLoss = new Audio("./audio/loss.wav");
     startTime = 0.0;
     m_nScoreToWin = 0;
+
+    eventLogic = {
+        m_szCurrentEvent: "no-event",
+        m_splitBalls: [],
+        m_tinyPaddleEvent: false,
+        m_nMaxTinyPaddleTime: 10,
+        m_dCurTime: 0.0
+
+    };
 
     audio = {
         file: "",
@@ -71,6 +82,98 @@ class GameCom extends Component {
             k: 0
         }
     };
+
+
+    startEvent(_eventName) {
+
+        this.eventLogic.m_szCurrentEvent = _eventName;
+        switch (this.eventLogic.m_szCurrentEvent) {
+            case "fast-ball":
+                this.state.ball.enterFastBallEvent();
+                break;
+            case "tiny-paddle":
+                this.eventLogic.m_dCurTime = 0.0;
+                this.eventLogic.m_tinyPaddleEvent = true;
+                this.state.player1.paddle.enterTinyPaddleEvent();
+
+                if (this.props.multiPlayer)
+                    this.state.player2.paddle.enterTinyPaddleEvent();
+                else
+                    this.state.player2.aiPaddle.enterTinyPaddleEvent();
+                break;
+            case "split-ball":
+                
+            for (let i = 0; i < 3; ++i) {
+                var splitBall = new Ball(this.state.gameUIWidth, this.state.gameUIWidth, "yellow");
+                this.eventLogic.m_splitBalls.push(splitBall);
+            }
+                break;
+            case "no-event":
+                break;
+            default:
+        };
+    }
+
+    updateEvents = _dt => {
+
+        switch (this.eventLogic.m_szCurrentEvent) {
+            case "split-ball":
+
+                var ballsToRemove = [];
+                for (let i = 0; i < this.eventLogic.m_splitBalls.length; ++i) {
+                
+                    this.eventLogic.m_splitBalls[i].update(_dt, function (_sideHit) {
+
+                        switch (_sideHit) {
+                            case "left":
+                                this.eventLogic.m_splitBalls.splice(i, 1);
+                                break;
+                            case "right":
+                                this.eventLogic.m_splitBalls.splice(i, 1);
+                                break;
+                            default:
+                        };
+                    });
+                }
+
+                break;
+            case "tiny-paddle":
+                this.eventLogic.m_dCurTime += _dt;
+                console.log("current time: " + this.eventLogic.m_dCurTime);
+                if (this.eventLogic.m_dCurTime >= this.eventLogic.m_nMaxTinyPaddleTime) {
+                    this.eventLogic.m_tinyPaddleEvent = false;
+                    this.eventLogic.m_dCurTime = 0.0;
+                    this.state.player1.paddle.exitTinyPaddleEvent();
+
+                    if (this.props.multiPlayer)
+                        this.state.player2.paddle.exitTinyPaddleEvent();
+                    else
+                        this.state.player2.aiPaddle.exitTinyPaddleEvent();
+                    this.startEvent("no-event");
+                }
+
+                break;
+            case "no-event":
+                break;
+            default:
+        };
+    }
+    
+
+    renderEvents() {
+        console.log("rendering events");
+
+        switch (this.m_szCurrentEvent) {
+            case "split-ball":
+                for (let i = 0; i < this.eventLogic.m_splitBalls.length; ++i) {
+                    this.eventLogic.m_splitBalls.render(this.state.context, null, 0, 0);
+                }                
+                break;
+            case "no-event":
+                break;
+            default:
+        };
+    }
 
 
     componentDidMount() {
@@ -118,6 +221,10 @@ class GameCom extends Component {
             else { // else its in 1 player mode
                 this.state.player2.aiPaddle = new AIPaddle(this.state.gameUIWidth, this.state.gameUIHeight, this.state.player2Color, this.state.player2Size);
                 this.state.player2.aiPaddle.setPositionX(this.state.gameUIWidth - 100);
+                this.state.player2.aiPaddle.setNormalMode();
+
+                if (this.props.practiceMode)
+                    this.state.player2.aiPaddle.setPracticeMode();
 
             }
 
@@ -265,6 +372,11 @@ class GameCom extends Component {
                 break;
             case 'u':
                 this.unPauseGame();
+                break;
+            case 't':
+                this.startEvent("fast-ball");
+                // this.startEvent("split-ball");
+
                 break;
             // case 'what ever letter or keyboard button you want to check':
             // put whatever you want to happen here
@@ -457,6 +569,9 @@ class GameCom extends Component {
             var deltaTime = (currentTime - this.startTime) / 1000;
             this.startTime = currentTime;
 
+            // update events
+            this.updateEvents(deltaTime);
+
             if (this.props.multiPlayer) {
 
             }
@@ -517,6 +632,10 @@ class GameCom extends Component {
                     this.state.player2.paddle.render(this.state.context, this.refs.image);
                 else
                     this.state.player2.aiPaddle.render(this.state.context, this.refs.image);
+                
+                // rende events
+                this.renderEvents();
+
                 //   this.state.player2.paddle.render(this.state.context, this.refs.image, this.state.player1.posX, this.state.player1.posY);
 
                 //this.state.paddle.render(this.state.context, this.refs.image, this.state.player2.posX, this.state.player2.posY);

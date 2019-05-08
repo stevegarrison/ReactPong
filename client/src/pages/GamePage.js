@@ -6,7 +6,7 @@ class GamePage extends Component {
     render() {
         return (
             <>
-                <GameCom multiPlayer={0}></GameCom>
+                <GameCom multiPlayer={0} practiceMode={0}></GameCom>
             </>
         );
     }
