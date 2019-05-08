@@ -36,7 +36,8 @@ class GameCom extends Component {
         m_splitBalls: [],
         m_tinyPaddleEvent: false,
         m_nMaxTinyPaddleTime: 10,
-        m_dCurTime: 0.0
+        m_dCurTime: 0.0,
+        m_dMaxEventTimer: 0.0
 
     };
 
@@ -45,6 +46,8 @@ class GameCom extends Component {
     };
 
     state = {
+        m_dNextEventTimer: 3.0,
+
         //Settings
         player1Color: "white",
         player1Size: 130,
@@ -91,7 +94,8 @@ class GameCom extends Component {
 
     startEvent(_eventName) {
 
-        this.eventLogic.m_szCurrentEvent = _eventName;
+        this.setState({ m_szCurrentEvent: _eventName });
+        //this.eventLogic.m_szCurrentEvent = _eventName;
         switch (this.eventLogic.m_szCurrentEvent) {
             case "fast-ball":
                 this.state.ball.enterFastBallEvent();
@@ -148,6 +152,7 @@ class GameCom extends Component {
                     console.log("splitballslength " + this.eventLogic.m_splitBalls.length);
 
                 }
+
 
 
                 break;
@@ -208,7 +213,7 @@ class GameCom extends Component {
             console.log("DidMount height: " + height);
             console.log("DidMount width: " + width);
             this.state.gameUIWidth = width * .85;
-            this.state.gameUIHeight = height * .8;
+            this.state.gameUIHeight = height * .77;
 
             const color = "white";
             if (!this.state.player1Color)
@@ -590,8 +595,34 @@ class GameCom extends Component {
             var deltaTime = (currentTime - this.startTime) / 1000;
             this.startTime = currentTime;
 
+            ////////////////////////////////////////////////
+            // events
+            // check for time till next event
+            if (this.state.m_dNextEventTimer <= 0.0) {
+
+                var numToChooseEvent = Math.floor(Math.random() * 3);
+
+                if (numToChooseEvent === 0) {
+                    this.startEvent("fast-ball");
+                }
+                else if (numToChooseEvent === 1) {
+                    this.startEvent("split-ball");
+
+                }
+                else if (numToChooseEvent === 2) {
+                    this.startEvent("tiny-paddle");
+
+                }
+
+                this.setState({ m_dNextEventTimer: 3.0 });
+            }
+            else {
+                this.setState({ m_dNextEventTimer: this.state.m_dNextEventTimer - deltaTime });
+            }
+
             // update events
             this.updateEvents(deltaTime);
+            //////////////////////////////////////////////////////
 
             if (this.props.multiPlayer) {
 
@@ -685,17 +716,20 @@ class GameCom extends Component {
                                     <div className="col-md-12">
                                         <h2 className="suddenDeath">Sudden Death!</h2>
                                     </div> : <>
-                                        <div className="col-md-6">
+                                        <div className="col-md-3">
                                             <h2>Player One: {this.state.player1.score}</h2>
                                         </div>
-                                        <div className="col-md-6">
+                                        {this.state.events === "true" ?
+                                            <div className="col-md-6">
+                                                <h2>Current Event: {this.eventLogic.m_szCurrentEvent}</h2>
+                                                <h2>Event in: {this.state.m_dNextEventTimer}</h2>
+                                            </div>
+                                            :
+                                            <div className="col-md-6"></div>
+                                        }
+                                        <div className="col-md-3">
                                             <h2>Player Two: {this.state.player2.score}</h2>
                                         </div></>}
-                               {this.state.events === "true" ? 
-                                <div className="countdown col-md-12">Event in: {m_nTimeTillEvent}</div> 
-                                : 
-                                null
-                                }
                             </div>
 
 
@@ -707,7 +741,8 @@ class GameCom extends Component {
                                         border: `${this.state.gameBorderWidth} solid ${this.state.gameBorderColor}`,
                                         backgroundImage: "url(" + this.state.imageURL + ")",
                                         backgroundSize: "cover",
-                                        backgroundPosition: "center"
+                                        backgroundPosition: "center",
+                                        marginBottom: "20px"
                                     }}
                                     width={this.state.gameUIWidth}
                                     height={this.state.gameUIHeight}

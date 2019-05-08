@@ -9,6 +9,10 @@ canvas {
     box-shadow: 1px 1px 2px rgb(195, 0, 255), 0 0 1em rgb(195, 0, 255), 0 0 0.2em rgb(241, 61, 241);
 }
 
+.text-center{
+  height: 0vh;
+}
+
 .suddenDeath{
   font-size: 50px;
   text-shadow: 1px 1px 2px rgb(255, 0, 0), 0 0 1em blue, 0 0 0.2em rgb(61, 241, 61);
@@ -17,7 +21,7 @@ canvas {
 .countdown{
   font-size: 25px;
   font-family: sans-serif;
-  font-weight: 600;
+  font-weight: 400;
   text-shadow: 3px 3px 3px rgb(0, 0, 0), 0 0 1em rgb(255, 255, 255), 0 0 0.2em rgb(61, 241, 61);
 }
 
