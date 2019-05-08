@@ -37,9 +37,11 @@ class Ball {
         this.m_gameWidth = _gameWidth;
         this.m_gameHeight = _gameHeight;
         this.m_ballColor = _ballColor;
+        this.placeAtOrigin();
     }
     
     placeAtOrigin() { 
+        this.delayLogic.m_dCurrentDelayTime = 0;
         this.m_positionX = this.m_gameWidth / 2 - this.m_width/2;
         this.m_positionY = this.m_gameHeight / 2;
     }
@@ -47,7 +49,11 @@ class Ball {
     enterFastBallEvent() { 
         this.m_bFastBallEvent = true;
 
-       // this.m_currentVelY = m_currentVelY + (m_currentVelY * 0.5);
+        // if(this.m_currentVelY > 0)
+        //     this.m_currentVelY = m_currentVelY + (m_currentVelY * 0.5);
+        // else
+        //  this.m_currentVelY = m_currentVelY + (m_currentVelY * 0.5);
+            
         if (this.m_velX > 0)
             this.m_velX = 1700.0;
         else
@@ -124,6 +130,10 @@ class Ball {
 
     update(_dt, _callback) {
 
+        this.delayLogic.m_dCurrentDelayTime += _dt;
+        if (this.delayLogic.m_dCurrentDelayTime < this.delayLogic.m_dMaxDelayTime)
+            return;
+        
       this.decelerateVelY(_dt);
 
         this.m_positionX += this.m_velX * _dt;

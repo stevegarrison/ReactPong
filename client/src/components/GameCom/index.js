@@ -114,24 +114,28 @@ class GameCom extends Component {
         };
     }
 
-    updateEvents(_dt) {
+    updateEvents = _dt => {
 
         switch (this.eventLogic.m_szCurrentEvent) {
             case "split-ball":
-                
-                for (let i = 0; i < 3; ++i) {
-                    this.eventLogic.m_splitBalls[i].update(_dt, function (_sideHit) { 
 
-                        switch (_sideHit) { 
+                var ballsToRemove = [];
+                for (let i = 0; i < this.eventLogic.m_splitBalls.length; ++i) {
+                
+                    this.eventLogic.m_splitBalls[i].update(_dt, function (_sideHit) {
+
+                        switch (_sideHit) {
                             case "left":
+                                this.eventLogic.m_splitBalls.splice(i, 1);
                                 break;
                             case "right":
+                                this.eventLogic.m_splitBalls.splice(i, 1);
                                 break;
-                                default:
+                            default:
                         };
                     });
-            }
-                
+                }
+
                 break;
             case "tiny-paddle":
                 this.eventLogic.m_dCurTime += _dt;
@@ -154,30 +158,16 @@ class GameCom extends Component {
             default:
         };
     }
-    endEvent(_eventName) {
-
-        switch (this.m_szCurrentEvent) {
-            case "fast-ball":
-                //  this.state.ball.exitFastBallEvent();
-                break;
-            case "tiny-paddle":
-                break;
-            case "split-ball":
-                break;
-            case "no-event":
-                break;
-            default:
-        };
-    }
+    
 
     renderEvents() {
+        console.log("rendering events");
 
         switch (this.m_szCurrentEvent) {
-            case "fast-ball":
-                break;
-            case "tiny-paddle":
-                break;
             case "split-ball":
+                for (let i = 0; i < this.eventLogic.m_splitBalls.length; ++i) {
+                    this.eventLogic.m_splitBalls.render(this.state.context, null, 0, 0);
+                }                
                 break;
             case "no-event":
                 break;
@@ -382,7 +372,7 @@ class GameCom extends Component {
                 break;
             case 't':
                 //this.startEvent("fast-ball");
-                this.startEvent("fast-ball");
+                this.startEvent("split-ball");
 
                 break;
             // case 'what ever letter or keyboard button you want to check':
@@ -639,6 +629,10 @@ class GameCom extends Component {
                     this.state.player2.paddle.render(this.state.context, this.refs.image);
                 else
                     this.state.player2.aiPaddle.render(this.state.context, this.refs.image);
+                
+                // rende events
+                this.renderEvents();
+
                 //   this.state.player2.paddle.render(this.state.context, this.refs.image, this.state.player1.posX, this.state.player1.posY);
 
                 //this.state.paddle.render(this.state.context, this.refs.image, this.state.player2.posX, this.state.player2.posY);
