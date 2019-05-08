@@ -25,16 +25,20 @@ class Start extends Component {
           <h1 className="pong-header glow">PONG!</h1>
 
           {/* Start Button */}
-          <Link to={"/game1"}><button className="btn m-2">One Player!</button></Link>
+          <Link to={"/gameOnePlayer"}><button className="btn m-2">One Player!</button></Link>
 
           {/* Start Button */}
-          <Link to={"/game2"}><button className="btn m-2">Two Player!</button></Link>
+          <Link to={"/gameTwoPlayer"}><button className="btn m-2">Two Player!</button></Link>
+
+          {/* Start Button */}
+          <Link to={"/practice"}><button className="btn m-2">Practice!</button></Link>
 
           {/* Otions Button */}
           <div className="text-light">
             <Link to={"/options"}><i id="cog" className="fas fa-cog fa-3x"></i></Link>
           </div>
         </div>
+        <p className="credits">Steve Garrison | Kurtis Pace</p>
       </>
     );
   }

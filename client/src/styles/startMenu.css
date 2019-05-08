@@ -1,15 +1,33 @@
+html{
+  height: 100%;
+}
+
 body{
+  height: 100%;
     background-image: url("./images/BG-IMG.png");
     background-size: cover;
 }
 
 .pong-header{
     color: rgb(255, 255, 255);
-    font-size:250px;
+    font-size: 250px;
     font-family: 'Wendy One', sans-serif;
     font-weight: 600;
     text-shadow: 5px 5px 6px rgb(255, 0, 0), 0 0 1em blue, 0 0 0.2em rgb(61, 241, 61);
     padding-top: 10%;
+}
+
+.text-center{
+  height: 100vh;
+}
+
+.credits{
+  color: rgb(255, 255, 255);
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;    
+  text-shadow: 1px 1px 1px rgb(255, 0, 0), 0 0 1em blue, 0 0 0.2em rgb(61, 241, 61);
 }
 
 .btn{
