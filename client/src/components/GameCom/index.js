@@ -371,8 +371,8 @@ class GameCom extends Component {
                 this.unPauseGame();
                 break;
             case 't':
-                //this.startEvent("fast-ball");
-                this.startEvent("split-ball");
+                this.startEvent("fast-ball");
+                // this.startEvent("split-ball");
 
                 break;
             // case 'what ever letter or keyboard button you want to check':
