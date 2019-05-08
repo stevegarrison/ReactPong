@@ -12,6 +12,9 @@ let player2Color = "";
 let player2Size = "";
 let ballColor = "";
 let value1 = 0;
+let multiBall = "";
+let paddleShrink = "";
+let fastBall = "";
 
 class Options extends Component {
 
@@ -22,7 +25,10 @@ class Options extends Component {
     imageURL: "",
     player1Size: 0,
     player2Size: 0,
-    value: 5
+    value: 5,
+    multiBall: "",
+    paddleShrink: "",
+    fastBall: ""
   };
 
   handleScoreChange = value => {
@@ -34,6 +40,35 @@ class Options extends Component {
     })
   };
 
+  handleMultiBall = event => {
+    event.preventDefault();
+    multiBall = event.target.getAttribute("data-multiBall");
+    console.log(multiBall);
+    // value = event.target.getAttribute("value");
+    this.setState({
+      multiBall: multiBall
+    })
+  };
+
+  handlePaddleShrink = event => {
+    event.preventDefault();
+    paddleShrink = event.target.getAttribute("data-paddleShrink");
+    console.log(paddleShrink);
+    // value = event.target.getAttribute("value");
+    this.setState({
+      paddleShrink: paddleShrink
+    })
+  };
+
+  handleFastBall = event => {
+    event.preventDefault();
+    fastBall = event.target.getAttribute("data-fastBall");
+    console.log(fastBall);
+    // value = event.target.getAttribute("value");
+    this.setState({
+      fastBall: fastBall
+    })
+  };
 
   handleSave = event => {
     // Save Options to DB
@@ -44,7 +79,10 @@ class Options extends Component {
       player2Size: this.state.player2Size,
       ballColor: this.state.ballColor,
       imageURL: this.state.imageURL,
-      value: this.state.value
+      value: this.state.value,
+      multiBall: this.state.multiBall,
+      paddleShrink: this.state.paddleShrink,
+      fastBall: this.state.fastBall
     })
 
   };
@@ -97,7 +135,7 @@ class Options extends Component {
 
   render() {
 
-    const { value } = this.state
+    const { value } = this.state;
 
     return (
       <>
@@ -128,6 +166,45 @@ class Options extends Component {
                     </div>
                     <div className="col-md-4">
                       <div className="value">{value === 1 ? <p id="suddenDeath">SUDDEN DEATH!</p> : value}</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <hr></hr>
+
+              {/* EVENTS */}
+              <div className="row mb-4">
+                <div className="col-md-4" id="flex">
+                  <h1 className="options-text">Events</h1>
+                </div>
+                <div className="col-md-8">
+                  <div className="row">
+                    <div className="col-md-4">
+                      <p className="options-text1">Multi-ball: </p>
+                    </div>
+                    <div className="col-md-8">
+                    <button className={`btn multiBall m-1 ${"true" === this.state.multiBall ? "active4" : ""}`} data-multiBall="true" onClick={this.handleMultiBall}>On</button>
+                      <button className={`btn multiBall m-1 ${"false" === this.state.multiBall ? "active4" : ""}`} data-multiBall="false" onClick={this.handleMultiBall}>Off</button>
+                    </div>
+                  </div>
+
+                  <div className="row">
+                    <div className="col-md-4">
+                      <p className="options-text1">Paddle Shrinker: </p>
+                    </div>
+                    <div className="col-md-8">
+                    <button className={`btn paddleShrink m-1 ${"true" === this.state.paddleShrink ? "active4" : ""}`} data-paddleShrink="true" onClick={this.handlePaddleShrink}>On</button>
+                      <button className={`btn paddleShrink m-1 ${"false" === this.state.paddleShrink ? "active4" : ""}`} data-paddleShrink="false" onClick={this.handlePaddleShrink}>Off</button>
+                    </div>
+                  </div>
+
+                  <div className="row">
+                    <div className="col-md-4">
+                      <p className="options-text1">Fast Ball: </p>
+                    </div>
+                    <div className="col-md-8">
+                    <button className={`btn fastBall m-1 ${"true" === this.state.fastBall ? "active4" : ""}`} data-fastBall="true" onClick={this.handleFastBall}>On</button>
+                      <button className={`btn fastBall m-1 ${"false" === this.state.fastBall ? "active4" : ""}`} data-fastBall="false" onClick={this.handleFastBall}>Off</button>
                     </div>
                   </div>
                 </div>
@@ -256,7 +333,7 @@ class Options extends Component {
 
                   <div className="row">
                     <div className="col-md-4">
-                      <p className="options-text1 mt-3">(OR choose a preset) </p>
+                      <p className="options-text1 mt-3">Presets:</p>
                     </div>
                     <div className="col-md-8">
                       <button className={`btn player-background m-1 ${"./images/space.jpg" === this.state.imageURL ? "active2" : ""}`} data-image="./images/space.jpg" onClick={this.handleImageURL}>Space</button>

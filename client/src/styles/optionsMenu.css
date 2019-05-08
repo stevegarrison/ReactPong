@@ -21,7 +21,6 @@ hr{
     align-items: center;
 }
 
-
 .value{
     font-size: 38px;
     text-shadow: 1px 1px 2px rgb(0, 47, 255), 0 0 1em rgb(0, 38, 255), 0 0 0.2em rgb(61, 241, 61);
@@ -41,8 +40,10 @@ hr{
     box-shadow: 1px 1px 2px red, 0 0 1em blue;
 }
 
+
 .save-btn{
     width: 100%;
+    border-radius: 15px;
     height: 7%;
     color: blueviolet;
     box-shadow: 1px 1px 2px red, 0 0 1em blue;
@@ -79,6 +80,24 @@ hr{
 width: auto;
 box-shadow: none;
 }
+
+.multiBall {
+    width: auto;
+    height: auto;
+    box-shadow: none;
+    }
+
+    .paddleShrink {
+        width: auto;
+        height: auto;
+        box-shadow: none;
+        }
+
+        .fastBall{
+            width: auto;
+            height: auto;
+            box-shadow: none;
+        }
 
 .player-background {
     width: auto;
@@ -285,6 +304,13 @@ box-shadow: none;
 }
 
 .active2{
+    background-color: rgba(203, 147, 255, 0.836);
+    color: rgb(0, 0, 0);   
+    width: 100px;
+    box-shadow: 1px 1px 2px red, 0 0 1em blue;
+}
+
+.active4{
     background-color: rgba(203, 147, 255, 0.836);
     color: rgb(0, 0, 0);   
     width: 100px;

@@ -32,7 +32,10 @@ db.options
     imageURL: "",
     player1Size: 130,
     player2Size: 130,
-    value: 5
+    value: 5,
+    multiBall: "false",
+    paddleShrink: "false",
+    fastBall: "false"
   }))
   
   .then(function (dbOptions) {

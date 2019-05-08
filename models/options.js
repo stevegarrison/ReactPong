@@ -8,7 +8,10 @@ const optionsSchema = new Schema({
     player2Size:{ type: Number, default: 130},
     ballColor: { type: String, default: "white"},
     imageURL: { type: String},
-    value: { type: Number, default: 5}
+    value: { type: Number, default: 5},
+    multiBall: { type: String, default: "false"},
+    paddleShrink: { type: String, default: "false"},
+    fastBall: { type: String, default: "false"}
 
 });
 

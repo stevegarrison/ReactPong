@@ -11,6 +11,9 @@ module.exports = {
     let newBallColor = _settings.ballColor;
     let newImageURL = _settings.imageURL;
     let newValue = _settings.value
+    let multiBall1 = _settings.multiBall;
+    let paddleShrink1 = _settings.paddleShrink;
+    let fastBall1 = _settings.fastBall;
 
     db.options
       .findOneAndUpdate({}, {
@@ -20,7 +23,10 @@ module.exports = {
         player2Size: newPlayer2Size,
         ballColor: newBallColor,
         imageURL: newImageURL,
-        value: newValue
+        value: newValue,
+        multiBall: multiBall1,
+        paddleShrink: paddleShrink1,
+        fastBall: fastBall1
       })
       .then(dbModel => { console.log("The model" + dbModel); _callback(dbModel) })
       .catch(err => console.log(err));

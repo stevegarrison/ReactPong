@@ -16,8 +16,9 @@ function App() {
         <Switch>
            <Route exact path="/" component={Start} />
           <Route exact path="/options" component={Options} />
-          <Route exact path="/game1" component={Game} />
-          <Route exact path="/game2" component={GameAI} />
+          <Route exact path="/gameOnePlayer" component={Game} />
+          <Route exact path="/gameTwoPlayer" component={GameAI} />
+          <Route exact path="/practice" component={Game} />
         </Switch>
      
    </Router>
