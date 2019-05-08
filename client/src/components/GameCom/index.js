@@ -35,7 +35,8 @@ class GameCom extends Component {
         m_splitBalls: [],
         m_tinyPaddleEvent: false,
         m_nMaxTinyPaddleTime: 10,
-        m_dCurTime: 0.0
+        m_dCurTime: 0.0,
+        m_dMaxEventTimer : 0.0
 
     };
 
@@ -44,6 +45,8 @@ class GameCom extends Component {
     };
 
     state = {
+        m_dNextEventTimer: 3.0,
+
         //Settings
         player1Color: "white",
         player1Size: 130,
@@ -86,7 +89,8 @@ class GameCom extends Component {
 
     startEvent(_eventName) {
 
-        this.eventLogic.m_szCurrentEvent = _eventName;
+        this.setState({m_szCurrentEvent : _eventName});
+        //this.eventLogic.m_szCurrentEvent = _eventName;
         switch (this.eventLogic.m_szCurrentEvent) {
             case "fast-ball":
                 this.state.ball.enterFastBallEvent();
@@ -573,8 +577,34 @@ class GameCom extends Component {
             var deltaTime = (currentTime - this.startTime) / 1000;
             this.startTime = currentTime;
 
+            ////////////////////////////////////////////////
+            // events
+            // check for time till next event
+            if (this.state.m_dNextEventTimer <= 0.0) {
+
+                var numToChooseEvent = Math.floor(Math.random() * 3);
+
+                if (numToChooseEvent === 0) { 
+                    this.startEvent("fast-ball");
+                }
+                else if(numToChooseEvent === 1) {
+                    this.startEvent("split-ball");
+
+                }
+                    else if(numToChooseEvent === 2) {
+                        this.startEvent("tiny-paddle");
+
+                }
+                
+                this.setState({m_dNextEventTimer : 3.0});
+            }
+            else { 
+                this.setState({m_dNextEventTimer : this.state.m_dNextEventTimer - deltaTime});
+            }
+            
             // update events
             this.updateEvents(deltaTime);
+            //////////////////////////////////////////////////////
 
             if (this.props.multiPlayer) {
 
@@ -670,6 +700,10 @@ class GameCom extends Component {
                                     </div> : <>
                                         <div className="col-md-6">
                                             <h2>Player One: {this.state.player1.score}</h2>
+                                        </div>
+                                        <div>
+                                            <h2>Current Event: {this.eventLogic.m_szCurrentEvent}</h2>
+                                            <h2>Next Event Timer: {this.state.m_dNextEventTimer}</h2>
                                         </div>
                                         <div className="col-md-6">
                                             <h2>Player Two: {this.state.player2.score}</h2>
