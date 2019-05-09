@@ -5,7 +5,6 @@
  */
 
 
-
 class Ball {
 
     m_positionX = 400.0;
@@ -25,7 +24,8 @@ class Ball {
     m_originY = 0.0;
     m_ballColor = "red";
     m_friction = 100.0;
-    m_bFastBallEvent = false;
+    m_bExitingFastBallEvent = false;
+    m_bInFastBallEvent = false;
 
     delayLogic = {
         m_dCurrentDelayTime :  0.0,
@@ -47,13 +47,12 @@ class Ball {
     }
 
     enterFastBallEvent() { 
-        this.m_bFastBallEvent = true;
 
         // if(this.m_currentVelY > 0)
         //     this.m_currentVelY = m_currentVelY + (m_currentVelY * 0.5);
         // else
         //  this.m_currentVelY = m_currentVelY + (m_currentVelY * 0.5);
-            
+        this.m_bInFastBallEvent = true;
         if (this.m_velX > 0)
             this.m_velX = 1700.0;
         else
@@ -61,7 +60,7 @@ class Ball {
 
     }
     exitFastBallEvent() { 
-        this.m_bFastBallEvent = false;
+        this.m_bExitingFastBallEvent = true;
         if (this.m_velX > 0)
             this.m_velX = 750.0;
         else
@@ -69,20 +68,20 @@ class Ball {
 
     }
 
+    
+
+
     resetBall() { 
         this.m_currentVelY = this.m_startingVel;
 
         this.m_currentVelY = Math.floor(Math.random() * this.m_startingVel) + 100.0;
-        console.log("random ball vel" + this.m_currentVelY);
 
         if (Math.floor(Math.random() * 3) === 0) {
-            console.log("flipping Y");
             this.m_currentVelY *= -1;
         }
         if (Math.floor(Math.random() * 3) === 0)
             this.m_velX *= -1;
         this.placeAtOrigin();
-        this.exitFastBallEvent();
     }
 
     addVelY() { 
@@ -143,18 +142,14 @@ class Ball {
 
         var sideHit = "";
         if (this.m_positionX < 0) {
-            this.resetBall();
-            this.m_velX *= -1;
             sideHit = "left";
         }
         if (this.m_positionX + this.m_width > this.m_gameWidth) {
-            this.resetBall();
-            this.m_velX *= -1;
             sideHit = "right";
         }
 
         if (this.m_positionY < 0) {
-            this.m_positionY += Math.abs(this.m_positionY);
+            this.m_positionY = 0;
             this.m_currentVelY *= -1;
         }
 
@@ -184,7 +179,7 @@ class Ball {
         _context.fillRect(this.m_positionX, this.m_positionY, this.m_width, this.m_height);
     }
 
-    render(_context, _imgRef, _levelWidth, _levelHeight) {
+    render(_context) {
         // console.log(_imgRef);
         // GamePlayer.prototype.render(_context, _imgRef);
         // _context.fillRect(_imgRef, this.m_positionX, this.m_positionY, this.m_width, this.m_height);
