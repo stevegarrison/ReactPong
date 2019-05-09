@@ -33,7 +33,6 @@ class GameCom extends Component {
     m_sfxSong = new Audio("./audio/song.mp3");
 
     eventLogic = {
-        m_szCurrentEvent: "no-event",
         m_splitBalls: [],
         m_tinyPaddleEvent: false,
         m_nMaxTinyPaddleTime: 10,
@@ -55,7 +54,6 @@ class GameCom extends Component {
         
         m_activeEvents: [],
         m_dNextEventTimer: 5.0,
-        m_szCurrentEvent: "no-event",
 
         //Settings
         player1Color: "white",
@@ -100,27 +98,28 @@ class GameCom extends Component {
         }
     };
 
-
-    startEvent(_eventName) {
+    startEvent = _eventName =>{
 
         var first = _eventName.split("-");
-        var second = this.state.m_szCurrentEvent.split("-");
-        if (first === second)
-            return;
+
+        for (let i = 0; i < this.state.m_activeEvents.length; ++i) {
+            var second = this.state.m_activeEvents[i].split("-");
+            console.log("first: " + first + ". second: " + second);
+            if (first[0] === second[0])
+                return;
+        }
+
         console.log("startEvent");
         this.eventLogic.m_dCurTime = 0.0;
-        this.setState({ m_szCurrentEvent: _eventName });
-        switch (this.state.m_szCurrentEvent) {
+
+        //this.setState({ m_szCurrentEvent: _eventName });
+        this.addEventActiveEvent(_eventName);
+
+        switch (_eventName) {
             case "fast-ball":
-                this.findAndRemoveEventActiveName("no-event");
-                this.addEventActiveEventName("fast-ball ");
-                console.log("starting fast-ball event");
                 this.state.ball.enterFastBallEvent();
                 break;
             case "tiny-paddle":
-            this.findAndRemoveEventActiveName("no-event");
-            this.addEventActiveEventName("tiny-paddle ");
-                console.log("starting tiny-paddle event");
                 this.eventLogic.m_tinyPaddleEvent = true;
                 this.state.player1.paddle.enterTinyPaddleEvent();
 
@@ -130,20 +129,13 @@ class GameCom extends Component {
                     this.state.player2.aiPaddle.enterTinyPaddleEvent();
                 break;
             case "split-ball":
-            this.findAndRemoveEventActiveName("no-event");
-            this.addEventActiveEventName("split-ball ");
-                console.log("starting split-ball event");
-                console.log("creating 3 split balls");
                 for (let i = 0; i < 3; ++i) {
                     var splitBall = new Ball(this.state.gameUIWidth, this.state.gameUIHeight, "white");
                     splitBall.resetBall();
-                    // console.log(splitBall.m_positionX + " " + splitBall.m_positionY);
-                    // console.log(this.state.gameUIWidth + " " + this.state.gameUIHeight);
                     this.eventLogic.m_splitBalls.push(splitBall);
                 }
                 break;
             case "no-event":
-                this.addEventActiveEventName("no-event");
                 break;
             default:
         };
@@ -193,57 +185,62 @@ class GameCom extends Component {
     updateEvents = _dt => {
 
         var i = 0;
-        switch (this.state.m_szCurrentEvent) {
-            case "split-ball":
+        for (let x = 0; x < this.state.m_activeEvents.length; ++x) {
+            switch (this.state.m_activeEvents[x]) {
+                case "split-ball":
 
                 
-                this.updateSplitBalls( _dt);
+                    this.updateSplitBalls(_dt);
 
-                this.eventLogic.m_dCurTime += _dt;
-                if (this.eventLogic.m_dCurTime >= this.eventLogic.m_dMaxSplitBallTime) { 
+                    this.eventLogic.m_dCurTime += _dt;
+                    if (this.eventLogic.m_dCurTime >= this.eventLogic.m_dMaxSplitBallTime) {
                    
-                    while (this.eventLogic.m_splitBalls.length !== 0) { 
-                        this.eventLogic.m_splitBalls.pop();
-                    }
+                        while (this.eventLogic.m_splitBalls.length !== 0) {
+                            this.eventLogic.m_splitBalls.pop();
+                        }
                     
-                    this.eventLogic.m_dCurTime = 0.0;
-                }
+                        this.eventLogic.m_dCurTime = 0.0;
+                    }
 
-                if (this.eventLogic.m_splitBalls.length === 0) {
-                    console.log("no balls");
-                    this.startEvent("no-event");
-                    this.findAndRemoveEventActiveName("split-ball");
-                    this.eventLogic.m_nNumSplitBallCurWave = 0;
-                    this.eventLogic.m_dSplitBallWaveCurTime = 0.0;
-                }
-               // console.log("splitballslength " + this.eventLogic.m_splitBalls.length);
+                    if (this.eventLogic.m_splitBalls.length === 0) {
+                        console.log("no balls");
+                        this.findAndRemoveActiveEvent("split-ball");
+                        if (this.state.m_activeEvents.length === 0)
+                            this.startEvent("no-event");
+                        this.eventLogic.m_nNumSplitBallCurWave = 0;
+                        this.eventLogic.m_dSplitBallWaveCurTime = 0.0;
+                    }
+                    // console.log("splitballslength " + this.eventLogic.m_splitBalls.length);
 
 
 
-                break;
-            case "tiny-paddle":
-            this.eventLogic.m_dCurTime += _dt;
-                if (this.eventLogic.m_dCurTime >= this.eventLogic.m_nMaxTinyPaddleTime) {
-                    this.eventLogic.m_tinyPaddleEvent = false;
-                    this.eventLogic.m_dCurTime = 0.0;
-                    this.state.player1.paddle.exitTinyPaddleEvent();
+                    break;
+                case "tiny-paddle":
+                    this.eventLogic.m_dCurTime += _dt;
+                    if (this.eventLogic.m_dCurTime >= this.eventLogic.m_nMaxTinyPaddleTime) {
+                        this.eventLogic.m_tinyPaddleEvent = false;
+                        this.eventLogic.m_dCurTime = 0.0;
+                        this.state.player1.paddle.exitTinyPaddleEvent();
 
-                    if (this.props.multiPlayer)
-                        this.state.player2.paddle.exitTinyPaddleEvent();
-                    else
-                        this.state.player2.aiPaddle.exitTinyPaddleEvent();
-                    this.startEvent("no-event");
-                    this.findAndRemoveEventActiveName("tiny-paddle");
-                } 
+                        if (this.props.multiPlayer)
+                            this.state.player2.paddle.exitTinyPaddleEvent();
+                        else
+                            this.state.player2.aiPaddle.exitTinyPaddleEvent();
+                        this.findAndRemoveActiveEvent("tiny-paddle");
+                        if (this.state.m_activeEvents.length === 0)
+                            this.startEvent("no-event");
+                    }
 
-                break;
-            case "no-event":
-            break;
-            default:
-        };
+                    break;
+                case "no-event":
+                    break;
+                default:
+            };
+        }
     }
 
-    addEventActiveEventName(_name) { 
+    addEventActiveEvent(_name) { 
+
         var activeEvents = this.state.m_activeEvents;
 
         activeEvents.push(_name);
@@ -251,7 +248,7 @@ class GameCom extends Component {
         
     }
 
-    findAndRemoveEventActiveName(_name) { 
+    findAndRemoveActiveEvent(_name) { 
         console.log("removing " + _name);
         
         var activeEvents = this.state.m_activeEvents;
@@ -275,17 +272,19 @@ class GameCom extends Component {
     renderEvents() {
         //console.log("rendering events");
 
-        switch (this.state.m_szCurrentEvent) {
-            case "split-ball":
-                //console.log("rendering splitballs");
-                for (let i = 0; i < this.eventLogic.m_splitBalls.length; ++i) {
-                    this.eventLogic.m_splitBalls[i].render(this.state.context);
-                }
-                break;
-            case "no-event":
-                break;
-            default:
-        };
+        for (let x = 0; x < this.state.m_activeEvents.length; ++x) {
+            switch (this.state.m_activeEvents[x]) {
+                case "split-ball":
+                    //console.log("rendering splitballs");
+                    for (let i = 0; i < this.eventLogic.m_splitBalls.length; ++i) {
+                        this.eventLogic.m_splitBalls[i].render(this.state.context);
+                    }
+                    break;
+                case "no-event":
+                    break;
+                default:
+            };
+        }
     }
 
 
@@ -495,6 +494,11 @@ class GameCom extends Component {
                 this.startEvent("split-ball");
 
                 break;
+                case 'r':
+                // this.startEvent("fast-ball");
+                this.startEvent("fast-ball");
+
+                break;
             // case 'what ever letter or keyboard button you want to check':
             // put whatever you want to happen here
             // break;
@@ -695,18 +699,27 @@ class GameCom extends Component {
             console.log("options fast-ball on");
             events.push("fast-ball");
         }
-        var eventToChoose = Math.floor(Math.random() * events.length);
+
+        if (events.length !== 0) {
+
+            var eventToChoose = Math.floor(Math.random() * events.length);
         
-        var first = events[eventToChoose].split("-");
-        var second = this.state.m_szCurrentEvent.split("-");
+            var first = events[eventToChoose].split("-");
 
-        // find an event that isnt the current one
-        while (first === second) { 
-            eventToChoose = Math.floor(Math.random() * events.length);
-            first = events[eventToChoose].split("-");
+            for (let i = 0; i < this.state.m_activeEvents.length; ++i) {
+                
+                var second = this.state.m_activeEvents[i].split("-");
+
+                // find an event that isnt the current one
+                while (first === second) {
+                    eventToChoose = Math.floor(Math.random() * events.length);
+                    first = events[eventToChoose].split("-");
+                }
+            }
+
+                this.startEvent(events[eventToChoose]);
+            
         }
-
-            this.startEvent(events[eventToChoose]);
 
         // if (numToChooseEvent === 0) {
         //     this.startEvent("fast-ball");
@@ -771,9 +784,12 @@ class GameCom extends Component {
                         this.setState({ player2: newPlayer });
                         this.state.ball.resetBall();
                         if (this.state.ball.m_bInFastBallEvent) {
+                            
                             this.state.ball.exitFastBallEvent();
-                            this.addEventActiveEventName("no-event");
-                            this.findAndRemoveEventActiveName("fast-ball");
+                            this.findAndRemoveActiveEvent("fast-ball");
+                            if (this.state.m_activeEvents.length === 0)
+                                this.startEvent("no-event");
+                            
                             this.state.ball.m_bInFastBallEvent = false;
                         }
                         this.m_velX *= -1;
@@ -785,9 +801,12 @@ class GameCom extends Component {
                         this.state.ball.resetBall();
                         this.m_velX *= -1;
                         if (this.state.ball.m_bInFastBallEvent) {
+                            
                             this.state.ball.exitFastBallEvent();
-                            this.addEventActiveEventName("no-event");
-                            this.findAndRemoveEventActiveName("fast-ball");
+                            this.findAndRemoveActiveEvent("fast-ball");
+                            if (this.state.m_activeEvents.length === 0)
+                                this.startEvent("no-event");
+                            
                             this.state.ball.m_bInFastBallEvent = false;
                         }
                         break;

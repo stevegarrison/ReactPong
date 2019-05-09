@@ -14,13 +14,13 @@ class EventManager {
 
         m_szCurrentEvent = _eventName;
         switch (m_szCurrentEvent) { 
-            case "fast-ball":
+            case "fast ball":
                 break;
-            case "tiny-paddle":
+            case "tinypaddle":
                 break;
-            case "split-ball":
+            case "multiball":
                 break;
-            case "no-event":
+            case "noevent":
                 break;
             default:
         };
@@ -29,13 +29,13 @@ class EventManager {
     update(_dt) { 
 
         switch (m_szCurrentEvent) { 
-            case "fast-ball":
+            case "fast ball":
                 break;
-            case "tiny-paddle":
+            case "tinypaddle":
                 break;
-            case "split-ball":
+            case "multiball":
                 break;
-            case "no-event":
+            case "noevent":
                 break;
             default:
         };
@@ -44,13 +44,13 @@ class EventManager {
 
         m_szCurrentEvent = _eventName;
         switch (m_szCurrentEvent) { 
-            case "fast-ball":
+            case "fast ball":
                 break;
-            case "tiny-paddle":
+            case "tinypaddle":
                 break;
-            case "split-ball":
+            case "multiball":
                 break;
-            case "no-event":
+            case "noevent":
                 break;
             default:
         };
@@ -59,13 +59,13 @@ class EventManager {
     render() { 
 
         switch (m_szCurrentEvent) { 
-            case "fast-ball":
+            case "fast ball":
                 break;
-            case "tiny-paddle":
+            case "tinypaddle":
                 break;
-            case "split-ball":
+            case "multiball":
                 break;
-            case "no-event":
+            case "noevent":
                 break;
             default:
         };
