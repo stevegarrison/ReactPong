@@ -852,7 +852,7 @@ class GameCom extends Component {
                                         {this.state.events === "true" ?
                                             <div className="col-md-6">
                                                 <h2>Current Event:
-                                                {this.state.m_activeEvents.map(_event => _event)}
+                                                {this.state.m_activeEvents.map(_event => (" " + _event))}
                                                  </h2>
                                                 <h2>Event in: {this.state.m_dNextEventTimer}</h2>
                                             </div>
