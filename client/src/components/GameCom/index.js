@@ -695,13 +695,15 @@ class GameCom extends Component {
             console.log("options fast-ball on");
             events.push("fast-ball");
         }
-        var eventToChoose = Math.floor(Math.random() * events.length);
+        if (events.length !== 0) {
+            var eventToChoose = Math.floor(Math.random() * events.length);
         
-        while (events[eventToChoose] !== this.state.m_szCurrentEvent) { 
-            eventToChoose = Math.floor(Math.random() * events.length);
-        }
+            while (events[eventToChoose] !== this.state.m_szCurrentEvent) {
+                eventToChoose = Math.floor(Math.random() * events.length);
+            }
 
-        this.startEvent(events[eventToChoose]);
+            this.startEvent(events[eventToChoose]);
+        }
 
         // if (numToChooseEvent === 0) {
         //     this.startEvent("fast-ball");
