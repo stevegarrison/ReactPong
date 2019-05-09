@@ -5,7 +5,7 @@
  */
 
 class Paddle  {
-
+    m_bPlaySound = true;
 
     eventLogic = {
         m_prevSize: 0
@@ -176,8 +176,9 @@ class Paddle  {
             && this.m_positionY + this.m_height > _ball.m_positionY // paddles botton >= balls top
             && this.m_positionX < _ball.m_positionX + _ball.m_width) { // paddles left <= balls right
 
+                if (this.m_bPlaySound) {
                 this.m_sfxPositive.play();
-            
+            }
                 // console.log("sfx" + this.m_sfxPositive);
                 // this.m_sfxPositive.play();
 

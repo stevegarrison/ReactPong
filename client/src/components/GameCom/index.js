@@ -13,7 +13,6 @@ import "../../styles/game.css"
 import API from "../../utils/API";
 import AIPaddle from "../../Game/AIPaddle";
 import windowSize from "react-window-size";
-import { SSL_OP_SSLEAY_080_CLIENT_DH_BUG, defaultCipherList } from "constants";
 
 
 let winner = "";
@@ -37,12 +36,12 @@ class GameCom extends Component {
         m_tinyPaddleEvent: false,
         m_nMaxTinyPaddleTime: 10,
         m_dCurTime: 0.0,
-        m_dMaxEventTimer: 5.0,
+        m_dMaxEventTimer: 10.0,
         m_dMaxSplitBallTime: 10.0,
         m_dSplitBallWaveMaxTime: 0.1,
         m_dSplitBallWaveCurTime: 0.0,
         m_nNumSplitBallCurWave: 0,
-        m_nNumSplitBallMaxWaves: 50
+        m_nNumSplitBallMaxWaves: 10
 
     };
 
@@ -51,9 +50,10 @@ class GameCom extends Component {
     };
 
     state = {
-        
+
         m_activeEvents: [],
-        m_dNextEventTimer: 5.0,
+        m_dNextEventTimer: 10.0,
+        m_szCurrentEvent: "no-event",
 
         //Settings
         player1Color: "white",
@@ -73,6 +73,7 @@ class GameCom extends Component {
         gameBorderColor: "white",
         gameBorderWidth: "1px",
         events: "false",
+        music: false,
 
         context: null,
         ball: null,
@@ -289,10 +290,9 @@ class GameCom extends Component {
 
 
     componentDidMount() {
-        //this.waitForContext();
-        // this.update();
         console.log("mounted");
-        //this.m_sfxSong.play();
+        this.setState({ music: true });
+        this.m_sfxSong.play();
         this.loadOptions(() => {
 
 
@@ -306,7 +306,7 @@ class GameCom extends Component {
             console.log("DidMount height: " + height);
             console.log("DidMount width: " + width);
             this.state.gameUIWidth = width * .85;
-            this.state.gameUIHeight = height * .77;
+            this.state.gameUIHeight = height * .8;
 
             const color = "white";
             if (!this.state.player1Color)
@@ -571,6 +571,31 @@ class GameCom extends Component {
 
     }
 
+    handleSound() {
+        // console.log(this.state.music);
+        if (this.state.music) {
+
+            this.m_sfxSong.pause();
+            this.setState({ music: false });
+            this.state.player1.paddle.m_bPlaySound = false;
+            if (this.props.multiPlayer) {
+                this.state.player2.paddle.m_bPlaySound = false;
+            } else {
+                this.state.player2.aiPaddle.m_bPlaySound = false;
+            }
+        } else {
+            this.m_sfxSong.play();
+            this.setState({ music: true });
+            this.state.player1.paddle.m_bPlaySound = true;
+            if (this.props.multiPlayer) {
+                this.state.player2.paddle.m_bPlaySound = true;
+            } else {
+                this.state.player2.aiPaddle.m_bPlaySound = true;
+            }
+        }
+
+    }
+
     pauseGame() {
 
         var gamePause = true;
@@ -605,9 +630,6 @@ class GameCom extends Component {
     }
 
     startGame() {
-        if (this.state.paddleShrink || this.state.multiBall || this.state.fastBall) {
-
-        }
 
         return (
             <>
@@ -660,8 +682,12 @@ class GameCom extends Component {
     }
 
     checkForWins() {
+
         if (this.state.player1.score >= this.m_nScoreToWin) {
-            this.m_sfxWin.play();
+            if (this.state.music) {
+                this.m_sfxWin.play();
+            }
+
             console.log("Player 1 Wins!!!");
             this.setState({ m_bWon: true });
             this.setState({ gameStart2: true });
@@ -669,12 +695,14 @@ class GameCom extends Component {
             this.resetGame();
 
         } else if (this.state.player2.score >= this.m_nScoreToWin) {
-            if (this.props.multiPlayer) {
+            if (this.props.multiPlayer && this.state.music === true) {
                 this.m_sfxWin.play();
-
             } else {
-                this.m_sfxLoss.play();
+                if (this.state.music) {
+                    this.m_sfxLoss.play();
+                }
             }
+
             console.log("Player 2 Wins!!!");
             this.setState({ m_bWon: true });
             this.setState({ gameStart2: true });
@@ -733,12 +761,20 @@ class GameCom extends Component {
 
         // }
     }
-
+    isPlaying(_song) {
+        return !_song.paused;
+    }
     update = () => {
 
         if (!this.state.gamePaused && !this.state.gameStart && !this.state.m_bWon) {
 
             // console.log("updating");
+            // check sound
+            if (this.state.music) { 
+                if (!this.isPlaying(this.m_sfxSong)) { 
+                    this.m_sfxSong.play();
+                }
+            }
 
             // find the time elapsed
             var currentTime = new Date().getTime();
@@ -870,10 +906,24 @@ class GameCom extends Component {
                         <div className="col-md-10">
                             {/* Player Scores */}
                             <div className="row player-text mt-3 mb-4">
-                                {this.m_nScoreToWin === 1 ?
+                                {this.m_nScoreToWin === 1 ? <> {this.state.events === "true" ? <>
+                                    <div className="col-md-6">
+                                        <h2 className="suddenDeath">Sudden Death!</h2>
+                                    </div>
+                                    <div className="col-md-6">
+                                        <h2>Current Event:
+                                     {this.state.m_activeEvents.map(_event => (" " + _event))}
+                                        </h2>
+                                        <h2>Event in: {this.state.m_dNextEventTimer.toFixed(0)}</h2>
+                                    </div> 
+                                    </>
+                                    :
                                     <div className="col-md-12">
                                         <h2 className="suddenDeath">Sudden Death!</h2>
-                                    </div> : <>
+                                    </div>
+                                } </>
+
+                                    : <>
                                         <div className="col-md-3">
                                             <h2>Player One: {this.state.player1.score}</h2>
                                         </div>
@@ -881,8 +931,8 @@ class GameCom extends Component {
                                             <div className="col-md-6">
                                                 <h2>Current Event:
                                                 {this.state.m_activeEvents.map(_event => (" " + _event))}
-                                                 </h2>
-                                                <h2>Event in: {this.state.m_dNextEventTimer}</h2>
+                                                </h2>
+                                                <h2>Event in: {this.state.m_dNextEventTimer.toFixed(0)}</h2>
                                             </div>
                                             :
                                             <div className="col-md-6"></div>
@@ -921,6 +971,17 @@ class GameCom extends Component {
                             <div>
                                 <Link onClick={this.resetGame} to={"/"}><i id="home-icon" className="m-3 fas fa-home fa-2x"></i></Link>
                             </div>
+
+                            {this.state.music ?
+                                <div>
+                                    <div onClick={() => this.handleSound()}><i id="volume-icon" className="m-3 fas fa-volume-up fa-2x"></i></div>
+                                </div>
+                                :
+                                <div>
+                                    <div onClick={() => this.handleSound()}><i id="volume-icon" className="m-3 fas fa-volume-mute fa-2x"></i></div>
+                                </div>}
+
+
                         </div>
                     </div>
                 </div>
