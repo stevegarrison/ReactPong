@@ -33,7 +33,6 @@ class GameCom extends Component {
 
     eventLogic = {
         m_splitBalls: [],
-        m_tinyPaddleEvent: false,
         m_nMaxTinyPaddleTime: 10,
         m_dCurTime: 0.0,
         m_dMaxEventTimer: 10.0,
@@ -103,6 +102,10 @@ class GameCom extends Component {
 
         var first = _eventName.split("-");
 
+        if (first !== "no") { 
+            this.findAndRemoveActiveEvent("no-event");
+        }
+
         for (let i = 0; i < this.state.m_activeEvents.length; ++i) {
             var second = this.state.m_activeEvents[i].split("-");
             console.log("first: " + first + ". second: " + second);
@@ -112,8 +115,6 @@ class GameCom extends Component {
 
         console.log("startEvent");
         this.eventLogic.m_dCurTime = 0.0;
-
-        //this.setState({ m_szCurrentEvent: _eventName });
         this.addEventActiveEvent(_eventName);
 
         switch (_eventName) {
@@ -121,7 +122,6 @@ class GameCom extends Component {
                 this.state.ball.enterFastBallEvent();
                 break;
             case "tiny-paddle":
-                this.eventLogic.m_tinyPaddleEvent = true;
                 this.state.player1.paddle.enterTinyPaddleEvent();
 
                 if (this.props.multiPlayer)
@@ -219,14 +219,15 @@ class GameCom extends Component {
                 case "tiny-paddle":
                     this.eventLogic.m_dCurTime += _dt;
                     if (this.eventLogic.m_dCurTime >= this.eventLogic.m_nMaxTinyPaddleTime) {
-                        this.eventLogic.m_tinyPaddleEvent = false;
                         this.eventLogic.m_dCurTime = 0.0;
+
                         this.state.player1.paddle.exitTinyPaddleEvent();
 
                         if (this.props.multiPlayer)
                             this.state.player2.paddle.exitTinyPaddleEvent();
                         else
                             this.state.player2.aiPaddle.exitTinyPaddleEvent();
+                        
                         this.findAndRemoveActiveEvent("tiny-paddle");
                         if (this.state.m_activeEvents.length === 0)
                             this.startEvent("no-event");
@@ -739,7 +740,7 @@ class GameCom extends Component {
                 var second = this.state.m_activeEvents[i].split("-");
 
                 // find an event that isnt the current one
-                while (first === second) {
+                while (first[0] === second[0]) {
                     eventToChoose = Math.floor(Math.random() * events.length);
                     first = events[eventToChoose].split("-");
                 }
