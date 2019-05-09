@@ -116,7 +116,7 @@ class AIPaddle extends Paddle {
             return;
         
         if (this.m_bIsDelayed) {
-            console.log("is delayed for :" + this.m_dDelayTime);
+           // console.log("is delayed for :" + this.m_dDelayTime);
             if (this.m_dCurDelayTime >= this.m_dDelayTime) { 
                 this.m_dCurDelayTime = 0.0;
                 this.m_bIsDelayed = false;

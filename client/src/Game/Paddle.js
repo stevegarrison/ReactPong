@@ -5,7 +5,7 @@
  */
 
 class Paddle  {
-
+    m_bPlaySound = true;
 
     eventLogic = {
         m_prevSize: 0
@@ -176,8 +176,9 @@ class Paddle  {
             && this.m_positionY + this.m_height > _ball.m_positionY // paddles botton >= balls top
             && this.m_positionX < _ball.m_positionX + _ball.m_width) { // paddles left <= balls right
 
+                if (this.m_bPlaySound) {
                 this.m_sfxPositive.play();
-            
+            }
                 // console.log("sfx" + this.m_sfxPositive);
                 // this.m_sfxPositive.play();
 
@@ -203,13 +204,10 @@ class Paddle  {
                         _ball.m_currentVelY *= -1;   
                     }
                 } else if(this.m_bIsMovingDown){ 
-                    console.log("moving down and hit");
                     if (_ball.m_currentVelY < 0) {// if the ball is moving up
-                           console.log("moving down and hit");
                         _ball.m_currentVelY *= -1;   
                     }
                 }
-                console.log("left");
                 _ball.m_velX *= -1;    
                 _ball.m_positionX += ((this.m_positionX + this.m_width) - _ball.m_positionX);
             }
@@ -228,7 +226,6 @@ class Paddle  {
                             _ball.m_currentVelY *= -1;   
                         }
                     }
-                console.log("right");
                 _ball.m_velX *= -1;    
                 _ball.m_positionX -= (_ball.m_positionX + _ball.m_width) - this.m_positionX;
             }
@@ -239,13 +236,8 @@ class Paddle  {
 
                 if(_ball.m_currentVelY > 0)
                     _ball.m_currentVelY *= -1;   
-                console.log("top");
-                console.log("ball y" + _ball.m_positionY);
-                console.log("ball height" + _ball.m_height);
-                console.log("paddle y "  + this.m_positionY);
 
                 // _ball.m_positionY = _ball.m_positionY - (_ball.m_positionY + _ball.m_height) - this.m_positionY;
-                console.log("ball y" + _ball.m_positionY);
                 _ball.m_positionY -= (_ball.m_positionY + _ball.m_height) - this.m_positionY;
             }
            
@@ -253,7 +245,6 @@ class Paddle  {
              else if (_ball.m_positionY < this.m_positionY + this.m_height) {
                 if(_ball.m_currentVelY < 0)
                 _ball.m_currentVelY *= -1;   
-                console.log("bottom");
                 _ball.m_positionY += (this.m_positionY + this.m_height) - _ball.m_positionY;
             }
             
