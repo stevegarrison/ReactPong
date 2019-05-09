@@ -698,8 +698,10 @@ class GameCom extends Component {
         if (events.length !== 0) {
             var eventToChoose = Math.floor(Math.random() * events.length);
         
-            while (events[eventToChoose] !== this.state.m_szCurrentEvent) {
-                eventToChoose = Math.floor(Math.random() * events.length);
+            if (this.state.m_szCurrentEvent !== ""){
+                while (events[eventToChoose] !== this.state.m_szCurrentEvent) {
+                    eventToChoose = Math.floor(Math.random() * events.length);
+                }
             }
 
             this.startEvent(events[eventToChoose]);
