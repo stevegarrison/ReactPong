@@ -199,7 +199,7 @@ class GameCom extends Component {
     componentDidMount() {
         //this.waitForContext();
         // this.update();
-        console.log("mounted");
+        console.log("Mounted");
         this.loadOptions(() => {
 
 
@@ -506,9 +506,6 @@ class GameCom extends Component {
     }
 
     startGame() {
-        if (this.state.paddleShrink || this.state.multiBall || this.state.fastBall) {
-
-        }
 
         return (
             <>
