@@ -119,8 +119,8 @@ class GameCom extends Component {
                 this.state.ball.enterFastBallEvent();
                 break;
             case "tiny-paddle":
-                this.findAndRemoveEventActiveName("no-event");
-                this.addEventActiveEventName("tiny-paddle ");
+            this.findAndRemoveEventActiveName("no-event");
+            this.addEventActiveEventName("tiny-paddle ");
                 console.log("starting tiny-paddle event");
                 this.eventLogic.m_tinyPaddleEvent = true;
                 this.state.player1.paddle.enterTinyPaddleEvent();
@@ -131,8 +131,8 @@ class GameCom extends Component {
                     this.state.player2.aiPaddle.enterTinyPaddleEvent();
                 break;
             case "split-ball":
-                this.findAndRemoveEventActiveName("no-event");
-                this.addEventActiveEventName("split-ball ");
+            this.findAndRemoveEventActiveName("no-event");
+            this.addEventActiveEventName("split-ball ");
                 console.log("starting split-ball event");
                 console.log("creating 3 split balls");
                 for (let i = 0; i < 3; ++i) {
@@ -152,10 +152,10 @@ class GameCom extends Component {
 
     updateSplitBalls(_dt) {
 
-        if (this.eventLogic.m_nNumSplitBallCurWave !== this.eventLogic.m_nNumSplitBallMaxWaves) {
-
+        if (this.eventLogic.m_nNumSplitBallCurWave !== this.eventLogic.m_nNumSplitBallMaxWaves) { 
+            
             this.eventLogic.m_dSplitBallWaveCurTime += _dt;
-            if (this.eventLogic.m_dSplitBallWaveCurTime >= this.eventLogic.m_dSplitBallWaveMaxTime) {
+            if (this.eventLogic.m_dSplitBallWaveCurTime >= this.eventLogic.m_dSplitBallWaveMaxTime) { 
                 // spawn a new wave
                 for (let i = 0; i < 3; ++i) {
                     var splitBall = new Ball(this.state.gameUIWidth, this.state.gameUIHeight, "white");
@@ -182,7 +182,7 @@ class GameCom extends Component {
                         break;
                     case "right":
                         this.eventLogic.m_splitBalls[i].m_positionX = this.state.gameUIWidth - this.eventLogic.m_splitBalls[i].m_width;
-                        this.eventLogic.m_splitBalls[i].m_velX *= -1;
+                    this.eventLogic.m_splitBalls[i].m_velX *= -1;
                         break;
                     default:
                 };
@@ -197,18 +197,19 @@ class GameCom extends Component {
         switch (this.state.m_szCurrentEvent) {
             case "split-ball":
 
-
-                this.updateSplitBalls(_dt);
+                
+                this.updateSplitBalls( _dt);
 
                 this.eventLogic.m_dCurTime += _dt;
-                if (this.eventLogic.m_dCurTime >= this.eventLogic.m_dMaxSplitBallTime) {
-
-                    while (this.eventLogic.m_splitBalls.length !== 0) {
+                if (this.eventLogic.m_dCurTime >= this.eventLogic.m_dMaxSplitBallTime) { 
+                   
+                    while (this.eventLogic.m_splitBalls.length !== 0) { 
                         this.eventLogic.m_splitBalls.pop();
                     }
-
+                    
                     this.eventLogic.m_dCurTime = 0.0;
                 }
+                // console.log("splitballslength " + this.eventLogic.m_splitBalls.length);
 
                 if (this.eventLogic.m_splitBalls.length === 0) {
                     console.log("no balls");
@@ -217,13 +218,13 @@ class GameCom extends Component {
                     this.eventLogic.m_nNumSplitBallCurWave = 0;
                     this.eventLogic.m_dSplitBallWaveCurTime = 0.0;
                 }
-                // console.log("splitballslength " + this.eventLogic.m_splitBalls.length);
+               // console.log("splitballslength " + this.eventLogic.m_splitBalls.length);
 
 
 
                 break;
             case "tiny-paddle":
-                this.eventLogic.m_dCurTime += _dt;
+            this.eventLogic.m_dCurTime += _dt;
                 if (this.eventLogic.m_dCurTime >= this.eventLogic.m_nMaxTinyPaddleTime) {
                     this.eventLogic.m_tinyPaddleEvent = false;
                     this.eventLogic.m_dCurTime = 0.0;
@@ -235,34 +236,34 @@ class GameCom extends Component {
                         this.state.player2.aiPaddle.exitTinyPaddleEvent();
                     this.startEvent("no-event");
                     this.findAndRemoveEventActiveName("tiny-paddle");
-                }
+                } 
 
                 break;
             case "no-event":
-                break;
+            break;
             default:
         };
     }
 
-    addEventActiveEventName(_name) {
+    addEventActiveEventName(_name) { 
         var activeEvents = this.state.m_activeEvents;
 
         activeEvents.push(_name);
-        this.setState({ m_activeEvents: activeEvents });
-
+        this.setState({m_activeEvents: activeEvents});
+        
     }
 
-    findAndRemoveEventActiveName(_name) {
+    findAndRemoveEventActiveName(_name) { 
         console.log("removing " + _name);
-
+        
         var activeEvents = this.state.m_activeEvents;
         console.log("active events length: " + activeEvents.length);
 
-        for (let i = 0; i < activeEvents.length; ++i) {
+        for (let i = 0; i < activeEvents.length; ++i) { 
             var first = activeEvents[i].split("-");
             var second = _name.split("-");
             console.log("active event name " + activeEvents[i] + " " + "name checking " + _name);
-            if (first[0] === second[0]) {
+            if (first[0] === second[0]) { 
                 console.log("active events length: " + activeEvents.length);
                 console.log("removing " + _name);
                 activeEvents.splice(i, 1);
@@ -270,7 +271,7 @@ class GameCom extends Component {
                 break;
             }
         }
-        this.setState({ m_activeEvents: activeEvents });
+        this.setState({m_activeEvents: activeEvents});
     }
 
     renderEvents() {
@@ -703,36 +704,34 @@ class GameCom extends Component {
         }
     }
 
-    findNextEvent() {
+    findNextEvent() { 
         var events = [];
-
+       
         //if (this.state.multiBall === "true" || this.state.paddleShrink === "true" || this.state.fastBall === "true") {
-        if (this.state.multiBall === "true") {
+        if (this.state.multiBall === "true") { 
             console.log("options split-ball on");
             events.push("split-ball");
         }
-        if (this.state.paddleShrink === "true") {
+        if (this.state.paddleShrink === "true") { 
             console.log("options tiny-paddle on");
             events.push("tiny-paddle");
         }
-        if (this.state.fastBall === "true") {
+        if (this.state.fastBall === "true") { 
             console.log("options fast-ball on");
             events.push("fast-ball");
         }
-        if(events.length !== 0){
         var eventToChoose = Math.floor(Math.random() * events.length);
-
+        
         var first = events[eventToChoose].split("-");
         var second = this.state.m_szCurrentEvent.split("-");
 
         // find an event that isnt the current one
-        while (first === second) {
+        while (first === second) { 
             eventToChoose = Math.floor(Math.random() * events.length);
             first = events[eventToChoose].split("-");
         }
 
-        this.startEvent(events[eventToChoose]);
-    }
+            this.startEvent(events[eventToChoose]);
 
         // if (numToChooseEvent === 0) {
         //     this.startEvent("fast-ball");
