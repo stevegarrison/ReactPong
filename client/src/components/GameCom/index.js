@@ -695,17 +695,18 @@ class GameCom extends Component {
             console.log("options fast-ball on");
             events.push("fast-ball");
         }
-        if (events.length !== 0) {
-            var eventToChoose = Math.floor(Math.random() * events.length);
+        var eventToChoose = Math.floor(Math.random() * events.length);
         
-            if (this.state.m_szCurrentEvent !== ""){
-                while (events[eventToChoose] !== this.state.m_szCurrentEvent) {
-                    eventToChoose = Math.floor(Math.random() * events.length);
-                }
-            }
+        var first = events[eventToChoose].split("-");
+        var second = this.state.m_szCurrentEvent.split("-");
+
+        // find an event that isnt the current one
+        while (first === second) { 
+            eventToChoose = Math.floor(Math.random() * events.length);
+            first = events[eventToChoose].split("-");
+        }
 
             this.startEvent(events[eventToChoose]);
-        }
 
         // if (numToChooseEvent === 0) {
         //     this.startEvent("fast-ball");
@@ -734,28 +735,28 @@ class GameCom extends Component {
             ////////////////////////////////////////////////
             // events
             // check for time till next event
-            // if (this.state.m_dNextEventTimer <= 0.0) {
+            if (this.state.m_dNextEventTimer <= 0.0) {
 
-            //     this.findNextEvent();
+                this.findNextEvent();
 
-            //     this.setState({ m_dNextEventTimer: this.eventLogic.m_dMaxEventTimer });
-            // }
-            // else {
-            //     this.setState({ m_dNextEventTimer: this.state.m_dNextEventTimer - deltaTime });
-            // }
+                this.setState({ m_dNextEventTimer: this.eventLogic.m_dMaxEventTimer });
+            }
+            else {
+                this.setState({ m_dNextEventTimer: this.state.m_dNextEventTimer - deltaTime });
+            }
 
             // // update events
             this.updateEvents(deltaTime);
             // //////////////////////////////////////////////////////
 
-            // if (this.props.multiPlayer) {
+            if (this.props.multiPlayer) {
 
-            // }
-            // else {
-            //     this.state.player2.aiPaddle.update(deltaTime);
-            //     this.state.player2.aiPaddle.trackBall(this.state.ball.m_positionX, this.state.ball.m_positionY, deltaTime);
+            }
+            else {
+                this.state.player2.aiPaddle.update(deltaTime);
+                this.state.player2.aiPaddle.trackBall(this.state.ball.m_positionX, this.state.ball.m_positionY, deltaTime);
 
-            // }
+            }
 
 
             // update input
