@@ -463,7 +463,6 @@ class GameCom extends Component {
         }
 
         if (this.state.gameStart) {
-            this.startGame();
             if (_event.keyCode === 32) {
                 this.setState({ gameStart: false });
                 this.setState({ gameStart3: true });
