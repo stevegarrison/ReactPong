@@ -21,7 +21,8 @@ app.use(routes);
 
 // Connect to the Mongo DB
 mongoose.connect(process.env.MONGODB_URI || "mongodb://user:password1@ds123603.mlab.com:23603/heroku_5lxdp3bs", { useNewUrlParser: true });
-//mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/options", { useNewUrlParser: true });
+
+// mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/options", { useNewUrlParser: true });
 
 // Every NPM start creates default options and DB
 db.options
