@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import "../styles/optionsMenu.css";
 import API from "../utils/API";
 import { Link } from "react-router-dom";
-import { Input, TextArea, FormBtn } from "../components/Input";
+import { Input } from "../components/Input";
 import Slider from 'react-rangeslider';
 
 let imageURL = "";

@@ -16,10 +16,6 @@ import windowSize from "react-window-size";
 
 
 let winner = "";
-let width = 0;
-let height = 0;
-let computer = "The Computer";
-let m_nTimeTillEvent = 10;
 
 class GameCom extends Component {
 
@@ -185,7 +181,6 @@ class GameCom extends Component {
 
     updateEvents = _dt => {
 
-        var i = 0;
         for (let x = 0; x < this.state.m_activeEvents.length; ++x) {
             switch (this.state.m_activeEvents[x]) {
                 case "split-ball":
@@ -259,7 +254,6 @@ class GameCom extends Component {
         for (let i = 0; i < activeEvents.length; ++i) { 
             var first = activeEvents[i].split("-");
             var second = _name.split("-");
-            console.log("active event name " + activeEvents[i] + " " + "name checking " + _name);
             if (first[0] === second[0]) { 
                 console.log("active events length: " + activeEvents.length);
                 console.log("removing " + _name);
@@ -302,13 +296,16 @@ class GameCom extends Component {
             this.setState({ context: canvas.getContext("2d") });
 
             // set game height and width
-            height = this.props.windowHeight;
-            width = this.props.windowWidth;
+            let height = this.props.windowHeight;
+            let width = this.props.windowWidth;
             console.log("DidMount height: " + height);
             console.log("DidMount width: " + width);
-            this.state.gameUIWidth = width * .85;
-            this.state.gameUIHeight = height * .8;
 
+            this.setState({
+                gameUIWidth: width * .85,
+                gameUIHeight: height * .8
+            });
+           
             const color = "white";
             if (!this.state.player1Color)
                 this.setState({ player1Color: color });
@@ -324,26 +321,44 @@ class GameCom extends Component {
                 this.setState({ player2Size: size });
 
             // create player 1 paddle
-            this.state.player1.paddle = new Paddle(this.state.gameUIWidth, this.state.gameUIHeight, this.state.player1Color, this.state.player1Size);
+            let player1 = { ...this.state.player1 };
+            player1.paddle = new Paddle(this.state.gameUIWidth, this.state.gameUIHeight, this.state.player1Color, this.state.player1Size);
+            this.setState({
+                player1: player1
+            });
+            
             this.state.player1.paddle.setPositionX(100);
 
             // check which mode the game was started in
+            let player2 = { ...this.state.player2 };
             if (this.props.multiPlayer) {
-                this.state.player2.paddle = new Paddle(this.state.gameUIWidth, this.state.gameUIHeight, this.state.player2Color, this.state.player2Size);
-                this.state.player2.paddle.setPositionX(this.state.gameUIWidth - 100);
+
+                player2.paddle = new Paddle(this.state.gameUIWidth, this.state.gameUIHeight, this.state.player2Color, this.state.player2Size);
+                player2.paddle.setPositionX(this.state.gameUIWidth - 100);
+                this.setState({
+                    player2: player2
+                });
+
             }
             else { // else its in 1 player mode
-                this.state.player2.aiPaddle = new AIPaddle(this.state.gameUIWidth, this.state.gameUIHeight, this.state.player2Color, this.state.player2Size);
-                this.state.player2.aiPaddle.setPositionX(this.state.gameUIWidth - 100);
-                this.state.player2.aiPaddle.setNormalMode();
+                player2.aiPaddle = new AIPaddle(this.state.gameUIWidth, this.state.gameUIHeight, this.state.player2Color, this.state.player2Size);
+                player2.aiPaddle.setPositionX(this.state.gameUIWidth - 100);
+                player2.aiPaddle.setNormalMode();
 
                 if (this.props.practiceMode)
                     this.state.player2.aiPaddle.setPracticeMode();
+                    this.setState({
+                        player2: player2
+                    });
 
             }
 
             // create the ball
-            this.state.ball = new Ball(this.state.gameUIWidth, this.state.gameUIHeight, this.state.ballColor);
+            let ball = { ...this.state.ball };
+            ball = new Ball(this.state.gameUIWidth, this.state.gameUIHeight, this.state.ballColor);
+            this.setState({
+                ball: ball
+            });
 
             // add events to listen for
             document.addEventListener("keydown", this.handleInput, false);
@@ -362,10 +377,12 @@ class GameCom extends Component {
         console.log("resizing");
 
         // update the games playing area
-        height = this.props.windowHeight;
-        width = this.props.windowWidth;
-        this.state.gameUIWidth = width * .85;
-        this.state.gameUIHeight = height * .8;
+        let height = this.props.windowHeight;
+        let width = this.props.windowWidth;
+        this.setState({
+            gameUIWidth: width * .85,
+            gameUIHeight: height * .8
+        });
 
         // update the first player
         this.state.player1.paddle.setPositionX(100);
@@ -577,21 +594,37 @@ class GameCom extends Component {
 
             this.m_sfxSong.pause();
             this.setState({ music: false });
-            this.state.player1.paddle.m_bPlaySound = false;
+
+            // 
+            let player1 = { ...this.state.player1 };
+            player1.paddle.m_bPlaySound = false;
+            this.setState({ player1: player1 });
+            
+            let player2 = { ...this.state.player2 };
             if (this.props.multiPlayer) {
-                this.state.player2.paddle.m_bPlaySound = false;
+                player2.paddle.m_bPlaySound = false;
             } else {
-                this.state.player2.aiPaddle.m_bPlaySound = false;
+                player2.aiPaddle.m_bPlaySound = false;
             }
+            this.setState({ player2: player2 });
+
         } else {
             this.m_sfxSong.play();
             this.setState({ music: true });
-            this.state.player1.paddle.m_bPlaySound = true;
+
+
+            let player1 = { ...this.state.player1 };
+            player1.paddle.m_bPlaySound = true;
+            this.setState({ player1: player1 });
+          
+
+            let player2 = { ...this.state.player2 };
             if (this.props.multiPlayer) {
-                this.state.player2.paddle.m_bPlaySound = true;
+                player2.paddle.m_bPlaySound = true;
             } else {
-                this.state.player2.aiPaddle.m_bPlaySound = true;
+                player2.aiPaddle.m_bPlaySound = true;
             }
+            this.setState({ player2: player2 });
         }
 
     }
@@ -654,7 +687,7 @@ class GameCom extends Component {
                     </div>
                     :
                     <div id="modal" className="text-center">
-                        <h1 className="mb-4 glow2" id="pong-text"> {winner === "Player One" ? winner : computer} won!</h1>
+                        <h1 className="mb-4 glow2" id="pong-text"> {winner === "Player One" ? winner : "The Computer"} won!</h1>
                         <h5>Press SPACEBAR to play again</h5>
                     </div>
                 }
@@ -813,9 +846,12 @@ class GameCom extends Component {
 
             // update objects
             this.state.ball.update(deltaTime, _sideHit => {
+
+                // create an emtpy object to use to capture the player state
+                let newPlayer = null;
                 switch (_sideHit) {
                     case "left":
-                        var newPlayer = { ...this.state.player2 };
+                        newPlayer = { ...this.state.player2 };
                         newPlayer.score++;
                         this.setState({ player2: newPlayer });
                         this.state.ball.resetBall();
@@ -826,12 +862,15 @@ class GameCom extends Component {
                             if (this.state.m_activeEvents.length === 0)
                                 this.startEvent("no-event");
                             
-                            this.state.ball.m_bInFastBallEvent = false;
+                            
+                            let ball = this.state.ball;
+                            ball.m_bInFastBallEvent = false;
+                            this.setState({ball: ball});
                         }
                         this.m_velX *= -1;
                         break;
                     case "right":
-                        var newPlayer = { ...this.state.player1 };
+                        newPlayer = { ...this.state.player1 };
                         newPlayer.score++;
                         this.setState({ player1: newPlayer });
                         this.state.ball.resetBall();
@@ -843,7 +882,9 @@ class GameCom extends Component {
                             if (this.state.m_activeEvents.length === 0)
                                 this.startEvent("no-event");
                             
-                            this.state.ball.m_bInFastBallEvent = false;
+                                let ball = this.state.ball;
+                                ball.m_bInFastBallEvent = false;
+                                this.setState({ball: ball});
                         }
                         break;
                     default:
@@ -861,14 +902,16 @@ class GameCom extends Component {
                 this.state.context.clearRect(0, 0, this.state.gameUIWidth, this.state.gameUIHeight);
 
                 // render the line in the middle
-                this.state.context.beginPath();
+                let context = this.state.context;
+                context.beginPath();
                 var prevColor = this.state.context.strokeStyle;
-                this.state.context.strokeStyle = this.state.gameBorderColor;
-                this.state.context.moveTo(this.state.gameUIWidth / 2, 0);
-                this.state.context.lineTo(this.state.gameUIWidth / 2, this.state.gameUIHeight);
-                this.state.context.stroke();
-                this.state.context.strokeStyle = prevColor;
-                this.state.context.closePath();
+                context.strokeStyle = this.state.gameBorderColor;
+                context.moveTo(this.state.gameUIWidth / 2, 0);
+                context.lineTo(this.state.gameUIWidth / 2, this.state.gameUIHeight);
+                context.stroke();
+                context.strokeStyle = prevColor;
+                context.closePath();
+                this.setState({context: context});
 
                 // render objects
                 this.state.ball.render(this.state.context);
