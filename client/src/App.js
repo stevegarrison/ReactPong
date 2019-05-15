@@ -27,6 +27,3 @@ function App() {
 }
 
 export default App;
-
-{/* <Paddle initPos={{ x: 10, y: 0 }} moveUp='w' moveDown='s'></Paddle>
-<Paddle initPos={{ x: 100, y: 0 }} moveUp='w' moveDown='s'></Paddle> */}

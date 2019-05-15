@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import "../styles/startMenu.css"
-import API from "../utils/API";
 import { Link } from "react-router-dom";
 
 
