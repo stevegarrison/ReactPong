@@ -580,7 +580,7 @@ class GameCom extends Component {
     // when the game closes
     componentWillUnmount() {
 
-        this.m_sfxSong.stop();
+        this.m_sfxSong.pause();
         // remove event listeners
         document.removeEventListener("keyup", this.handleKeyUp, false);
         document.removeEventListener("keydown", this.handleInput, false);
@@ -593,6 +593,7 @@ class GameCom extends Component {
         if (this.state.music) {
 
             this.m_sfxSong.pause();
+            
             this.setState({ music: false });
 
             // 
