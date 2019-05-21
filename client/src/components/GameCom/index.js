@@ -97,6 +97,8 @@ class GameCom extends Component {
                 gameUIHeight: height * .8
             });
            
+
+            // Set the color of the ball and paddles
             const color = "white";
             if (!this.state.player1Color)
                 this.setState({ player1Color: color });
@@ -105,6 +107,7 @@ class GameCom extends Component {
             if (!this.state.ballColor)
                 this.setState({ ballColor: color });
 
+            // Set the size of the ball
             const size = 130;
             if (!this.state.player1Size)
                 this.setState({ player1Size: size });
@@ -352,8 +355,6 @@ class GameCom extends Component {
                 break;
         };
     }
-
-
 
     processInput(_deltaTime) {
 
