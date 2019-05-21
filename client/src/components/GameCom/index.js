@@ -15,7 +15,6 @@ import AIPaddle from "../../Game/AIPaddle";
 import windowSize from "react-window-size";
 import EventManager from "../../Game/EventManager/EventManager"
 
-let winner = "";
 
 class GameCom extends Component {
 
@@ -24,14 +23,14 @@ class GameCom extends Component {
     startTime = 0.0;
     m_nScoreToWin = 0;
 
+    // winner
+    m_szWinner = "";
+
     // music
     m_sfxSong = new Audio("./audio/song.mp3");
 
+    // event
     m_eventManager = new EventManager();
-
-    audio = {
-        file: "",
-    };
 
     state = {
 
@@ -140,7 +139,7 @@ class GameCom extends Component {
                 player2.aiPaddle.setNormalMode();
 
                 if (this.props.practiceMode)
-                    this.state.player2.aiPaddle.setPracticeMode();
+                    player2.aiPaddle.setPracticeMode();
                 this.setState({
                     player2: player2
                 });
@@ -458,6 +457,13 @@ class GameCom extends Component {
         });
     }
 
+     /******************************************************************************/
+    /*                                                                            */
+    /*      Method:     resetGame                                                 */
+    /*                                                                            */
+    /*      Purpose:    Reset the game                                            */
+    /*                                                                            */
+    /******************************************************************************/
     resetGame() {
         var newState = { ...this.state };
         newState.player1.score = 0;
@@ -477,6 +483,13 @@ class GameCom extends Component {
         this.setState(newState);
     }
 
+    /******************************************************************************/
+    /*                                                                            */
+    /*      Method:     checkForWins                                              */
+    /*                                                                            */
+    /*      Purpose:    check to see if anyone has won the game                   */
+    /*                                                                            */
+    /******************************************************************************/
     checkForWins() {
 
         if (this.state.player1.score >= this.m_nScoreToWin) {
@@ -484,10 +497,9 @@ class GameCom extends Component {
                 this.m_sfxWin.play();
             }
 
-            console.log("Player 1 Wins!!!");
             this.setState({ m_bWon: true });
             this.setState({ gameStart2: true });
-            winner = "Player One"
+            this.m_szWinner = "Player One"
             this.resetGame();
 
         } else if (this.state.player2.score >= this.m_nScoreToWin) {
@@ -499,18 +511,34 @@ class GameCom extends Component {
                 }
             }
 
-            console.log("Player 2 Wins!!!");
             this.setState({ m_bWon: true });
             this.setState({ gameStart2: true });
-            winner = "Player Two"
+            if(this.props.multiPlayer)  
+                this.m_szWinner = "Player Two"
+            else
+                this.m_szWinner = "The Computer"
             this.resetGame();
         }
     }
 
+    /******************************************************************************/
+    /*                                                                            */
+    /*      Method:     isPlaying                                                 */
+    /*                                                                            */
+    /*      Purpose:    Check to see if the song passed in is playing             */
+    /*                                                                            */
+    /******************************************************************************/
     isPlaying(_song) {
         return !_song.paused;
     }
 
+    /******************************************************************************/
+    /*                                                                            */
+    /*      Method:     update                                                    */
+    /*                                                                            */
+    /*      Purpose:    update all game logic                                     */
+    /*                                                                            */
+    /******************************************************************************/
     update = () => {
 
         if (!this.state.gamePaused && !this.state.gameStart && !this.state.m_bWon) {
@@ -630,6 +658,13 @@ class GameCom extends Component {
 
     }
 
+    /******************************************************************************/
+    /*                                                                            */
+    /*      Method:     getPauseGameJSX                                           */
+    /*                                                                            */
+    /*      Purpose:    return JSX to react to be rendered on the page            */
+    /*                                                                            */
+    /******************************************************************************/
     getPauseGameJSX() {
         return (
             <div id="modal" className="text-center">
@@ -639,6 +674,13 @@ class GameCom extends Component {
         );
     }
 
+    /******************************************************************************/
+    /*                                                                            */
+    /*      Method:     getStartGameJSX                                           */
+    /*                                                                            */
+    /*      Purpose:    return JSX to react to be rendered on the page            */
+    /*                                                                            */
+    /******************************************************************************/
     getStartGameJSX() {
 
         return (
@@ -652,33 +694,32 @@ class GameCom extends Component {
         );
     }
 
+    /******************************************************************************/
+    /*                                                                            */
+    /*      Method:     getWonGameJSX                                             */
+    /*                                                                            */
+    /*      Purpose:    return JSX to react to be rendered on the page            */
+    /*                                                                            */
+    /******************************************************************************/
     getWonGameJSX() {
-
-        var jsx = <>Hey you</>;
-
-        if (this.props.multiPlayer) {
-            jsx = <>
-                <div id="modal" className="text-center">
-                    <h1 className="mb-4 glow2" id="pong-text"> {winner} won!</h1>
-                    <h5>Press SPACEBAR to play again</h5>
-                </div>
-            </>;
-        }
-        else {
-            jsx = <>
-                <div id="modal" className="text-center">
-                    <h1 className="mb-4 glow2" id="pong-text"> {winner === "Player One" ? winner : "The Computer"} won!</h1>
-                    <h5>Press SPACEBAR to play again</h5>
-                </div>
-            </>;
-        }
-
-        return jsx;
+        return <>
+            <div id="modal" className="text-center">
+                <h1 className="mb-4 glow2" id="pong-text"> {this.m_szWinner} won!</h1>
+                <h5>Press SPACEBAR to play again</h5>
+            </div>
+        </>;
     }
 
+    /******************************************************************************/
+    /*                                                                            */
+    /*      Method:     getRegHeaderJSX                                           */
+    /*                                                                            */
+    /*      Purpose:    return JSX to react to be rendered on the page            */
+    /*                                                                            */
+    /******************************************************************************/
     getRegHeaderJSX() {
 
-        var jsx = <p>Hey you</p>;
+        var jsx = <p>Steve!!!!!</p>;
         if (this.state.events === "true") {
             jsx = <>
                 <div className="col-md-3">
@@ -708,9 +749,16 @@ class GameCom extends Component {
 
     }
 
+    /******************************************************************************/
+    /*                                                                            */
+    /*      Method:     getSuddenDeathJSX                                         */
+    /*                                                                            */
+    /*      Purpose:    return JSX to react to be rendered on the page            */
+    /*                                                                            */
+    /******************************************************************************/
     getSuddenDeathJSX() {
 
-        var jsx = <p>Hey you</p>;
+        var jsx = <p>YOOOO!!!!</p>;
         if (this.state.events === "true") {
             jsx = <>
                 <div className="col-md-6">
@@ -736,13 +784,19 @@ class GameCom extends Component {
 
     }
 
+    /******************************************************************************/
+    /*                                                                            */
+    /*      Method:     render                                                    */
+    /*                                                                            */
+    /*      Purpose:    return JSX to react to be rendered on the page            */
+    /*                                                                            */
+    /******************************************************************************/
     render() {
         return (
             <>
                 <div className="text-center">
                     <div className="row">
                         <div className="col-md-1"></div>
-
 
                         <div className="col-md-10">
                             {/* Player Scores */}
@@ -785,8 +839,6 @@ class GameCom extends Component {
                                 <div>
                                     <div onClick={() => this.handleSound()}><i id="volume-icon" className="m-3 fas fa-volume-mute fa-2x"></i></div>
                                 </div>}
-
-
                         </div>
                     </div>
                 </div>

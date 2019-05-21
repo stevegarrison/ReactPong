@@ -109,7 +109,6 @@ class AIPaddle extends Paddle {
     }
 
     update(_dt) { 
-        super.update(_dt);
         this.m_dCurDelayTime += _dt;
 
         if (this.m_bPracticeMode)
@@ -130,10 +129,9 @@ class AIPaddle extends Paddle {
             }
                 
         }
-
     }
+
     render(_context) { 
-       
         super.render(_context);
     }
 

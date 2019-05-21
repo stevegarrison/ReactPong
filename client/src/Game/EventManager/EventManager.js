@@ -213,10 +213,7 @@ class EventManager {
 
     updateEvents = _dt => {
 
-
-        ////////////////////////////////////////////////
-        // events
-        // check for time till next event
+        // check time till next event
         if (this.m_dNextEventTimer <= 0.0) {
 
             this.findNextEvent();
@@ -239,9 +236,6 @@ class EventManager {
                     this.m_dCurTime += _dt;
                     if (this.m_dCurTime >= this.m_dMaxSplitBallTime) {
 
-                        // while (this.eventLogic.m_splitBalls.length !== 0) {
-                        //     this.eventLogic.m_splitBalls.pop();
-                        // }
                         this.m_splitBalls = [];
                         console.log("spb len" + this.m_splitBalls.length);
                         this.m_dCurTime = 0.0;
@@ -254,10 +248,6 @@ class EventManager {
                         this.m_nNumSplitBallCurWave = 0;
                         this.m_dSplitBallWaveCurTime = 0.0;
                     }
-                    // console.log("splitballslength " + this.eventLogic.m_splitBalls.length);
-
-
-
                     break;
                 case "tiny-paddle":
                     this.m_dCurTime += _dt;
