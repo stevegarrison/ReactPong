@@ -143,11 +143,7 @@ class Paddle extends GameObject  {
         //GamePlayer.prototype.update(_dt)
     }
 
-    render(_context, _imgRef) {
-        // console.log(_imgRef);
-        // GamePlayer.prototype.render(_context, _imgRef);
-       
-
+    render(_context) {
         _context.fillStyle = this.m_paddleColor;
         _context.fillRect(this.m_position.x, this.m_position.y, this.m_dimensions.width, this.m_dimensions.height);
 
@@ -159,7 +155,6 @@ class Paddle extends GameObject  {
             _context.fillStyle = "red";
             _context.fillRect(this.collisionRect.topLeft, this.collisionRect.topLeft, this.collisionRect.topRight - this.collisionRect.topLeft, this.collisionRect.bottomRight - this.collisionRect.topLeft);
         }
-          // _context.drawImage(_imgRef, _posX, _posY, this.m_dimensions.width, this.m_dimensions.height);
 
     }
 

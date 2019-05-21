@@ -458,7 +458,7 @@ class GameCom extends Component {
         });
     }
 
-    pauseGame2() {
+    getPauseGameJSX() {
         return (
             <div id="modal" className="text-center">
                 <h1 id="pong-text">Paused</h1>
@@ -467,7 +467,7 @@ class GameCom extends Component {
         );
     }
 
-    startGame() {
+    getStartGameJSX() {
 
         return (
             <>
@@ -480,10 +480,10 @@ class GameCom extends Component {
         );
     }
 
-    wonGameLogic() {
+    getWonGameJSX() {
 
-        return (
-            <>
+        var jsx = <>Hey you</>;
+        jsx = <>
                 {(this.props.multiPlayer) ?
 
                     <div id="modal" className="text-center">
@@ -496,8 +496,8 @@ class GameCom extends Component {
                         <h5>Press SPACEBAR to play again</h5>
                     </div>
                 }
-            </>
-        )
+            </>;
+        return jsx;
     }
 
     resetGame() {
@@ -657,12 +657,12 @@ class GameCom extends Component {
 
                 // render objects
                 this.state.ball.render(this.state.context);
-                this.state.player1.paddle.render(this.state.context, this.refs.image);
+                this.state.player1.paddle.render(this.state.context);
 
                 if (this.props.multiPlayer)
-                    this.state.player2.paddle.render(this.state.context, this.refs.image);
+                    this.state.player2.paddle.render(this.state.context);
                 else
-                    this.state.player2.aiPaddle.render(this.state.context, this.refs.image);
+                    this.state.player2.aiPaddle.render(this.state.context);
 
                 // render events
                 this.m_eventManager.renderEvents(this.state.context);
@@ -673,6 +673,66 @@ class GameCom extends Component {
         }
         // Next frame
         requestAnimationFrame(() => { this.update() });
+
+    }
+
+    getRegHeaderJSX() {
+
+        var jsx = <p>Hey you</p>;
+        if (this.state.events === "true") {
+            jsx = <>
+                <div className="col-md-3">
+                    <h2>Player One: {this.state.player1.score}</h2>
+                </div>
+                <div className="col-md-6">
+                    <h2>Current Event:
+                        {this.m_eventManager.m_activeEvents.map(_event => (" " + _event))}
+                    </h2>
+                    <h2>Event in: {this.m_eventManager.m_dNextEventTimer.toFixed(0)}</h2>
+                </div>
+            </>
+        }
+        else {
+            jsx = <>
+                <div className="col-md-3">
+                <h2>Player One: {this.state.player1.score}</h2>
+            </div>
+                <div className="col-md-6"></div>
+                <div className="col-md-3">
+                    <h2>Player Two: {this.state.player2.score}</h2>
+                </div>
+            </>;
+        }
+
+        return jsx;
+
+    }
+
+    getSuddenDeathJSX() { 
+        
+        var jsx = <p>Hey you</p>;
+        if (this.state.events === "true") {
+            jsx =  <>
+                <div className="col-md-6">
+                    <h2 className="suddenDeath">Sudden Death!</h2>
+                </div>
+                <div className="col-md-6">
+                    <h2>Current Event:
+                    {this.m_eventManager.m_activeEvents.map(_event => (" " + _event))}
+                    </h2>
+                    <h2>Event in: {this.m_eventManager.m_dNextEventTimer.toFixed(0)}</h2>
+                </div>
+            </>;
+        }
+        else {
+            jsx = <>
+                <div className="col-md-12">
+                    <h2 className="suddenDeath">Sudden Death!</h2>
+                </div>
+            </>;
+        }
+
+        return jsx;
 
     }
 
@@ -687,42 +747,8 @@ class GameCom extends Component {
                         <div className="col-md-10">
                             {/* Player Scores */}
                             <div className="row player-text mt-3 mb-4">
-                                {this.m_nScoreToWin === 1 ? <> {this.state.events === "true" ? <>
-                                    <div className="col-md-6">
-                                        <h2 className="suddenDeath">Sudden Death!</h2>
-                                    </div>
-                                    <div className="col-md-6">
-                                        <h2>Current Event:
-                                     {this.m_eventManager.m_activeEvents.map(_event => (" " + _event))}
-                                        </h2>
-                                        <h2>Event in: {this.m_eventManager.m_dNextEventTimer.toFixed(0)}</h2>
-                                    </div> 
-                                    </>
-                                    :
-                                    <div className="col-md-12">
-                                        <h2 className="suddenDeath">Sudden Death!</h2>
-                                    </div>
-                                } </>
-
-                                    : <>
-                                        <div className="col-md-3">
-                                            <h2>Player One: {this.state.player1.score}</h2>
-                                        </div>
-                                        {this.state.events === "true" ?
-                                            <div className="col-md-6">
-                                                <h2>Current Event:
-                                                {this.m_eventManager.m_activeEvents.map(_event => (" " + _event))}
-                                                </h2>
-                                                <h2>Event in: {this.m_eventManager.m_dNextEventTimer.toFixed(0)}</h2>
-                                            </div>
-                                            :
-                                            <div className="col-md-6"></div>
-                                        }
-                                        <div className="col-md-3">
-                                            <h2>Player Two: {this.state.player2.score}</h2>
-                                        </div></>}
+                                {this.m_nScoreToWin === 1 ? this.getSuddenDeathJSX() : this.getRegHeaderJSX()}
                             </div>
-
 
                             {/* Game UI */}
                             <div className="row">
@@ -738,13 +764,11 @@ class GameCom extends Component {
                                     width={this.state.gameUIWidth}
                                     height={this.state.gameUIHeight}
                                     ref="canvas" >
-
-
-
                                 </canvas>
-                                {this.state.m_bWon ? this.wonGameLogic() : ""}
-                                {this.state.gamePaused ? this.pauseGame2() : ""}
-                                {!this.state.gameStart2 && !this.state.gameStart3 ? this.startGame() : ""}
+
+                                {this.state.m_bWon ? this.getWonGameJSX() : ""}
+                                {this.state.gamePaused ? this.getPauseGameJSX() : ""}
+                                {!this.state.gameStart2 && !this.state.gameStart3 ? this.getStartGameJSX() : ""}
                             </div>
                         </div>
 

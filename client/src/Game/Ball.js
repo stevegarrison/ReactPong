@@ -177,28 +177,16 @@ class Ball extends GameObject {
     }
 
     render(_context) {
-        // console.log(_imgRef);
-        // GamePlayer.prototype.render(_context, _imgRef);
-        // _context.fillRect(_imgRef, this.m_position.x, this.m_position.y, this.m_dimensions.width, this.m_dimensions.height);
-        //_context.drawImage(_imgRef, this.m_position.x, this.m_position.y, this.m_dimensions.width, this.m_dimensions.height);
         _context.fillStyle = this.m_ballColor;
-        // _context.fillRect(this.m_position.x, this.m_position.y, this.m_dimensions.width, this.m_dimensions.height);
 
         _context.beginPath();
         _context.arc(this.m_position.x + this.m_dimensions.width / 2, this.m_position.y + this.m_dimensions.height / 2, this.m_dimensions.width / 2, 0, Math.PI * 2);
-        // _context.ellipse(this.m_position.x + this.m_dimensions.width/2, this.m_position.y + this.m_dimensions.height/2, this.m_dimensions.width/2, this.m_dimensions.height/2, Math.PI * this.m_dimensions.width, 0,  Math.PI * this.m_dimensions.width);
         _context.fill();
-
-
-        // _context.beginPath();
         _context.fillStyle = "black";
         _context.lineWidth = 3;
         _context.arc(this.m_position.x + this.m_dimensions.width / 2, this.m_position.y + this.m_dimensions.height / 2, this.m_dimensions.width / 2, 0, Math.PI * 2);
         _context.stroke();
         _context.closePath();
-
-        //    this.renderCollisionRect(_context);
-
     }
 
 };

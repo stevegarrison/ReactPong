@@ -132,9 +132,9 @@ class AIPaddle extends Paddle {
         }
 
     }
-    render(_context, _imgRef) { 
+    render(_context) { 
        
-        super.render(_context, _imgRef);
+        super.render(_context);
     }
 
 }
