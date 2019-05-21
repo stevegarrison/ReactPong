@@ -42,7 +42,7 @@ class GameCom extends Component {
         player2Size: 130,
         ballColor: "white",
         imageURL: "",
-         gamePaused: false,
+        gamePaused: false,
         gameStart: true,
         gameStart2: false,
         gameStart3: false,
@@ -75,7 +75,7 @@ class GameCom extends Component {
         }
     };
 
-   
+
     componentDidMount() {
         console.log("mounted");
         this.setState({ music: true });
@@ -96,7 +96,7 @@ class GameCom extends Component {
                 gameUIWidth: width * .85,
                 gameUIHeight: height * .8
             });
-           
+
 
             // Set the color of the ball and paddles
             const color = "white";
@@ -120,7 +120,7 @@ class GameCom extends Component {
             this.setState({
                 player1: player1
             });
-            
+
             this.state.player1.paddle.setPositionX(100);
 
             // check which mode the game was started in
@@ -141,9 +141,9 @@ class GameCom extends Component {
 
                 if (this.props.practiceMode)
                     this.state.player2.aiPaddle.setPracticeMode();
-                    this.setState({
-                        player2: player2
-                    });
+                this.setState({
+                    player2: player2
+                });
 
             }
 
@@ -167,7 +167,7 @@ class GameCom extends Component {
                 this.state.player2.paddle,
                 this.state.player2.aiPaddle,
                 this.state.gameUIWidth,
-                this.state.gameUIHeight, 
+                this.state.gameUIHeight,
                 this.props.multiPlayer
             );
 
@@ -223,20 +223,20 @@ class GameCom extends Component {
                     player2Size: res.data[0].player2Size,
                     ballColor: res.data[0].ballColor,
                     imageURL: res.data[0].imageURL,
-                   
+
                 });
 
                 this.m_eventManager.multiBall = res.data[0].multiBall;
                 this.m_eventManager.paddleShrink = res.data[0].paddleShrink;
                 this.m_eventManager.fastBall = res.data[0].fastBall;
-                
+
                 this.m_nScoreToWin = res.data[0].value;
                 console.log("bc: " + this.state.ballColor);
                 console.log(this.state);
                 if (this.m_eventManager.multiBall === "true" || this.m_eventManager.paddleShrink === "true" || this.m_eventManager.fastBall === "true") {
                     this.setState({ events: "true" });
                 }
-                  console.log("LOADED OPTIONS (GamePage.js)");
+                console.log("LOADED OPTIONS (GamePage.js)");
                 _callback();
             })
             .catch(err => console.log("GameCom error loading options", err));
@@ -322,9 +322,9 @@ class GameCom extends Component {
             case 'r':
                 this.m_eventManager.startEvent("fast-ball");
                 break;
-                case 'y':
-                        this.m_eventManager.startEvent("tiny-paddle");
-                        break;
+            case 'y':
+                this.m_eventManager.startEvent("tiny-paddle");
+                break;
             default:
                 break;
         };
@@ -397,14 +397,14 @@ class GameCom extends Component {
         if (this.state.music) {
 
             this.m_sfxSong.pause();
-            
+
             this.setState({ music: false });
 
             // 
             let player1 = { ...this.state.player1 };
             player1.paddle.m_bPlaySound = false;
             this.setState({ player1: player1 });
-            
+
             let player2 = { ...this.state.player2 };
             if (this.props.multiPlayer) {
                 player2.paddle.m_bPlaySound = false;
@@ -421,7 +421,7 @@ class GameCom extends Component {
             let player1 = { ...this.state.player1 };
             player1.paddle.m_bPlaySound = true;
             this.setState({ player1: player1 });
-          
+
 
             let player2 = { ...this.state.player2 };
             if (this.props.multiPlayer) {
@@ -456,48 +456,6 @@ class GameCom extends Component {
         this.setState({
             gamePaused: !this.state.gamePaused
         });
-    }
-
-    getPauseGameJSX() {
-        return (
-            <div id="modal" className="text-center">
-                <h1 id="pong-text">Paused</h1>
-                <h4> Press  'P'  to resume</h4>
-            </div>
-        );
-    }
-
-    getStartGameJSX() {
-
-        return (
-            <>
-                <div id="modal" className="text-center">
-                    <h1 id="pong-text">PONG!</h1>
-                    <h3 className="mb-3"> Press the SPACEBAR to play</h3>
-                    <h7> NOTE: You can pause the game at any moment by pressing the 'P' key</h7>
-                </div>
-            </>
-        );
-    }
-
-    getWonGameJSX() {
-
-        var jsx = <>Hey you</>;
-        jsx = <>
-                {(this.props.multiPlayer) ?
-
-                    <div id="modal" className="text-center">
-                        <h1 className="mb-4 glow2" id="pong-text"> {winner} won!</h1>
-                        <h5>Press SPACEBAR to play again</h5>
-                    </div>
-                    :
-                    <div id="modal" className="text-center">
-                        <h1 className="mb-4 glow2" id="pong-text"> {winner === "Player One" ? winner : "The Computer"} won!</h1>
-                        <h5>Press SPACEBAR to play again</h5>
-                    </div>
-                }
-            </>;
-        return jsx;
     }
 
     resetGame() {
@@ -549,18 +507,18 @@ class GameCom extends Component {
         }
     }
 
-    
     isPlaying(_song) {
         return !_song.paused;
     }
+
     update = () => {
 
         if (!this.state.gamePaused && !this.state.gameStart && !this.state.m_bWon) {
 
             // console.log("updating");
             // check sound
-            if (this.state.music) { 
-                if (!this.isPlaying(this.m_sfxSong)) { 
+            if (this.state.music) {
+                if (!this.isPlaying(this.m_sfxSong)) {
                     this.m_sfxSong.play();
                 }
             }
@@ -573,17 +531,12 @@ class GameCom extends Component {
 
             // // update events
             this.m_eventManager.updateEvents(deltaTime);
-            // //////////////////////////////////////////////////////
 
-            if (this.props.multiPlayer) {
-
-            }
-            else {
+            // update AI is in 1 player mode
+            if (!this.props.multiPlayer) {
                 this.state.player2.aiPaddle.update(deltaTime);
                 this.state.player2.aiPaddle.trackBall(this.state.ball.m_position.x, this.state.ball.m_position.y, deltaTime);
-
             }
-
 
             // update input
             this.processInput(deltaTime);
@@ -609,9 +562,11 @@ class GameCom extends Component {
                         }
                         let newBall = this.state.ball;
                         newBall.m_velocity.x *= -1;
-                        this.setState({ball: newBall});
+                        this.setState({ ball: newBall });
+                        // check for player wins
+                        this.checkForWins();
                         break;
-                    
+
                     case "right":
                         newPlayer = { ...this.state.player1 };
                         newPlayer.score++;
@@ -619,7 +574,7 @@ class GameCom extends Component {
                         this.state.ball.resetBall();
                         let ball = this.state.ball;
                         ball.m_velocity.x *= -1;
-                        this.setState({ball: ball});
+                        this.setState({ ball: ball });
                         if (this.state.ball.m_bInFastBallEvent) {
 
                             this.m_eventManager.exitFastBallEvent();
@@ -628,6 +583,8 @@ class GameCom extends Component {
                             ball.m_bInFastBallEvent = false;
                             this.setState({ ball: ball });
                         }
+                        // check for player wins
+                        this.checkForWins();
                         break;
                     default:
                         break;
@@ -636,9 +593,6 @@ class GameCom extends Component {
 
             // check for collision
             this.checkCollision();
-
-            // check for player wins
-            this.checkForWins();
 
             if (this.state.context) {
                 this.state.context.clearRect(0, 0, this.state.gameUIWidth, this.state.gameUIHeight);
@@ -653,7 +607,7 @@ class GameCom extends Component {
                 context.stroke();
                 context.strokeStyle = prevColor;
                 context.closePath();
-                this.setState({context: context});
+                this.setState({ context: context });
 
                 // render objects
                 this.state.ball.render(this.state.context);
@@ -676,6 +630,52 @@ class GameCom extends Component {
 
     }
 
+    getPauseGameJSX() {
+        return (
+            <div id="modal" className="text-center">
+                <h1 id="pong-text">Paused</h1>
+                <h4> Press  'P'  to resume</h4>
+            </div>
+        );
+    }
+
+    getStartGameJSX() {
+
+        return (
+            <>
+                <div id="modal" className="text-center">
+                    <h1 id="pong-text">PONG!</h1>
+                    <h3 className="mb-3"> Press the SPACEBAR to play</h3>
+                    <h7> NOTE: You can pause the game at any moment by pressing the 'P' key</h7>
+                </div>
+            </>
+        );
+    }
+
+    getWonGameJSX() {
+
+        var jsx = <>Hey you</>;
+
+        if (this.props.multiPlayer) {
+            jsx = <>
+                <div id="modal" className="text-center">
+                    <h1 className="mb-4 glow2" id="pong-text"> {winner} won!</h1>
+                    <h5>Press SPACEBAR to play again</h5>
+                </div>
+            </>;
+        }
+        else {
+            jsx = <>
+                <div id="modal" className="text-center">
+                    <h1 className="mb-4 glow2" id="pong-text"> {winner === "Player One" ? winner : "The Computer"} won!</h1>
+                    <h5>Press SPACEBAR to play again</h5>
+                </div>
+            </>;
+        }
+
+        return jsx;
+    }
+
     getRegHeaderJSX() {
 
         var jsx = <p>Hey you</p>;
@@ -695,8 +695,8 @@ class GameCom extends Component {
         else {
             jsx = <>
                 <div className="col-md-3">
-                <h2>Player One: {this.state.player1.score}</h2>
-            </div>
+                    <h2>Player One: {this.state.player1.score}</h2>
+                </div>
                 <div className="col-md-6"></div>
                 <div className="col-md-3">
                     <h2>Player Two: {this.state.player2.score}</h2>
@@ -708,11 +708,11 @@ class GameCom extends Component {
 
     }
 
-    getSuddenDeathJSX() { 
-        
+    getSuddenDeathJSX() {
+
         var jsx = <p>Hey you</p>;
         if (this.state.events === "true") {
-            jsx =  <>
+            jsx = <>
                 <div className="col-md-6">
                     <h2 className="suddenDeath">Sudden Death!</h2>
                 </div>
