@@ -18,18 +18,15 @@ class EventManager {
 
     m_multiPlayer = false;
 
-    eventLogic = {
-        m_splitBalls: [],
-        m_nMaxTinyPaddleTime: 10,
-        m_dCurTime: 0.0,
-        m_dMaxEventTimer: 10.0,
-        m_dMaxSplitBallTime: 10.0,
-        m_dSplitBallWaveMaxTime: 0.1,
-        m_dSplitBallWaveCurTime: 0.0,
-        m_nNumSplitBallCurWave: 0,
-        m_nNumSplitBallMaxWaves: 10
-
-    };
+    m_splitBalls = [];
+    m_nMaxTinyPaddleTime = 10;
+    m_dCurTime = 0.0;
+    m_dMaxEventTimer = 10.0;
+    m_dMaxSplitBallTime = 10.0;
+    m_dSplitBallWaveMaxTime = 0.1;
+    m_dSplitBallWaveCurTime = 0.0;
+    m_nNumSplitBallCurWave = 0;
+    m_nNumSplitBallMaxWaves = 10;
 
     m_gameUIWidth = 0;
     m_gameUIHeight = 0;
@@ -106,35 +103,35 @@ class EventManager {
 
     updateSplitBalls(_dt) {
 
-        if (this.eventLogic.m_nNumSplitBallCurWave !== this.eventLogic.m_nNumSplitBallMaxWaves) {
+        if (this.m_nNumSplitBallCurWave !== this.m_nNumSplitBallMaxWaves) {
 
-            this.eventLogic.m_dSplitBallWaveCurTime += _dt;
-            if (this.eventLogic.m_dSplitBallWaveCurTime >= this.eventLogic.m_dSplitBallWaveMaxTime) {
+            this.m_dSplitBallWaveCurTime += _dt;
+            if (this.m_dSplitBallWaveCurTime >= this.m_dSplitBallWaveMaxTime) {
                 // spawn a new wave
                 for (let i = 0; i < 3; ++i) {
                     var splitBall = new Ball(this.m_gameUIWidth, this.m_gameUIHeight, "white");
                     splitBall.resetBall();
-                    this.eventLogic.m_splitBalls.push(splitBall);
-                    this.eventLogic.m_dSplitBallWaveCurTime = 0.0;
+                    this.m_splitBalls.push(splitBall);
+                    this.m_dSplitBallWaveCurTime = 0.0;
                 }
-                this.eventLogic.m_nNumSplitBallCurWave++;
+                this.m_nNumSplitBallCurWave++;
 
             }
 
         }
 
         // update the balls 
-        for (let i = 0; i < this.eventLogic.m_splitBalls.length; ++i) {
-            this.eventLogic.m_splitBalls[i].update(_dt, _sideHit => {
+        for (let i = 0; i < this.m_splitBalls.length; ++i) {
+            this.m_splitBalls[i].update(_dt, _sideHit => {
 
                 switch (_sideHit) {
                     case "left":
-                        this.eventLogic.m_splitBalls[i].m_position.x = 0.0;
-                        this.eventLogic.m_splitBalls[i].m_velocity.x *= -1;
+                        this.m_splitBalls[i].m_position.x = 0.0;
+                        this.m_splitBalls[i].m_velocity.x *= -1;
                         break;
                     case "right":
-                        this.eventLogic.m_splitBalls[i].m_position.x = this.m_gameUIWidth - this.eventLogic.m_splitBalls[i].m_dimensions.width;
-                        this.eventLogic.m_splitBalls[i].m_velocity.x *= -1;
+                        this.m_splitBalls[i].m_position.x = this.m_gameUIWidth - this.m_splitBalls[i].m_dimensions.width;
+                        this.m_splitBalls[i].m_velocity.x *= -1;
                         break;
                     default:
                 };
@@ -178,7 +175,7 @@ class EventManager {
         }
 
         console.log("startEvent");
-        this.eventLogic.m_dCurTime = 0.0;
+        this.m_dCurTime = 0.0;
         this.addEventActiveEvent(_eventName);
 
         switch (_eventName) {
@@ -197,7 +194,7 @@ class EventManager {
                 for (let i = 0; i < 3; ++i) {
                     var splitBall = new Ball(this.m_gameUIWidth, this.m_gameUIHeight, "white");
                     splitBall.resetBall();
-                    this.eventLogic.m_splitBalls.push(splitBall);
+                    this.m_splitBalls.push(splitBall);
                 }
                 break;
             case "no-event":
@@ -224,7 +221,7 @@ class EventManager {
 
             this.findNextEvent();
 
-            this.m_dNextEventTimer = this.eventLogic.m_dMaxEventTimer;
+            this.m_dNextEventTimer = this.m_dMaxEventTimer;
         }
         else {
             this.m_dNextEventTimer = this.m_dNextEventTimer - _dt;
@@ -239,23 +236,23 @@ class EventManager {
 
                     this.updateSplitBalls(_dt);
 
-                    this.eventLogic.m_dCurTime += _dt;
-                    if (this.eventLogic.m_dCurTime >= this.eventLogic.m_dMaxSplitBallTime) {
+                    this.m_dCurTime += _dt;
+                    if (this.m_dCurTime >= this.m_dMaxSplitBallTime) {
 
                         // while (this.eventLogic.m_splitBalls.length !== 0) {
                         //     this.eventLogic.m_splitBalls.pop();
                         // }
-                        this.eventLogic.m_splitBalls = [];
-                        console.log("spb len" + this.eventLogic.m_splitBalls.length);
-                        this.eventLogic.m_dCurTime = 0.0;
+                        this.m_splitBalls = [];
+                        console.log("spb len" + this.m_splitBalls.length);
+                        this.m_dCurTime = 0.0;
                     }
 
-                    if (this.eventLogic.m_splitBalls.length === 0) {
+                    if (this.m_splitBalls.length === 0) {
                         this.findAndRemoveActiveEvent("split-ball");
                         if (this.m_activeEvents.length === 0)
                             this.startEvent("no-event");
-                        this.eventLogic.m_nNumSplitBallCurWave = 0;
-                        this.eventLogic.m_dSplitBallWaveCurTime = 0.0;
+                        this.m_nNumSplitBallCurWave = 0;
+                        this.m_dSplitBallWaveCurTime = 0.0;
                     }
                     // console.log("splitballslength " + this.eventLogic.m_splitBalls.length);
 
@@ -263,9 +260,9 @@ class EventManager {
 
                     break;
                 case "tiny-paddle":
-                    this.eventLogic.m_dCurTime += _dt;
-                    if (this.eventLogic.m_dCurTime >= this.eventLogic.m_nMaxTinyPaddleTime) {
-                        this.eventLogic.m_dCurTime = 0.0;
+                    this.m_dCurTime += _dt;
+                    if (this.m_dCurTime >= this.m_nMaxTinyPaddleTime) {
+                        this.m_dCurTime = 0.0;
 
                         this.m_handleToPlayer1Paddle.exitTinyPaddleEvent();
 
@@ -294,9 +291,9 @@ class EventManager {
             switch (this.m_activeEvents[x]) {
                 case "split-ball":
                     //console.log("rendering splitballs");
-                    console.log(this.eventLogic.m_splitBalls);
-                    for (let i = 0; i < this.eventLogic.m_splitBalls.length; ++i) {
-                        this.eventLogic.m_splitBalls[i].render(_context);
+                    console.log(this.m_splitBalls);
+                    for (let i = 0; i < this.m_splitBalls.length; ++i) {
+                        this.m_splitBalls[i].render(_context);
                     }
                     break;
                 case "no-event":
