@@ -13,7 +13,7 @@ import "../../styles/game.css"
 import API from "../../utils/API";
 import AIPaddle from "../../Game/AIPaddle";
 import windowSize from "react-window-size";
-
+import EventManager from "../../Game/EventManager/EventManager"
 
 let winner = "";
 
@@ -27,28 +27,13 @@ class GameCom extends Component {
     // music
     m_sfxSong = new Audio("./audio/song.mp3");
 
-    eventLogic = {
-        m_splitBalls: [],
-        m_nMaxTinyPaddleTime: 10,
-        m_dCurTime: 0.0,
-        m_dMaxEventTimer: 10.0,
-        m_dMaxSplitBallTime: 10.0,
-        m_dSplitBallWaveMaxTime: 0.1,
-        m_dSplitBallWaveCurTime: 0.0,
-        m_nNumSplitBallCurWave: 0,
-        m_nNumSplitBallMaxWaves: 10
-
-    };
+    m_eventManager = new EventManager();
 
     audio = {
         file: "",
     };
 
     state = {
-
-        m_activeEvents: [],
-        m_dNextEventTimer: 10.0,
-        m_szCurrentEvent: "no-event",
 
         //Settings
         player1Color: "white",
@@ -57,10 +42,7 @@ class GameCom extends Component {
         player2Size: 130,
         ballColor: "white",
         imageURL: "",
-        fastBall: "false",
-        paddleShrink: "false",
-        multiBall: "false",
-        gamePaused: false,
+         gamePaused: false,
         gameStart: true,
         gameStart2: false,
         gameStart3: false,
@@ -69,7 +51,6 @@ class GameCom extends Component {
         gameBorderWidth: "1px",
         events: "false",
         music: false,
-
         context: null,
         ball: null,
         gameUIWidth: 0,
@@ -94,202 +75,12 @@ class GameCom extends Component {
         }
     };
 
-    startEvent = _eventName =>{
-
-        var first = _eventName.split("-");
-
-        if (first !== "no") { 
-            this.findAndRemoveActiveEvent("no-event");
-        }
-
-        for (let i = 0; i < this.state.m_activeEvents.length; ++i) {
-            var second = this.state.m_activeEvents[i].split("-");
-            console.log("first: " + first + ". second: " + second);
-            if (first[0] === second[0])
-                return;
-        }
-
-        console.log("startEvent");
-        this.eventLogic.m_dCurTime = 0.0;
-        this.addEventActiveEvent(_eventName);
-
-        switch (_eventName) {
-            case "fast-ball":
-                this.state.ball.enterFastBallEvent();
-                break;
-            case "tiny-paddle":
-                this.state.player1.paddle.enterTinyPaddleEvent();
-
-                if (this.props.multiPlayer)
-                    this.state.player2.paddle.enterTinyPaddleEvent();
-                else
-                    this.state.player2.aiPaddle.enterTinyPaddleEvent();
-                break;
-            case "split-ball":
-                for (let i = 0; i < 3; ++i) {
-                    var splitBall = new Ball(this.state.gameUIWidth, this.state.gameUIHeight, "white");
-                    splitBall.resetBall();
-                    this.eventLogic.m_splitBalls.push(splitBall);
-                }
-                break;
-            case "no-event":
-                break;
-            default:
-        };
-    }
-
-    updateSplitBalls(_dt) {
-
-        if (this.eventLogic.m_nNumSplitBallCurWave !== this.eventLogic.m_nNumSplitBallMaxWaves) { 
-            
-            this.eventLogic.m_dSplitBallWaveCurTime += _dt;
-            if (this.eventLogic.m_dSplitBallWaveCurTime >= this.eventLogic.m_dSplitBallWaveMaxTime) { 
-                // spawn a new wave
-                for (let i = 0; i < 3; ++i) {
-                    var splitBall = new Ball(this.state.gameUIWidth, this.state.gameUIHeight, "white");
-                    splitBall.resetBall();
-                    // console.log(splitBall.m_positionX + " " + splitBall.m_positionY);
-                    // console.log(this.state.gameUIWidth + " " + this.state.gameUIHeight);
-                    this.eventLogic.m_splitBalls.push(splitBall);
-                    this.eventLogic.m_dSplitBallWaveCurTime = 0.0;
-                }
-                this.eventLogic.m_nNumSplitBallCurWave++;
-
-            }
-
-        }
-
-        // find the ball to remove
-        for (let i = 0; i < this.eventLogic.m_splitBalls.length; ++i) {
-            this.eventLogic.m_splitBalls[i].update(_dt, _sideHit => {
-
-                switch (_sideHit) {
-                    case "left":
-                        this.eventLogic.m_splitBalls[i].m_positionX = 0.0;
-                        this.eventLogic.m_splitBalls[i].m_velX *= -1;
-                        break;
-                    case "right":
-                        this.eventLogic.m_splitBalls[i].m_positionX = this.state.gameUIWidth - this.eventLogic.m_splitBalls[i].m_width;
-                    this.eventLogic.m_splitBalls[i].m_velX *= -1;
-                        break;
-                    default:
-                };
-            });
-        }
-
-    }
-
-    updateEvents = _dt => {
-
-        for (let x = 0; x < this.state.m_activeEvents.length; ++x) {
-            switch (this.state.m_activeEvents[x]) {
-                case "split-ball":
-
-                
-                    this.updateSplitBalls(_dt);
-
-                    this.eventLogic.m_dCurTime += _dt;
-                    if (this.eventLogic.m_dCurTime >= this.eventLogic.m_dMaxSplitBallTime) {
-                   
-                        while (this.eventLogic.m_splitBalls.length !== 0) {
-                            this.eventLogic.m_splitBalls.pop();
-                        }
-                    
-                        this.eventLogic.m_dCurTime = 0.0;
-                    }
-
-                    if (this.eventLogic.m_splitBalls.length === 0) {
-                        console.log("no balls");
-                        this.findAndRemoveActiveEvent("split-ball");
-                        if (this.state.m_activeEvents.length === 0)
-                            this.startEvent("no-event");
-                        this.eventLogic.m_nNumSplitBallCurWave = 0;
-                        this.eventLogic.m_dSplitBallWaveCurTime = 0.0;
-                    }
-                    // console.log("splitballslength " + this.eventLogic.m_splitBalls.length);
-
-
-
-                    break;
-                case "tiny-paddle":
-                    this.eventLogic.m_dCurTime += _dt;
-                    if (this.eventLogic.m_dCurTime >= this.eventLogic.m_nMaxTinyPaddleTime) {
-                        this.eventLogic.m_dCurTime = 0.0;
-
-                        this.state.player1.paddle.exitTinyPaddleEvent();
-
-                        if (this.props.multiPlayer)
-                            this.state.player2.paddle.exitTinyPaddleEvent();
-                        else
-                            this.state.player2.aiPaddle.exitTinyPaddleEvent();
-                        
-                        this.findAndRemoveActiveEvent("tiny-paddle");
-                        if (this.state.m_activeEvents.length === 0)
-                            this.startEvent("no-event");
-                    }
-
-                    break;
-                case "no-event":
-                    break;
-                default:
-            };
-        }
-    }
-
-    addEventActiveEvent(_name) { 
-
-        var activeEvents = this.state.m_activeEvents;
-
-        activeEvents.push(_name);
-        this.setState({m_activeEvents: activeEvents});
-        
-    }
-
-    findAndRemoveActiveEvent(_name) { 
-        console.log("removing " + _name);
-        
-        var activeEvents = this.state.m_activeEvents;
-        console.log("active events length: " + activeEvents.length);
-
-        for (let i = 0; i < activeEvents.length; ++i) { 
-            var first = activeEvents[i].split("-");
-            var second = _name.split("-");
-            if (first[0] === second[0]) { 
-                console.log("active events length: " + activeEvents.length);
-                console.log("removing " + _name);
-                activeEvents.splice(i, 1);
-                console.log("active events length: " + activeEvents.length);
-                break;
-            }
-        }
-        this.setState({m_activeEvents: activeEvents});
-    }
-
-    renderEvents() {
-        //console.log("rendering events");
-
-        for (let x = 0; x < this.state.m_activeEvents.length; ++x) {
-            switch (this.state.m_activeEvents[x]) {
-                case "split-ball":
-                    //console.log("rendering splitballs");
-                    for (let i = 0; i < this.eventLogic.m_splitBalls.length; ++i) {
-                        this.eventLogic.m_splitBalls[i].render(this.state.context);
-                    }
-                    break;
-                case "no-event":
-                    break;
-                default:
-            };
-        }
-    }
-
-
+   
     componentDidMount() {
         console.log("mounted");
         this.setState({ music: true });
         this.m_sfxSong.play();
         this.loadOptions(() => {
-
 
             console.log(this.state);
             const canvas = this.refs.canvas;
@@ -365,12 +156,22 @@ class GameCom extends Component {
             document.addEventListener("keyup", this.handleKeyUp, false);
             window.addEventListener("resize", this.handleResize);
 
+            // intiialize the event manager
+            console.log("eventM: " + this.m_eventManager);
+            this.m_eventManager.initializeEventManager(
+                this.state.ball,
+                this.state.player1.paddle,
+                this.state.player2.paddle,
+                this.state.player2.aiPaddle,
+                this.state.gameUIWidth,
+                this.state.gameUIHeight, 
+                this.props.multiPlayer
+            );
+
             // request the update function to be called as an animation frame
             requestAnimationFrame(() => { this.update() });
         });
     }
-
-
 
     handleResize = (_event) => {
 
@@ -401,11 +202,13 @@ class GameCom extends Component {
 
         // update the ball
         this.state.ball.updateGameSize(this.state.gameUIWidth, this.state.gameUIHeight);
+
+        // update the event manager
+        this.m_eventManager.updateGameDimensions(this.state.gameUIWidth, this.state.gameUIHeight);
     }
 
 
     loadOptions = (_callback) => {
-        console.log("LOADED OPTIONS (GamePage.js)");
         API.getOptions()
             .then(res => {
                 // I DON'T THINK I'M GETTING HERE
@@ -417,19 +220,23 @@ class GameCom extends Component {
                     player2Size: res.data[0].player2Size,
                     ballColor: res.data[0].ballColor,
                     imageURL: res.data[0].imageURL,
-                    multiBall: res.data[0].multiBall,
-                    paddleShrink: res.data[0].paddleShrink,
-                    fastBall: res.data[0].fastBall
+                   
                 });
+
+                this.m_eventManager.multiBall = res.data[0].multiBall;
+                this.m_eventManager.paddleShrink = res.data[0].paddleShrink;
+                this.m_eventManager.fastBall = res.data[0].fastBall;
+                
                 this.m_nScoreToWin = res.data[0].value;
                 console.log("bc: " + this.state.ballColor);
                 console.log(this.state);
-                if (this.state.multiBall === "true" || this.state.paddleShrink === "true" || this.state.fastBall === "true") {
+                if (this.m_eventManager.multiBall === "true" || this.m_eventManager.paddleShrink === "true" || this.m_eventManager.fastBall === "true") {
                     this.setState({ events: "true" });
                 }
+                  console.log("LOADED OPTIONS (GamePage.js)");
                 _callback();
             })
-            .catch(err => console.log("GameCon console", err));
+            .catch(err => console.log("GameCom error loading options", err));
     };
 
     setKey(_key, _value) {
@@ -507,18 +314,14 @@ class GameCom extends Component {
                 this.unPauseGame();
                 break;
             case 't':
-                // this.startEvent("fast-ball");
-                this.startEvent("split-ball");
-
+                this.m_eventManager.startEvent("split-ball");
                 break;
-                case 'r':
-                // this.startEvent("fast-ball");
-                this.startEvent("fast-ball");
-
+            case 'r':
+                this.m_eventManager.startEvent("fast-ball");
                 break;
-            // case 'what ever letter or keyboard button you want to check':
-            // put whatever you want to happen here
-            // break;
+                case 'y':
+                        this.m_eventManager.startEvent("tiny-paddle");
+                        break;
             default:
                 break;
         };
@@ -745,56 +548,7 @@ class GameCom extends Component {
         }
     }
 
-    findNextEvent() { 
-        var events = [];
-       
-        //if (this.state.multiBall === "true" || this.state.paddleShrink === "true" || this.state.fastBall === "true") {
-        if (this.state.multiBall === "true") { 
-            console.log("options split-ball on");
-            events.push("split-ball");
-        }
-        if (this.state.paddleShrink === "true") { 
-            console.log("options tiny-paddle on");
-            events.push("tiny-paddle");
-        }
-        if (this.state.fastBall === "true") { 
-            console.log("options fast-ball on");
-            events.push("fast-ball");
-        }
-
-        if (events.length !== 0) {
-
-            var eventToChoose = Math.floor(Math.random() * events.length);
-        
-            var first = events[eventToChoose].split("-");
-
-            for (let i = 0; i < this.state.m_activeEvents.length; ++i) {
-                
-                var second = this.state.m_activeEvents[i].split("-");
-
-                // find an event that isnt the current one
-                while (first[0] === second[0]) {
-                    eventToChoose = Math.floor(Math.random() * events.length);
-                    first = events[eventToChoose].split("-");
-                }
-            }
-
-                this.startEvent(events[eventToChoose]);
-            
-        }
-
-        // if (numToChooseEvent === 0) {
-        //     this.startEvent("fast-ball");
-        // }
-        // else if (numToChooseEvent === 1) {
-        //     this.startEvent("split-ball");
-
-        // }
-        // else if (numToChooseEvent === 2) {
-        //     this.startEvent("tiny-paddle");
-
-        // }
-    }
+    
     isPlaying(_song) {
         return !_song.paused;
     }
@@ -815,21 +569,9 @@ class GameCom extends Component {
             var deltaTime = (currentTime - this.startTime) / 1000;
             this.startTime = currentTime;
 
-            ////////////////////////////////////////////////
-            // events
-            // check for time till next event
-            if (this.state.m_dNextEventTimer <= 0.0) {
-
-                this.findNextEvent();
-
-                this.setState({ m_dNextEventTimer: this.eventLogic.m_dMaxEventTimer });
-            }
-            else {
-                this.setState({ m_dNextEventTimer: this.state.m_dNextEventTimer - deltaTime });
-            }
 
             // // update events
-            this.updateEvents(deltaTime);
+            this.m_eventManager.updateEvents(deltaTime);
             // //////////////////////////////////////////////////////
 
             if (this.props.multiPlayer) {
@@ -837,7 +579,7 @@ class GameCom extends Component {
             }
             else {
                 this.state.player2.aiPaddle.update(deltaTime);
-                this.state.player2.aiPaddle.trackBall(this.state.ball.m_positionX, this.state.ball.m_positionY, deltaTime);
+                this.state.player2.aiPaddle.trackBall(this.state.ball.m_position.x, this.state.ball.m_position.y, deltaTime);
 
             }
 
@@ -857,35 +599,33 @@ class GameCom extends Component {
                         this.setState({ player2: newPlayer });
                         this.state.ball.resetBall();
                         if (this.state.ball.m_bInFastBallEvent) {
-                            
-                            this.state.ball.exitFastBallEvent();
-                            this.findAndRemoveActiveEvent("fast-ball");
-                            if (this.state.m_activeEvents.length === 0)
-                                this.startEvent("no-event");
-                            
-                            
+
+                            this.m_eventManager.exitFastBallEvent();
+
                             let ball = this.state.ball;
                             ball.m_bInFastBallEvent = false;
-                            this.setState({ball: ball});
+                            this.setState({ ball: ball });
                         }
-                        this.m_velX *= -1;
+                        let newBall = this.state.ball;
+                        newBall.m_velocity.x *= -1;
+                        this.setState({ball: newBall});
                         break;
+                    
                     case "right":
                         newPlayer = { ...this.state.player1 };
                         newPlayer.score++;
                         this.setState({ player1: newPlayer });
                         this.state.ball.resetBall();
-                        this.m_velX *= -1;
+                        let ball = this.state.ball;
+                        ball.m_velocity.x *= -1;
+                        this.setState({ball: ball});
                         if (this.state.ball.m_bInFastBallEvent) {
-                            
-                            this.state.ball.exitFastBallEvent();
-                            this.findAndRemoveActiveEvent("fast-ball");
-                            if (this.state.m_activeEvents.length === 0)
-                                this.startEvent("no-event");
-                            
-                                let ball = this.state.ball;
-                                ball.m_bInFastBallEvent = false;
-                                this.setState({ball: ball});
+
+                            this.m_eventManager.exitFastBallEvent();
+
+                            let ball = this.state.ball;
+                            ball.m_bInFastBallEvent = false;
+                            this.setState({ ball: ball });
                         }
                         break;
                     default:
@@ -923,12 +663,9 @@ class GameCom extends Component {
                 else
                     this.state.player2.aiPaddle.render(this.state.context, this.refs.image);
 
-                // rende events
-                this.renderEvents();
+                // render events
+                this.m_eventManager.renderEvents(this.state.context);
 
-                //   this.state.player2.paddle.render(this.state.context, this.refs.image, this.state.player1.posX, this.state.player1.posY);
-
-                //this.state.paddle.render(this.state.context, this.refs.image, this.state.player2.posX, this.state.player2.posY);
             }
         } else {
             this.startTime = new Date().getTime();
@@ -937,7 +674,6 @@ class GameCom extends Component {
         requestAnimationFrame(() => { this.update() });
 
     }
-
 
     render() {
         return (
@@ -956,9 +692,9 @@ class GameCom extends Component {
                                     </div>
                                     <div className="col-md-6">
                                         <h2>Current Event:
-                                     {this.state.m_activeEvents.map(_event => (" " + _event))}
+                                     {this.m_eventManager.m_activeEvents.map(_event => (" " + _event))}
                                         </h2>
-                                        <h2>Event in: {this.state.m_dNextEventTimer.toFixed(0)}</h2>
+                                        <h2>Event in: {this.m_eventManager.m_dNextEventTimer.toFixed(0)}</h2>
                                     </div> 
                                     </>
                                     :
@@ -974,9 +710,9 @@ class GameCom extends Component {
                                         {this.state.events === "true" ?
                                             <div className="col-md-6">
                                                 <h2>Current Event:
-                                                {this.state.m_activeEvents.map(_event => (" " + _event))}
+                                                {this.m_eventManager.m_activeEvents.map(_event => (" " + _event))}
                                                 </h2>
-                                                <h2>Event in: {this.state.m_dNextEventTimer.toFixed(0)}</h2>
+                                                <h2>Event in: {this.m_eventManager.m_dNextEventTimer.toFixed(0)}</h2>
                                             </div>
                                             :
                                             <div className="col-md-6"></div>
