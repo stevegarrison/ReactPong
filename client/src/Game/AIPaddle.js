@@ -27,12 +27,12 @@ class AIPaddle extends Paddle {
 
     setPracticeMode() {
         this.m_bPracticeMode = true;
-        this.m_velocityY = 1000.0;
+        this.m_velocity.y = 1000.0;
      }
 
     setNormalMode() { 
         this.m_bPracticeMode = false;
-        this.m_velocityY = 720.0;
+        this.m_velocity.y = 720.0;
     }
     findNextDelayTime() { 
         this.m_dNextDelayTime = (Math.random() * 5) + 1;
@@ -41,38 +41,38 @@ class AIPaddle extends Paddle {
 
     moveToBall(_targetPosY, _dt) { 
 
-        if (this.m_positionY <= 0) {
-            this.m_positionY = 1;
+        if (this.m_position.y <= 0) {
+            this.m_position.y = 1;
             return;
         }
 
-        if (this.m_positionY + this.m_height >= this.m_gameHeight) { 
-            this.m_positionY = this.m_positionY - this.m_height;
+        if (this.m_position.y + this.m_dimensions.height >= this.m_gameHeight) { 
+            this.m_position.y = this.m_position.y - this.m_dimensions.height;
             return;
         }
 
         
-        if (_targetPosY < this.m_positionY + this.m_height/2) { // moving up
+        if (_targetPosY < this.m_position.y + this.m_dimensions.height/2) { // moving up
             this.m_bIsMovingUp = true;
-            this.m_positionY = this.m_positionY - (this.m_velocityY * _dt);
+            this.m_position.y = this.m_position.y - (this.m_velocity.y * _dt);
         }
-        else if (_targetPosY > this.m_positionY - this.m_height/2) { // moving down
+        else if (_targetPosY > this.m_position.y - this.m_dimensions.height/2) { // moving down
             this.m_bIsMovingDown = true;
-            this.m_positionY = this.m_positionY + (this.m_velocityY * _dt);            
+            this.m_position.y = this.m_position.y + (this.m_velocity.y * _dt);            
         }
     }
 
     stayWithBall(_targetPosY) { 
         
-        this.m_positionY = _targetPosY - this.m_height/2;
+        this.m_position.y = _targetPosY - this.m_dimensions.height/2;
 
-        if (this.m_positionY <= 0) {
-            this.m_positionY = 0;
+        if (this.m_position.y <= 0) {
+            this.m_position.y = 0;
             return;
         }
 
-        if (this.m_positionY + this.m_height >= this.m_gameHeight) { 
-            this.m_positionY = this.m_gameHeight - this.m_height;
+        if (this.m_position.y + this.m_dimensions.height >= this.m_gameHeight) { 
+            this.m_position.y = this.m_gameHeight - this.m_dimensions.height;
             return;
         }
        
@@ -87,19 +87,19 @@ class AIPaddle extends Paddle {
             return;
         }
 
-        if (_posY >= this.m_positionY && _posY <= this.m_positionY + this.m_height) { 
+        if (_posY >= this.m_position.y && _posY <= this.m_position.y + this.m_dimensions.height) { 
             return;
         }
 
         this.m_changeInPosition = Math.abs(_posY - this.m_prevBallPosition);
-        if (this.m_changeInPosition >= 10 || this.m_positionX - _posX <= 200) {
+        if (this.m_changeInPosition >= 10 || this.m_position.x - _posX <= 200) {
             
             this.m_prevBallPosition = _posY;
             
             if (!this.m_bIsDelayed) {
 
                     //console.log("tracking");
-                    // this.m_positionY = _posY;
+                    // this.m_position.y = _posY;
                     this.moveToBall(_posY, _dt);
     
             }
@@ -109,7 +109,6 @@ class AIPaddle extends Paddle {
     }
 
     update(_dt) { 
-        super.update(_dt);
         this.m_dCurDelayTime += _dt;
 
         if (this.m_bPracticeMode)
@@ -130,11 +129,10 @@ class AIPaddle extends Paddle {
             }
                 
         }
-
     }
-    render(_context, _imgRef) { 
-       
-        super.render(_context, _imgRef);
+
+    render(_context) { 
+        super.render(_context);
     }
 
 }
