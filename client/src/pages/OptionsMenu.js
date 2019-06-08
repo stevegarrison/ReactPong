@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { Input } from "../components/Input";
 import Slider from 'react-rangeslider';
 
+
 let imageURL = "";
 let player1Color = "";
 let player1Size = "";
@@ -336,14 +337,14 @@ class Options extends Component {
                       <p className="options-text1 mt-3">Presets:</p>
                     </div>
                     <div className="col-md-8">
-                      <button className={`btn player-background m-1 ${"./images/space.jpg" === this.state.imageURL ? "active2" : ""}`} data-image="./images/space.jpg" onClick={this.handleImageURL}>Space</button>
-                      <button className={`btn player-background m-1 ${"./images/jungle.jpg" === this.state.imageURL ? "active2" : ""}`} data-image="./images/jungle.jpg" onClick={this.handleImageURL}>Jungle</button>
-                      <button className={`btn player-background m-1 ${"./images/clouds.jpg" === this.state.imageURL ? "active2" : ""}`} data-image="./images/clouds.jpg" onClick={this.handleImageURL}>Clouds</button>
-                      <button className={`btn player-background m-1 ${"./images/ocean.jpg" === this.state.imageURL ? "active2" : ""}`} data-image="./images/ocean.jpg" onClick={this.handleImageURL}>Ocean</button>
-                      <button className={`btn player-background m-1 ${"./images/beach.jpg" === this.state.imageURL ? "active2" : ""}`} data-image="./images/beach.jpg" onClick={this.handleImageURL}>Beach</button>
-                      <button className={`btn player-background m-1 ${"./images/winter.jpg" === this.state.imageURL ? "active2" : ""}`} data-image="./images/winter.jpg" onClick={this.handleImageURL}>Winter</button>
-                      <button className={`btn player-background m-1 ${"./images/lava.jpg" === this.state.imageURL ? "active2" : ""}`} data-image="./images/lava.jpg" onClick={this.handleImageURL}>Lava</button>
-                      <button className={`btn player-background m-1 ${"./images/snow.jpg" === this.state.imageURL ? "active2" : ""}`} data-image="./images/snow.jpg" onClick={this.handleImageURL}>Snow</button>
+                      <button className={`btn player-background m-1 ${"../resources/images/space.jpg" === this.state.imageURL ? "active2" : ""}`} data-image={require("../resources/images/space.jpg")} onClick={this.handleImageURL}>Space</button>
+                      <button className={`btn player-background m-1 ${"../resources/images/jungle.jpg" === this.state.imageURL ? "active2" : ""}`} data-image={require("../resources//images/jungle.jpg")} onClick={this.handleImageURL}>Jungle</button>
+                      <button className={`btn player-background m-1 ${"../resources/images/clouds.jpg" === this.state.imageURL ? "active2" : ""}`} data-image={require("../resources/images/clouds.jpg")} onClick={this.handleImageURL}>Clouds</button>
+                      <button className={`btn player-background m-1 ${"../resources/images/ocean.jpg" === this.state.imageURL ? "active2" : ""}`} data-image={require("../resources/images/ocean.jpg")} onClick={this.handleImageURL}>Ocean</button>
+                      <button className={`btn player-background m-1 ${"../resources/images/beach.jpg" === this.state.imageURL ? "active2" : ""}`} data-image={require("../resources/images/beach.jpg")} onClick={this.handleImageURL}>Beach</button>
+                      <button className={`btn player-background m-1 ${"../resources/imagess/winter.jpg" === this.state.imageURL ? "active2" : ""}`} data-image={require("../resources/images/winter.jpg")} onClick={this.handleImageURL}>Winter</button>
+                      <button className={`btn player-background m-1 ${"../resources/images/lava.jpg" === this.state.imageURL ? "active2" : ""}`} data-image={require("../resources/images/lava.jpg")} onClick={this.handleImageURL}>Lava</button>
+                      <button className={`btn player-background m-1 ${"../resources/images/snow.jpg" === this.state.imageURL ? "active2" : ""}`} data-image={require("../resources/images/snow.jpg")} onClick={this.handleImageURL}>Snow</button>
                     </div>
                   </div>
                 </div>
