@@ -1,7 +1,7 @@
 body{
 margin: 0;
 padding: 0;
-background-image: url("./images/BG-IMG.png");
+background-image: url("../resources/images/BG-IMG.png");
 background-size: cover;
 }
 

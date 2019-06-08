@@ -18,8 +18,8 @@ import EventManager from "../../Game/EventManager/EventManager"
 
 class GameCom extends Component {
 
-    m_sfxWin = new Audio("./audio/winner.wav");
-    m_sfxLoss = new Audio("./audio/loss.wav");
+    m_sfxWin = new Audio(require("../../resources/audio/winner.wav"));
+    m_sfxLoss = new Audio(require("../../resources/audio/loss.wav"));
     startTime = 0.0;
     m_nScoreToWin = 0;
 
@@ -27,7 +27,7 @@ class GameCom extends Component {
     m_szWinner = "";
 
     // music
-    m_sfxSong = new Audio("./audio/song.mp3");
+    m_sfxSong = new Audio(require("../../resources/audio/song.mp3"));
 
     // event
     m_eventManager = new EventManager();
