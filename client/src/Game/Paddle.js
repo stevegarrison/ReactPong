@@ -18,7 +18,7 @@ class Paddle extends GameObject {
     m_gameHeight = 0;
     m_bIsMovingUp = false;
     m_bIsMovingDown = false;
-    m_sfxPositive = new Audio("./audio/ping.wav");
+    m_sfxPositive = new Audio(require("../resources/audio/ping.wav"));
 
     collision = false;
     collisionRect = {
