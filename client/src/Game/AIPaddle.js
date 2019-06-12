@@ -8,130 +8,246 @@ import Paddle from "./Paddle"
 
 
 
-class AIPaddle extends Paddle { 
+class AIPaddle extends Paddle {
+
+    m_dCurWrongDirTime = 0.0;
+    m_dMaxWrongDirTime = 0.0;
+    m_dNextWrongDirTime = 0.0;
 
     m_dNextDelayTime = 0.0;
-    m_dDelayTime = 0.0;
+    m_dMaxDelayTime = 0.0;
     m_dCurDelayTime = 0.0;
-    m_bIsDelayed = false;
-    m_prevBallPosition = 0.0;
-    m_changeInPosition = 0.0;
+
     m_bPracticeMode = false;
 
-    constructor(_gameWidth, _gameHeight, _color, _paddleHeight) { 
+    m_bIsCollidingWithWall = false;
+
+    // colliding, searching, wrongDirection, saveBall, perfect, DELAYED
+    stateMachine = {
+        szCurrentState: "",
+        enterState: _szStateName => {
+            if (this.szCurrentState === _szStateName)
+                return;
+
+            this.szCurrentState = _szStateName;
+
+        },
+        updateStates: (_ballPosX, _ballPosY, _dt) => {
+
+            console.log(this.szCurrentState);
+            switch (this.szCurrentState) {
+                case "PRACTICE":
+                    this.stayWithBall(_ballPosY);
+                    break;
+                case "COLLIDING":
+                    break;
+                case "SEARCHING":
+
+
+                    this.trackBall(_ballPosX, _ballPosY, _dt);
+
+                    // update wrong direction timer
+                    this.m_dCurWrongDirTime += _dt;
+                    if (this.m_dCurWrongDirTime >= this.m_dNextWrongDirTime) {
+                        this.m_dCurWrongDirTime = 0.0;
+                        this.findNextWrongDirTime();
+                        this.stateMachine.enterState("WRONGDIR");
+                    }
+
+                    // update delay timer
+                    this.m_dCurDelayTime += _dt;
+                    if (this.m_dCurDelayTime >= this.m_dNextDelayTime) {
+                        this.m_dCurDelayTime = 0.0;
+                        this.findNextDelayTime();
+                        this.stateMachine.enterState("DELAYED");
+                    }
+
+                    break;
+                case "DELAYED":
+                    this.m_dCurDelayTime += _dt;
+                    if (this.m_dCurDelayTime >= this.m_dMaxDelayTime) {
+                        this.m_dCurDelayTime = 0.0;
+                        this.stateMachine.enterState("SEARCHING");
+                    }
+
+                    break;
+                case "WRONGDIR":
+                    if (this.m_position.x - _ballPosX > this.m_gameWidth * .33) {
+                        this.m_dCurWrongDirTime = 0.0;
+                        this.findNextWrongDirTime();
+                        this.stateMachine.enterState("SEARCHING");
+                    }
+                        
+                    this.movePaddleWrongDir(_ballPosY, _dt);
+                    this.m_dCurWrongDirTime += _dt;
+                    if (this.m_dCurWrongDirTime >= this.m_dMaxWrongDirTime) {
+                        this.m_dCurWrongDirTime = 0.0;
+                        this.findNextWrongDirTime();
+                        this.stateMachine.enterState("SEARCHING");
+                    }
+                    break;
+                case "SAVEBALL":
+                    break;
+                case "PERFECT":
+                    break;
+                default:
+                    
+            };
+
+        },
+        exitState: () => {
+
+        }
+    };
+
+    constructor(_gameWidth, _gameHeight, _color, _paddleHeight) {
 
         super(_gameWidth, _gameHeight, _color, _paddleHeight);
         this.findNextDelayTime();
-        
+
     }
 
     setPracticeMode() {
         this.m_bPracticeMode = true;
         this.m_velocity.y = 1000.0;
-     }
+        this.stateMachine.enterState("PRACTICE");
+    }
 
-    setNormalMode() { 
+    setNormalMode() {
         this.m_bPracticeMode = false;
         this.m_velocity.y = 720.0;
+        this.stateMachine.enterState("SEARCHING");
     }
-    findNextDelayTime() { 
+    findNextDelayTime() {
         this.m_dNextDelayTime = (Math.random() * 5) + 1;
-        this.m_dDelayTime = ((Math.random() * 100) + 1)/ 100;
+        this.m_dMaxDelayTime = ((Math.random() * 100) + 1) / 100;
+    }
+    findNextWrongDirTime() {
+        this.m_dNextWrongDirTime = (Math.random() * 5) + 1;
+        this.m_dMaxWrongDirTime = ((Math.random() * 100) + 1) / 100;
     }
 
-    moveToBall(_targetPosY, _dt) { 
 
-        if (this.m_position.y <= 0) {
+    moveToBall(_targetPosY, _dt) {
+
+        // moving up
+        if (_targetPosY < this.m_position.y + this.m_dimensions.height / 2) {
+            this.m_bIsMovingUp = true;
+            this.m_position.y = this.m_position.y - (this.m_velocity.y * _dt);
+        }
+        // moving down
+        else if (_targetPosY > this.m_position.y - this.m_dimensions.height / 2) {
+            this.m_bIsMovingDown = true;
+            this.m_position.y = this.m_position.y + (this.m_velocity.y * _dt);
+        }
+    }
+
+    movePaddleWrongDir(_targetPosY, _dt) {
+
+        // moving up
+        if (_targetPosY < this.m_position.y + this.m_dimensions.height / 2) {
+            this.m_bIsMovingUp = true;
+            this.m_position.y = this.m_position.y + (this.m_velocity.y * _dt);
+        }
+        // moving down
+        else if (_targetPosY > this.m_position.y - this.m_dimensions.height / 2) {
+            this.m_bIsMovingDown = true;
+            this.m_position.y = this.m_position.y - (this.m_velocity.y * _dt);
+        }
+        this.checkForMapBoundries();
+    }
+
+    checkForMapBoundries() {
+        if (this.m_position.y <= 1) {
             this.m_position.y = 1;
             return;
         }
 
-        if (this.m_position.y + this.m_dimensions.height >= this.m_gameHeight) { 
-            this.m_position.y = this.m_position.y - this.m_dimensions.height;
+        if (this.m_position.y + this.m_dimensions.height - 1 >= this.m_gameHeight) {
+            this.m_position.y = this.m_gameHeight - this.m_dimensions.height - 1;
             return;
-        }
-
-        
-        if (_targetPosY < this.m_position.y + this.m_dimensions.height/2) { // moving up
-            this.m_bIsMovingUp = true;
-            this.m_position.y = this.m_position.y - (this.m_velocity.y * _dt);
-        }
-        else if (_targetPosY > this.m_position.y - this.m_dimensions.height/2) { // moving down
-            this.m_bIsMovingDown = true;
-            this.m_position.y = this.m_position.y + (this.m_velocity.y * _dt);            
         }
     }
 
-    stayWithBall(_targetPosY) { 
-        
-        this.m_position.y = _targetPosY - this.m_dimensions.height/2;
+    /***********************************************************************************/
+    /*                                                                                 */
+    /*  name:   StayWithBall                                                           */
+    /*                                                                                 */
+    /*  parameters:  _targetPosY                                                       */
+    /*                                                                                 */
+    /*  purpose:    To stay with the balls movement no matter what                     */
+    /*                                                                                 */
+    /***********************************************************************************/
+    stayWithBall(_targetPosY) {
 
-        if (this.m_position.y <= 0) {
-            this.m_position.y = 0;
-            return;
-        }
-
-        if (this.m_position.y + this.m_dimensions.height >= this.m_gameHeight) { 
-            this.m_position.y = this.m_gameHeight - this.m_dimensions.height;
-            return;
-        }
-       
-
+        this.m_position.y = _targetPosY - this.m_dimensions.height / 2;
+        this.checkForMapBoundries();
 
     }
 
+
+    /***********************************************************************************/
+    /*                                                                                 */
+    /*  name:   trackBall                                                              */
+    /*                                                                                 */
+    /*  parameters:  _posX, _posY, _dt                                                 */
+    /*                                                                                 */
+    /*  purpose:  follow the ball in 1 player mode                                     */
+    /*                                                                                 */
+    /***********************************************************************************/
     trackBall(_posX, _posY, _dt) {
 
-        if (this.m_bPracticeMode) { 
+        if (this.m_bPracticeMode) {
             this.stayWithBall(_posY);
             return;
         }
 
-        if (_posY >= this.m_position.y && _posY <= this.m_position.y + this.m_dimensions.height) { 
+        // check to see if the ball is already within range of the paddle
+        // if the balls position is greater than the paddle top 
+        // AND
+        // the balls positions is less than or equal to the paddles bottom
+        // RETURN
+        if (_posY >= this.m_position.y && _posY <= this.m_position.y + this.m_dimensions.height) {
             return;
         }
 
-        this.m_changeInPosition = Math.abs(_posY - this.m_prevBallPosition);
-        if (this.m_changeInPosition >= 10 || this.m_position.x - _posX <= 200) {
-            
-            this.m_prevBallPosition = _posY;
-            
-            if (!this.m_bIsDelayed) {
 
-                    //console.log("tracking");
-                    // this.m_position.y = _posY;
-                    this.moveToBall(_posY, _dt);
-    
-            }
-
-        } 
+        if (!this.m_bIsDelayed) {
+            this.moveToBall(_posY, _dt);
+        }
+        this.checkForMapBoundries();
 
     }
 
-    update(_dt) { 
-        this.m_dCurDelayTime += _dt;
+    /***********************************************************************************/
+    /*                                                                                 */
+    /*  name:   update                                                                 */
+    /*                                                                                 */
+    /*  parameters:  _posX, _posY, _dt                                                 */
+    /*                                                                                 */
+    /*  purpose:  update the AIPaddle                                                  */
+    /*                                                                                 */
+    /***********************************************************************************/
+    update(_ballPosX, _ballPosY, _dt) {
 
-        if (this.m_bPracticeMode)
-            return;
-        
-        if (this.m_bIsDelayed) {
-           // console.log("is delayed for :" + this.m_dDelayTime);
-            if (this.m_dCurDelayTime >= this.m_dDelayTime) { 
-                this.m_dCurDelayTime = 0.0;
-                this.m_bIsDelayed = false;
-            }
-        }
-        else { 
-            if (this.m_dCurDelayTime >= this.m_dNextDelayTime) { 
-                this.m_dCurDelayTime = 0.0;
-                this.findNextDelayTime();
-                this.m_bIsDelayed = true;
-            }
-                
-        }
+        // if (this.m_bPracticeMode)
+        //     return;
+
+
+        this.stateMachine.updateStates(_ballPosX, _ballPosY, _dt);
+
     }
 
-    render(_context) { 
+    /***********************************************************************************/
+    /*                                                                                 */
+    /*  name:   render                                                                 */
+    /*                                                                                 */
+    /*  parameters:  _context                                                          */
+    /*                                                                                 */
+    /*  purpose:  render the AIPaddle to the screen                                    */
+    /*                                                                                 */
+    /***********************************************************************************/
+    render(_context) {
         super.render(_context);
     }
 

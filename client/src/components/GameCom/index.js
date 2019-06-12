@@ -562,8 +562,7 @@ class GameCom extends Component {
 
             // update AI is in 1 player mode
             if (!this.props.multiPlayer) {
-                this.state.player2.aiPaddle.update(deltaTime);
-                this.state.player2.aiPaddle.trackBall(this.state.ball.m_position.x, this.state.ball.m_position.y, deltaTime);
+                this.state.player2.aiPaddle.update(this.state.ball.m_position.x, this.state.ball.m_position.y, deltaTime);
             }
 
             // update input
@@ -688,7 +687,7 @@ class GameCom extends Component {
                 <div id="modal" className="text-center">
                     <h1 id="pong-text">PONG!</h1>
                     <h3 className="mb-3"> Press the SPACEBAR to play</h3>
-                    <h7> NOTE: You can pause the game at any moment by pressing the 'P' key</h7>
+                    <h4> NOTE: You can pause the game at any moment by pressing the 'P' key</h4>
                 </div>
             </>
         );
