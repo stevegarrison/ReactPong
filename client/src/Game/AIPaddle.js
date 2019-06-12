@@ -7,16 +7,27 @@
 import Paddle from "./Paddle"
 
 
+var EventTimer = function () { 
+
+    this.m_dCurrentTime = 0.0;
+    this.m_dNextEventTime = 0.0;
+    this.m_dMaxTime = 0.0;
+}
 
 class AIPaddle extends Paddle {
 
-    m_dCurWrongDirTime = 0.0;
-    m_dMaxWrongDirTime = 0.0;
-    m_dNextWrongDirTime = 0.0;
+    // wrong dir time
+    m_wrongDirTime = new EventTimer();
 
-    m_dNextDelayTime = 0.0;
-    m_dMaxDelayTime = 0.0;
-    m_dCurDelayTime = 0.0;
+    // delay timer
+    m_delayTimer = new EventTimer();
+
+    // perfect timer
+    m_perfectTimer = new EventTimer();
+    m_bLocked = false;
+
+    // save ball timer
+    m_saveBallTimer = new EventTimer();
 
     m_bPracticeMode = false;
 
@@ -31,6 +42,15 @@ class AIPaddle extends Paddle {
 
             this.szCurrentState = _szStateName;
 
+            switch (this.szCurrentState) { 
+
+                case "SEARCHING":
+                    this.m_bLocked = false;
+                    break;
+                default:
+
+            };
+
         },
         updateStates: (_ballPosX, _ballPosY, _dt) => {
 
@@ -39,56 +59,104 @@ class AIPaddle extends Paddle {
                 case "PRACTICE":
                     this.stayWithBall(_ballPosY);
                     break;
-                case "COLLIDING":
-                    break;
                 case "SEARCHING":
-
 
                     this.trackBall(_ballPosX, _ballPosY, _dt);
 
+                    // update SAVEBALL timer
+                    this.m_saveBallTimer.m_dCurrentTime += _dt;
+                    if (this.m_saveBallTimer.m_dCurrentTime >= this.m_saveBallTimer.m_dNextEventTime) {
+                        this.m_saveBallTimer.m_dCurrentTime = 0.0;
+                        this.findNextSaveBallTime();
+                        this.stateMachine.enterState("SAVEBALL");
+                    }
+
+                    // update PERFECT timer
+                    this.m_perfectTimer.m_dCurrentTime += _dt;
+                    if (this.m_perfectTimer.m_dCurrentTime >= this.m_perfectTimer.m_dNextEventTime) {
+                        this.m_perfectTimer.m_dCurrentTime = 0.0;
+                        this.findNextPerfectTime();
+                        this.stateMachine.enterState("PERFECT");
+                    }
+
                     // update wrong direction timer
-                    this.m_dCurWrongDirTime += _dt;
-                    if (this.m_dCurWrongDirTime >= this.m_dNextWrongDirTime) {
-                        this.m_dCurWrongDirTime = 0.0;
+                    this.m_wrongDirTime.m_dCurrentTime += _dt;
+                    if (this.m_wrongDirTime.m_dCurrentTime >= this.m_wrongDirTime.m_dNextEventTime) {
+                        this.m_wrongDirTime.m_dCurrentTime = 0.0;
                         this.findNextWrongDirTime();
                         this.stateMachine.enterState("WRONGDIR");
                     }
 
                     // update delay timer
-                    this.m_dCurDelayTime += _dt;
-                    if (this.m_dCurDelayTime >= this.m_dNextDelayTime) {
-                        this.m_dCurDelayTime = 0.0;
+                    this.m_delayTimer.m_dCurrentTime += _dt;
+                    if (this.m_delayTimer.m_dCurrentTime >= this.m_delayTimer.m_dNextEventTime) {
+                        this.m_delayTimer.m_dCurrentTime = 0.0;
                         this.findNextDelayTime();
                         this.stateMachine.enterState("DELAYED");
                     }
 
                     break;
                 case "DELAYED":
-                    this.m_dCurDelayTime += _dt;
-                    if (this.m_dCurDelayTime >= this.m_dMaxDelayTime) {
-                        this.m_dCurDelayTime = 0.0;
+                    this.m_delayTimer.m_dCurrentTime += _dt;
+                    if (this.m_delayTimer.m_dCurrentTime >= this.m_delayTimer.m_dMaxTime) {
+                        this.m_delayTimer.m_dCurrentTime = 0.0;
                         this.stateMachine.enterState("SEARCHING");
                     }
 
                     break;
                 case "WRONGDIR":
-                    if (this.m_position.x - _ballPosX > this.m_gameWidth * .33) {
-                        this.m_dCurWrongDirTime = 0.0;
-                        this.findNextWrongDirTime();
+
+                    // if the ball is too far then go back to searching
+                    if (this.m_position.x - _ballPosX > this.m_gameWidth * .33 && Math.abs(_ballPosY - this.m_position.y) < (this.m_dimensions.height * 1.5)) {
+                        this.m_wrongDirTime.m_dCurrentTime = 0.0;
                         this.stateMachine.enterState("SEARCHING");
                     }
                         
                     this.movePaddleWrongDir(_ballPosY, _dt);
-                    this.m_dCurWrongDirTime += _dt;
-                    if (this.m_dCurWrongDirTime >= this.m_dMaxWrongDirTime) {
-                        this.m_dCurWrongDirTime = 0.0;
-                        this.findNextWrongDirTime();
+                    this.m_wrongDirTime.m_dCurrentTime += _dt;
+                    if (this.m_wrongDirTime.m_dCurrentTime >= this.m_wrongDirTime.m_dMaxTime) {
+                        this.m_wrongDirTime.m_dCurrentTime = 0.0;
                         this.stateMachine.enterState("SEARCHING");
                     }
                     break;
                 case "SAVEBALL":
+                    if (this.m_position.x - _ballPosX > this.m_gameWidth * .33) {
+                        this.m_saveBallTimer.m_dCurrentTime = 0.0;
+                        this.stateMachine.enterState("SEARCHING");
+                    }
+
+                    // if the ball is in the middle of the paddle
+                    if ((this.m_position.y + this.m_dimensions.width / 2) === _ballPosY + 16 && this.m_bLocked === false)
+                        this.m_bLocked = true;
+                    else
+                        this.trackBall(_ballPosX, _ballPosY, _dt);
+
+                    if (this.m_bLocked)
+                        this.stayWithBall(_ballPosY);
+                    
+                    if (this.m_saveBallTimer.m_dCurrentTime >= this.m_saveBallTimer.m_dMaxTime) {
+                        this.m_saveBallTimer.m_dCurrentTime = 0.0;
+                        this.stateMachine.enterState("SEARCHING");
+                    }
+                        
                     break;
                 case "PERFECT":
+                        this.m_perfectTimer.m_dCurrentTime += _dt;
+                    
+                    // TODO: get the ball width not this hard coded value
+                    // if the ball is in the middle of the paddle
+                    if ((this.m_position.y + this.m_dimensions.width / 2) === _ballPosY + 16 && this.m_bLocked === false) 
+                        this.m_bLocked = true;
+                     else
+                        this.trackBall(_ballPosX, _ballPosY, _dt);
+                    
+                    if (this.m_bLocked) 
+                        this.stayWithBall(_ballPosY);
+                    
+                    if (this.m_perfectTimer.m_dCurrentTime >= this.m_perfectTimer.m_dMaxTime) {
+                        this.m_perfectTimer.m_dCurrentTime = 0.0;
+                        this.stateMachine.enterState("SEARCHING");
+                    }
                     break;
                 default:
                     
@@ -103,7 +171,14 @@ class AIPaddle extends Paddle {
     constructor(_gameWidth, _gameHeight, _color, _paddleHeight) {
 
         super(_gameWidth, _gameHeight, _color, _paddleHeight);
+        this.initEventTimers();
+    }
+
+    initEventTimers() { 
         this.findNextDelayTime();
+        this.findNextWrongDirTime();
+        this.findNextPerfectTime();
+        this.findNextSaveBallTime();
 
     }
 
@@ -118,13 +193,25 @@ class AIPaddle extends Paddle {
         this.m_velocity.y = 720.0;
         this.stateMachine.enterState("SEARCHING");
     }
+
     findNextDelayTime() {
-        this.m_dNextDelayTime = (Math.random() * 5) + 1;
-        this.m_dMaxDelayTime = ((Math.random() * 100) + 1) / 100;
+        this.m_delayTimer.m_dNextEventTime = (Math.random() * 8) + 3;
+        this.m_delayTimer.m_dMaxTime = ((Math.random() * 100) + 1) / 100;
     }
+
     findNextWrongDirTime() {
-        this.m_dNextWrongDirTime = (Math.random() * 5) + 1;
-        this.m_dMaxWrongDirTime = ((Math.random() * 100) + 1) / 100;
+        this.m_wrongDirTime.m_dNextEventTime = (Math.random() * 6) + 1;
+        this.m_wrongDirTime.m_dMaxTime = ((Math.random() * 100) + 1) / 100;
+    }
+
+    findNextPerfectTime() {
+        this.m_perfectTimer.m_dNextEventTime = (Math.random() * 10) + 5;
+        this.m_perfectTimer.m_dMaxTime = ((Math.random() * 5) + 1);
+    }
+
+    findNextSaveBallTime() {
+        this.m_saveBallTimer.m_dNextEventTime = (Math.random() * 6) + 1;
+        this.m_saveBallTimer.m_dMaxTime = 3;
     }
 
 
